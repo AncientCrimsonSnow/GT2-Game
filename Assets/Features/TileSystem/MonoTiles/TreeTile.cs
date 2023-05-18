@@ -1,5 +1,6 @@
 ﻿using Unity.Mathematics;
 using UnityEngine;
+using Zenject;
 
 namespace Features.TileSystem.MonoTiles
 {
@@ -9,5 +10,12 @@ namespace Features.TileSystem.MonoTiles
         
         //Astetic stuff
         public int2 MyPos() => tile.MyPos();
+
+        
+        [Inject]
+        public void Construct(ITileManager TEST)
+        {
+                
+        }
     }
 }
