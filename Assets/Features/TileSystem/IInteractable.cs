@@ -1,7 +1,9 @@
-﻿namespace Features.TileSystem
+﻿using UnityEngine;
+
+namespace Features.TileSystem
 {
-    public abstract class Interactable : IInteract
+    public interface IInteractable
     {
-        public abstract bool Interact();
+        public bool OnInteract(GameObject interactor);
     }
 }

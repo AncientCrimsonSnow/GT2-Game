@@ -14,7 +14,7 @@ namespace ZenjectInstaller
 
         private TileManager CreateTileManager(InjectContext arg)
         {
-            return new TileManager(new int2(10, 10));
+            return new TileManager(new int2(10, 10), new int2(0,0));
         }
     }
 }
