@@ -15,28 +15,38 @@ namespace Features.TileSystem
         
         public static TileBase[,] GetTileKernelAt(TileBase[,] tilemap, int2 originArrayPosition, int kernelSize)
         {
-            int numRows = tilemap.GetLength(0);
-            int numCols = tilemap.GetLength(1);
+            var numRows = tilemap.GetLength(0);
+            var numCols = tilemap.GetLength(1);
 
-            int kernelOffset = (kernelSize - 1) / 2;
+            var kernelOffset = (kernelSize - 1) / 2;
 
-            int startRow = Math.Max(0, originArrayPosition.x - kernelOffset);
-            int endRow = Math.Min(numRows - 1, originArrayPosition.x + kernelOffset);
+            var startRow = Math.Max(0, originArrayPosition.x - kernelOffset);
+            var endRow = Math.Min(numRows - 1, originArrayPosition.x + kernelOffset);
 
-            int startCol = Math.Max(0, originArrayPosition.y - kernelOffset);
-            int endCol = Math.Min(numCols - 1, originArrayPosition.y + kernelOffset);
+            var startCol = Math.Max(0, originArrayPosition.y - kernelOffset);
+            var endCol = Math.Min(numCols - 1, originArrayPosition.y + kernelOffset);
 
             TileBase[,] neighboringCells = new TileBase[endRow - startRow + 1, endCol - startCol + 1];
 
-            for (int x = startRow; x <= endRow; x++)
+            for (var x = startRow; x <= endRow; x++)
             {
-                for (int y = startCol; y <= endCol; y++)
+                for (var y = startCol; y <= endCol; y++)
                 {
                     neighboringCells[x - startRow, y - startCol] = tilemap[x, y];
                 }
             }
 
             return neighboringCells;
+        }
+        
+        public static int2 WorldToArrayPosition(int2 originPosition, int2 worldPosition)
+        {
+            return new int2(-originPosition.x + worldPosition.x, -originPosition.y + worldPosition.y);
+        }
+        
+        public static int2 ArrayToWorldPosition(int2 originPosition, int2 arrayPosition)
+        {
+            return new int2(originPosition.x + arrayPosition.x, originPosition.y + arrayPosition.y);
         }
     }
 }

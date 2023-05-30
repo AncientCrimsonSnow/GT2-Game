@@ -20,19 +20,15 @@ namespace Features.TileSystem
             {
                 for (int y = 0; y < mapSize.y; y++)
                 {
-                    _tileMap[x, y] = new TileBase(new int2(_mapOrigin.x + x, _mapOrigin.y + y));
+                    var arrayPosition = new int2(x, y);
+                    _tileMap[x, y] = new TileBase(TileHelper.ArrayToWorldPosition(_mapOrigin, new int2(x, y)), arrayPosition);
                 }
             }
         }
 
-        private int2 WorldToArrayPosition(int2 worldPosition)
-        {
-            return new int2(-_mapOrigin.x + worldPosition.x, -_mapOrigin.y + worldPosition.y);
-        }
-        
         public TileBase GetTileAt(int2 worldPosition)
         {
-            var arrayPosition = WorldToArrayPosition(worldPosition);
+            var arrayPosition = TileHelper.WorldToArrayPosition(_mapOrigin, worldPosition);
             
             return _tileMap[arrayPosition.x, arrayPosition.y];
         }
@@ -45,7 +41,7 @@ namespace Features.TileSystem
         /// <param name="tileContextType"></param>
         public void RegisterTileContext(ITileInteractionContext tileInteraction, int2 worldPosition)
         {
-            var arrayPosition = WorldToArrayPosition(worldPosition);
+            var arrayPosition = TileHelper.WorldToArrayPosition(_mapOrigin, worldPosition);
             
             _tileMap[arrayPosition.x, arrayPosition.y].RegisterTileContext(tileInteraction);
         }
@@ -58,14 +54,14 @@ namespace Features.TileSystem
         /// <param name="tileContextType"></param>
         public void UnregisterTileContext(ITileInteractionContext tileInteraction, int2 worldPosition)
         {
-            var arrayPosition = WorldToArrayPosition(worldPosition);
+            var arrayPosition = TileHelper.WorldToArrayPosition(_mapOrigin, worldPosition);
             
             _tileMap[arrayPosition.x, arrayPosition.y].UnregisterTileContext(tileInteraction);
         }
         
         public TileBase[,] GetTileKernelAt(int2 originWorldPosition, int kernelSize)
         {
-            int2 arrayPosition = WorldToArrayPosition(originWorldPosition);
+            var arrayPosition = TileHelper.WorldToArrayPosition(_mapOrigin, originWorldPosition);
 
             return TileHelper.GetTileKernelAt(_tileMap, arrayPosition, kernelSize);
         }

@@ -4,6 +4,7 @@ using UnityEngine;
 using Zenject;
 
 
+//TODO: this must be able to represent a building -> have a list af all registratable things and register at one spot
 /// <summary>
 /// This script automatically registers itself to the TileManager dependant on the position at Start.
 /// When changing it's position later, it will still be inside the same position inside the TileManager!
