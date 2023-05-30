@@ -38,30 +38,5 @@ namespace Features.TileSystem
 
             return neighboringCells;
         }
-
-        public static bool IsNeighborInsideDepth(int iterator, int originPosition, int depth) => 
-            Mathf.Abs(iterator - originPosition) <= depth && Mathf.Abs(iterator - originPosition) > 0;
-        
-        public static bool IsInBounds(TileBase[,] grid, int position) => position >= 0 && position < grid.GetLength(1);
-        
-        
-        public static List<TileBase> GetCardinalNeighboringCells(TileBase[,] tilemap, int2 originArrayPosition, int depth)
-        {
-            var result = new List<TileBase>();
-            
-            for (var x = 0; x < tilemap.GetLength(0); x++)
-            {
-                for (var y = 0; y < tilemap.GetLength(1); y++)
-                {
-                    if (x == originArrayPosition.x && IsInBounds(tilemap, originArrayPosition.y) && IsNeighborInsideDepth(y, originArrayPosition.y, depth)|| 
-                        y == originArrayPosition.y && IsInBounds(tilemap, originArrayPosition.x) && IsNeighborInsideDepth(x, originArrayPosition.x, depth))
-                    {
-                        result.Add(tilemap[x, y]);
-                    }
-                }
-            }
-
-            return result;
-        }
     }
 }

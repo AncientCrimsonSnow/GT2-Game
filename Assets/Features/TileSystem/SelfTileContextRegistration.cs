@@ -6,18 +6,18 @@ namespace Features.TileSystem
     [CreateAssetMenu(fileName = "Self Tile Context Registrator", menuName = "TileContext/Registrator/Self")]
     public class SelfTileContextRegistration : TileContextRegistration
     {
-        public override void OnRegister(ITileContext ownedTileContext, ITileManager tileManager, int2 worldPosition)
+        public override void OnRegister(ITileInteractionContext ownedTileInteractionContext, ITileManager tileManager, int2 worldPosition)
         {
-            tileManager.RegisterTileContext(ownedTileContext, worldPosition, TileContextType.SelfContext);
+            tileManager.RegisterTileContext(ownedTileInteractionContext, worldPosition);
         }
 
-        public override void OnUnregister(ITileContext ownedTileContext, ITileManager tileManager, int2 worldPosition)
+        public override void OnUnregister(ITileInteractionContext ownedTileInteractionContext, ITileManager tileManager, int2 worldPosition)
         {
             var tilePosition = worldPosition;
             var tileBase = tileManager.GetTileAt(tilePosition);
-            if (tileBase.HasTileContextOfType(TileContextType.SelfContext) && ownedTileContext != null)
+            if (tileBase.HasTileContext() && ownedTileInteractionContext != null)
             {
-                tileManager.UnregisterTileContext(ownedTileContext, tilePosition);
+                tileManager.UnregisterTileContext(ownedTileInteractionContext, tilePosition);
             }
         }
     }

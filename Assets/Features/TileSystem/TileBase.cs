@@ -6,72 +6,58 @@ using UnityEngine;
 
 namespace Features.TileSystem
 {
-    public class TileBase : IInteractable
+    public class TileBase : IActiveInteractable, IPassiveInteractable, ITileContextRegistration
     {
         public int2 TileManagerArrayPosition { get; }
         
-        private ITileContext _tileContext;
-        private readonly List<ITileContext> _connectedTileContexts;
+        
+        
+        private readonly List<ITileInteractionContext> _stackedTileContexts;
 
         public TileBase(int2 tileManagerArrayPosition)
         {
             TileManagerArrayPosition = tileManagerArrayPosition;
-            _connectedTileContexts = new List<ITileContext>();
-        }
-
-        public bool HasTileContextOfType(TileContextType tileContextType)
-        {
-            switch (tileContextType)
-            {
-                case TileContextType.SelfContext:
-                    return _tileContext != null;
-                case TileContextType.PointerContext:
-                    return _connectedTileContexts.Count != 0;
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(tileContextType), tileContextType, null);
-            }
+            _stackedTileContexts = new List<ITileInteractionContext>();
         }
         
         public bool HasTileContext()
         {
-            return _tileContext != null && _connectedTileContexts.Count != 0;
+            return _stackedTileContexts.Count != 0;
         }
 
-        public void RegisterTileContext(ITileContext tileContext, TileContextType tileContextType)
+        public void RegisterTileContext(ITileInteractionContext tileInteractionContext)
         {
-            switch (tileContextType)
-            {
-                case TileContextType.SelfContext:
-                    _tileContext = tileContext;
-                    break;
-                case TileContextType.PointerContext:
-                    _connectedTileContexts.Add(tileContext);
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(tileContextType), tileContextType, null);
-            }
+            _stackedTileContexts.Add(tileInteractionContext);
         }
         
-        public void UnregisterTileContext(ITileContext tileContext)
+        public void UnregisterTileContext(ITileInteractionContext tileInteractionContext)
         {
-            if (ReferenceEquals(_tileContext, tileContext))
+            _stackedTileContexts.RemoveAll(x => ReferenceEquals(x, tileInteractionContext));
+        }
+
+        //TODO: After each interaction, this must be saved as an element in the current tick list. It must be ordered by interaction call.
+        public bool OnActiveInteract(GameObject interactor)
+        {
+            return _stackedTileContexts.Any(connectedTileContext => connectedTileContext.OnActiveInteract(interactor));
+        }
+
+        //TODO: call this, at the end of each tick
+        public void OnPassiveInteract()
+        {
+            foreach (var stackedTileContext in _stackedTileContexts)
             {
-                _tileContext = null;
-            }
-            else
-            {
-                _connectedTileContexts.RemoveAll(x => ReferenceEquals(x, tileContext));
+                stackedTileContext.OnPassiveInteract();
             }
         }
 
-        public bool OnInteract(GameObject interactor)
+        public bool IsMovable()
         {
-            if (_tileContext != null && _tileContext.OnInteract(interactor))
-            {
-                return true;
-            }
+            return _stackedTileContexts.All(tileInteractionContext => tileInteractionContext.IsMovable());
+        }
 
-            return _connectedTileContexts.Any(connectedTileContext => connectedTileContext.OnInteract(interactor));
+        public bool CanContainResource()
+        {
+            return _stackedTileContexts.All(tileInteractionContext => tileInteractionContext.CanContainResource());
         }
     }
 }

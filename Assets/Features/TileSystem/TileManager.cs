@@ -5,8 +5,6 @@ using UnityEngine;
 
 namespace Features.TileSystem
 {
-    public enum TileContextType { SelfContext, PointerContext }
-    
     public class TileManager : ITileManager
     {
         private readonly int2 _mapOrigin;
@@ -42,33 +40,27 @@ namespace Features.TileSystem
         /// <summary>
         /// Will always be called by the TileContentRegistrator after it got instantiated
         /// </summary>
-        /// <param name="tile"></param>
+        /// <param name="tileInteraction"></param>
         /// <param name="worldPosition"></param>
         /// <param name="tileContextType"></param>
-        public void RegisterTileContext(ITileContext tile, int2 worldPosition, TileContextType tileContextType)
+        public void RegisterTileContext(ITileInteractionContext tileInteraction, int2 worldPosition)
         {
             var arrayPosition = WorldToArrayPosition(worldPosition);
             
-            if (_tileMap[arrayPosition.x, arrayPosition.y].HasTileContextOfType(tileContextType))
-            {
-                Debug.LogError("You tried to register a tile on a position, that already has a tile!");
-                return;
-            }
-            
-            _tileMap[arrayPosition.x, arrayPosition.y].RegisterTileContext(tile, tileContextType);
+            _tileMap[arrayPosition.x, arrayPosition.y].RegisterTileContext(tileInteraction);
         }
         
         /// <summary>
         /// Will always be called by the TileContentRegistrator after it got destroyed, in case it doesn't got cleaned up earlier.
         /// </summary>
-        /// <param name="tile"></param>
+        /// <param name="tileInteraction"></param>
         /// <param name="worldPosition"></param>
         /// <param name="tileContextType"></param>
-        public void UnregisterTileContext(ITileContext tile, int2 worldPosition)
+        public void UnregisterTileContext(ITileInteractionContext tileInteraction, int2 worldPosition)
         {
             var arrayPosition = WorldToArrayPosition(worldPosition);
             
-            _tileMap[arrayPosition.x, arrayPosition.y].UnregisterTileContext(tile);
+            _tileMap[arrayPosition.x, arrayPosition.y].UnregisterTileContext(tileInteraction);
         }
         
         public TileBase[,] GetTileKernelAt(int2 originWorldPosition, int kernelSize)
@@ -76,13 +68,6 @@ namespace Features.TileSystem
             int2 arrayPosition = WorldToArrayPosition(originWorldPosition);
 
             return TileHelper.GetTileKernelAt(_tileMap, arrayPosition, kernelSize);
-        }
-
-        public List<TileBase> GetCardinalNeighboringCells(int2 originWorldPosition, int depth)
-        {
-            int2 arrayPosition = WorldToArrayPosition(originWorldPosition);
-
-            return TileHelper.GetCardinalNeighboringCells(_tileMap, arrayPosition, depth);
         }
     }
 }

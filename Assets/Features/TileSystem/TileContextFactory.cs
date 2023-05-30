@@ -8,6 +8,6 @@ namespace Features.TileSystem
     /// </summary>
     public abstract class TileContextFactory : ScriptableObject
     {
-        public abstract ITileContext Generate(TileContextRegistrator registrator);
+        public abstract ITileInteractionContext Generate(TileContextRegistrator registrator);
     }
 }

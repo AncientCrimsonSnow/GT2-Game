@@ -4,27 +4,30 @@ using UnityEngine;
 using Zenject;
 
 
+/// <summary>
+/// This script automatically registers itself to the TileManager dependant on the position at Start.
+/// When changing it's position later, it will still be inside the same position inside the TileManager!
+/// Tiles must currently be static on a position!
+///
+/// Current suitable concept for pooling: setting out-of-screenspace objects inactive. It got registered inside the TileManager.
+/// Thus, things will be able to interact with it, even though it is set inactive & out of screenspace (useful for the tick system).
+/// </summary>
 public class TileContextRegistrator : MonoBehaviour
 {
     [SerializeField] private TileContextRegistration tileContextRegistration;
     [SerializeField] private TileContextFactory tileContextFactory;
-    
+
     private ITileManager _tileManager;
-    private ITileContext _ownedTileContext;
+    private ITileInteractionContext _ownedTileInteractionContext;
     
-    /// <summary>
-    /// This script automatically registers itself to the TileManager dependant on the position at Start.
-    /// When changing it's position later, it will still be inside the same position inside the TileManager!
-    /// Tiles must currently be static on a position!
-    /// </summary>
     private int2 _registeredPosition;
 
     private void Start()
     {
         ApplyRoundedPosition();
         _registeredPosition = TileHelper.TransformPositionToInt2(transform);
-        _ownedTileContext = tileContextFactory.Generate(this);
-        tileContextRegistration.OnRegister(_ownedTileContext, _tileManager, _registeredPosition);
+        _ownedTileInteractionContext = tileContextFactory.Generate(this);
+        tileContextRegistration.OnRegister(_ownedTileInteractionContext, _tileManager, _registeredPosition);
     }
 
     private void ApplyRoundedPosition()
@@ -54,6 +57,6 @@ public class TileContextRegistrator : MonoBehaviour
             Debug.LogWarning("You changed the position of this tile during Runtime!");
         }
         
-        tileContextRegistration.OnUnregister(_ownedTileContext, _tileManager, _registeredPosition);
+        tileContextRegistration.OnUnregister(_ownedTileInteractionContext, _tileManager, _registeredPosition);
     }
 }
