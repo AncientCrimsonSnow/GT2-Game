@@ -5,48 +5,47 @@ namespace Features.TileSystem
 {
     public class StackableTileObjectComponent : ITileObjectComponent
     {
-        private readonly TileObjectDecorator _tileObjectDecorator;
+        public GameObject InstantiatedObject { get; }
+        public TileBase TileBase { get; }
         
-        private readonly int _maxItemCount;
+        private readonly BaseItem _newItem;
         private int _itemCount;
 
-        public StackableTileObjectComponent(TileObjectDecorator tileObjectDecorator , int maxItemCount)
+        public StackableTileObjectComponent(BaseItem newItem, GameObject instantiatedObject, TileBase tileBase)
         {
-            _tileObjectDecorator = tileObjectDecorator;
-            _maxItemCount = maxItemCount;
+            _newItem = newItem;
+            InstantiatedObject = instantiatedObject;
+            TileBase = tileBase;
         }
         
         public bool OnActiveInteract(GameObject interactor)
         {
-            if (!interactor.TryGetComponent(out CarriedItemBehaviour heldItemBehaviour)) return false;
+            if (!interactor.TryGetComponent(out CarriedItemBaseBehaviour heldItemBehaviour)) return false;
             
             if (heldItemBehaviour.IsCarrying())
             {
-                if (_itemCount >= _maxItemCount)
+                if (_itemCount >= _newItem.maxStack)
                 {
                     Debug.LogWarning($"Cant add {heldItemBehaviour.HeldItem}! {GetType()} has reached it's max item count!");
                     return false;
                 }
-
-                if (_itemCount == 0)
-                {
-                    //TODO: Instantiate Object
-                }
                 
-                heldItemBehaviour.RemoveItem();
+                heldItemBehaviour.DropItem();
             }
             else
             {
-                _itemCount--;
-                heldItemBehaviour.PickupItem(_tileObjectDecorator.NewItem);
+                if (_itemCount <= 0) return false;
                 
-                if (_itemCount == 0)
-                {
-                    //TODO: destroy instantiated Object
-                }
+                _itemCount--;
+                heldItemBehaviour.PickupItem(_newItem);
             }
             
             return true;
+        }
+
+        public void OnUnregister()
+        {
+            Object.Destroy(InstantiatedObject);
         }
 
         public bool IsMovable() => true;

@@ -14,17 +14,17 @@ namespace Features.TileSystem
 
         public bool OnActiveInteract(GameObject interactor)
         {
-            if (!interactor.TryGetComponent(out CarriedItemBehaviour heldItemBehaviour) 
+            if (!interactor.TryGetComponent(out CarriedItemBaseBehaviour heldItemBehaviour) 
                 && !heldItemBehaviour.IsCarrying()) return false;
-            
-            heldItemBehaviour.DropItem(_tileBase);      //TODO: create unstackable
-            
-            var tileObjectDecorator = new TileObjectDecorator()
-            tileObjectDecorator.TileObjectComponent = new UnstackableTileObjectComponent(tileObjectDecorator);
-            _tileBase.SetTileObjectComponent();
-            //TODO: create decorator, & add this
+
+            var heldItem = heldItemBehaviour.HeldItem;
+            var instantiatedObject = TileHelper.InstantiateOnTile(_tileBase, heldItem.prefab, Quaternion.identity);
+            var tileObjectComponent = new UnstackableTileObjectComponent(heldItem, instantiatedObject, _tileBase);
+            _tileBase.RegisterNewTileObjectComponent(tileObjectComponent);
             return true;
         }
+
+        public void OnUnregister() { }
 
         public bool IsMovable() => true;
 

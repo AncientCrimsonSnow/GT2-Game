@@ -4,6 +4,7 @@ using System.Linq;
 using DataStructures.StateLogic;
 using Unity.Mathematics;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace Features.TileSystem
 {
@@ -50,16 +51,18 @@ namespace Features.TileSystem
             return _stackedTileContexts.Count != 0;
         }
 
-        public void SetTileObjectComponent(ITileObjectComponent objectInteractionContext)
+        public void RegisterNewTileObjectComponent(ITileObjectComponent objectInteractionContext)
         {
-            if (_tileObjectComponent is TileObjectDecorator oldTileObjectDecorator && objectInteractionContext is TileObjectDecorator newTileObjectDecorator)
-            {
-                oldTileObjectDecorator.TileObjectComponent = newTileObjectDecorator.TileObjectComponent;
-            }
-            else
-            {
-                _tileObjectComponent = objectInteractionContext;
-            }
+            _tileObjectComponent.OnUnregister();
+            _tileObjectComponent = objectInteractionContext;
+        }
+
+        //TODO: put this into the storage instantiation -> TODO: destroy on building destroy
+        public void AddStackableTileObjectComponent(BaseItem item)
+        {
+            var instantiatedObject = TileHelper.InstantiateOnTile(this, item.prefab, Quaternion.identity);
+            var tileObjectComponent = new StackableTileObjectComponent(item, instantiatedObject, this);
+            RegisterNewTileObjectComponent(tileObjectComponent);
         }
 
         public void RegisterTileContext(ITileInteractionContext tileInteractionContext)

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Unity.Mathematics;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace Features.TileSystem
 {
@@ -47,6 +48,14 @@ namespace Features.TileSystem
         public static int2 ArrayToWorldPosition(int2 originPosition, int2 arrayPosition)
         {
             return new int2(originPosition.x + arrayPosition.x, originPosition.y + arrayPosition.y);
+        }
+        
+        public static GameObject InstantiateOnTile(TileBase tileBase, GameObject prefab, Quaternion rotation, Transform parent = null)
+        {
+            var position = new Vector3(tileBase.WorldPosition.x, 0, tileBase.WorldPosition.x);
+            var instantiateObject = Object.Instantiate(prefab, position, rotation);
+            if (parent != null) instantiateObject.transform.SetParent(parent);
+            return instantiateObject;
         }
     }
 }

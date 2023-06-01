@@ -1,27 +1,34 @@
 ﻿using DataStructures.StateLogic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 namespace Features.TileSystem
 {
     public class UnstackableTileObjectComponent : ITileObjectComponent
     {
-        private readonly TileObjectDecorator _tileObjectDecorator;
+        private readonly BaseItem _newItem;
+        private readonly GameObject _instantiatedObject;
+        private readonly TileBase _tileBase;
 
-        public UnstackableTileObjectComponent(TileObjectDecorator tileObjectDecorator)
+        public UnstackableTileObjectComponent(BaseItem newItem, GameObject instantiatedObject, TileBase tileBase)
         {
-            _tileObjectDecorator = tileObjectDecorator;
+            _newItem = newItem;
+            _instantiatedObject = instantiatedObject;
+            _tileBase = tileBase;
         }
         
         public bool OnActiveInteract(GameObject interactor)
         {
-            if (!interactor.TryGetComponent(out CarriedItemBehaviour heldItemBehaviour) && heldItemBehaviour.IsCarrying()) return false;
+            if (!interactor.TryGetComponent(out CarriedItemBaseBehaviour heldItemBehaviour) && heldItemBehaviour.IsCarrying()) return false;
             
-            //TODO: destroy instantiated Object
-            heldItemBehaviour.PickupItem(_tileObjectDecorator.NewItem);
-            _tileObjectDecorator.TileBase.SetTileObjectComponent(new EmptyTileObjectComponent(_tileObjectDecorator.TileBase));
+            heldItemBehaviour.PickupItem(_newItem);
+            _tileBase.RegisterNewTileObjectComponent(new EmptyTileObjectComponent(_tileBase));
 
             return true;
+        }
+
+        public void OnUnregister()
+        {
+            Object.Destroy(_instantiatedObject);
         }
 
         public bool IsMovable() => true;
