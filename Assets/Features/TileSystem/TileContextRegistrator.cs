@@ -1,6 +1,7 @@
 using Features.TileSystem;
 using Unity.Mathematics;
 using UnityEngine;
+using UnityEngine.Serialization;
 using Zenject;
 
 
@@ -15,20 +16,23 @@ using Zenject;
 /// </summary>
 public class TileContextRegistrator : MonoBehaviour
 {
-    [SerializeField] private TileContextRegistration tileContextRegistration;
-    [SerializeField] private TileContextFactory tileContextFactory;
+    [FormerlySerializedAs("tileContextFactory")] [SerializeField] private TileComponentFactory tileComponentFactory;
 
     private ITileManager _tileManager;
-    private ITileInteractionContext _ownedTileInteractionContext;
-    
+    private BaseTileComponent _ownedExchangeable;
     private int2 _registeredPosition;
 
     private void Start()
     {
         ApplyRoundedPosition();
+        
         _registeredPosition = TileHelper.TransformPositionToInt2(transform);
-        _ownedTileInteractionContext = tileContextFactory.Generate(this);
-        tileContextRegistration.OnRegister(_ownedTileInteractionContext, _tileManager, _registeredPosition);
+        if (_tileManager.TryGetTileTypeAt(_registeredPosition, out Tile tile))
+        {
+            //TODO: create pointers
+            _ownedExchangeable = tileComponentFactory.Generate(tile, );
+            _tileManager.RegisterTileContext(_ownedExchangeable, _registeredPosition);
+        }
     }
 
     private void ApplyRoundedPosition()
@@ -58,6 +62,6 @@ public class TileContextRegistrator : MonoBehaviour
             Debug.LogWarning("You changed the position of this tile during Runtime!");
         }
         
-        tileContextRegistration.OnUnregister(_ownedTileInteractionContext, _tileManager, _registeredPosition);
+        _tileManager.UnregisterTileContext(_ownedExchangeable, _registeredPosition);
     }
 }

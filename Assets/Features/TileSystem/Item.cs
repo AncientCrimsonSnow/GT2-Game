@@ -3,7 +3,7 @@
 namespace Features.TileSystem
 {
     [CreateAssetMenu]
-    public class BaseItem : ScriptableObject
+    public class Item : ScriptableObject
     {
         public string itemName;
         public GameObject prefab;

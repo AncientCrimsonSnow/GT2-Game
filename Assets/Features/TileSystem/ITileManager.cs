@@ -5,12 +5,13 @@ namespace Features.TileSystem
 {
     public interface ITileManager
     {
-        public TileBase GetTileAt(int2 worldPosition);
+        bool TryGetTileTypeAt<T>(int2 worldPosition, out T tileBase)
+            where T : IInteractable, ITileComponentRegistration, IMovable, IGridPosition;
 
-        public void RegisterTileContext(ITileInteractionContext tileInteraction, int2 worldPosition);
+        void RegisterTileContext(BaseTileComponent baseTileComponent, int2 worldPosition);
 
-        public void UnregisterTileContext(ITileInteractionContext tileInteraction, int2 worldPosition);
+        void UnregisterTileContext(BaseTileComponent baseTileComponent, int2 worldPosition);
 
-        public TileBase[,] GetTileKernelAt(int2 originWorldPosition, int kernelSize);
+        Tile[,] GetTileKernelAt(int2 originWorldPosition, int kernelSize);
     }
 }

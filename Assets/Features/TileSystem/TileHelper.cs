@@ -14,7 +14,7 @@ namespace Features.TileSystem
             return new int2((int)position.x, (int)position.z);
         }
         
-        public static TileBase[,] GetTileKernelAt(TileBase[,] tilemap, int2 originArrayPosition, int kernelSize)
+        public static Tile[,] GetTileKernelAt(Tile[,] tilemap, int2 originArrayPosition, int kernelSize)
         {
             var numRows = tilemap.GetLength(0);
             var numCols = tilemap.GetLength(1);
@@ -27,7 +27,7 @@ namespace Features.TileSystem
             var startCol = Math.Max(0, originArrayPosition.y - kernelOffset);
             var endCol = Math.Min(numCols - 1, originArrayPosition.y + kernelOffset);
 
-            TileBase[,] neighboringCells = new TileBase[endRow - startRow + 1, endCol - startCol + 1];
+            Tile[,] neighboringCells = new Tile[endRow - startRow + 1, endCol - startCol + 1];
 
             for (var x = startRow; x <= endRow; x++)
             {
@@ -50,9 +50,9 @@ namespace Features.TileSystem
             return new int2(originPosition.x + arrayPosition.x, originPosition.y + arrayPosition.y);
         }
         
-        public static GameObject InstantiateOnTile(TileBase tileBase, GameObject prefab, Quaternion rotation, Transform parent = null)
+        public static GameObject InstantiateOnTile(IGridPosition gridPosition, GameObject prefab, Quaternion rotation, Transform parent = null)
         {
-            var position = new Vector3(tileBase.WorldPosition.x, 0, tileBase.WorldPosition.x);
+            var position = new Vector3(gridPosition.WorldPosition.x, 0, gridPosition.WorldPosition.x);
             var instantiateObject = Object.Instantiate(prefab, position, rotation);
             if (parent != null) instantiateObject.transform.SetParent(parent);
             return instantiateObject;

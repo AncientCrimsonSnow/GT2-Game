@@ -1,11 +1,10 @@
-﻿using DataStructures.StateLogic;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Features.TileSystem
 {
     public abstract class CarriedItemBaseBehaviour : MonoBehaviour
     {
-        public BaseItem HeldItem { get; private set; }
+        public Item HeldItem { get; private set; }
         
         public bool IsCarrying() => HeldItem != null;
 
@@ -25,7 +24,7 @@ namespace Features.TileSystem
         //TODO: handle visualisation of held item -> e.g. instantiate
         protected abstract void OnDropItem();
 
-        public void PickupItem(BaseItem newItem)
+        public void PickupItem(Item newItem)
         {
             if (HeldItem != null)
             {
