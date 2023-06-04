@@ -27,16 +27,11 @@ namespace Features.TileSystem
         }
 
         
-        public bool TryGetTileTypeAt<T>(int2 worldPosition, out T tileBase)
-            where T : IInteractable, ITileComponentRegistration, IMovable, IGridPosition
+        public Tile GetTileTypeAt(int2 worldPosition)
         {
             var arrayPosition = TileHelper.WorldToArrayPosition(_mapOrigin, worldPosition);
-            
-            tileBase = default;
-            if (_tileMap[arrayPosition.x, arrayPosition.y] is not T currentTileBase) return false;
-            
-            tileBase = currentTileBase;
-            return true;
+
+            return _tileMap[arrayPosition.x, arrayPosition.y];
         }
 
         /// <summary>

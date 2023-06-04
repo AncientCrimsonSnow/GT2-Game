@@ -11,7 +11,7 @@ namespace Features.TileSystem
         [SerializeField] private int craftAmount;
         
         //TODO: extend new BaseTileComponents & improve this one for design
-        public override BaseTileComponent Generate(Tile tile, StackableBaseTileComponent tileComponent)
+        public override BaseTileComponent Generate(Tile tile, StackableItemTileComponent tileComponent)
         {
             var instantiatedObject = TileHelper.InstantiateOnTile(tile, prefab, Quaternion.identity);
             return new PointerResourceGeneratorTileComponent(tile, instantiatedObject, isMovable, tileComponent, item, craftAmount);

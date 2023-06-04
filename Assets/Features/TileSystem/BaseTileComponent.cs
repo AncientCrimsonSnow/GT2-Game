@@ -2,7 +2,7 @@
 
 namespace Features.TileSystem
 {
-    public abstract class BaseTileComponent : IInteractable, IMovable, IExchangeable<BaseTileComponent>
+    public abstract class BaseTileComponent : IInteractable, IMovable
     {
         protected readonly Tile Tile;
 
@@ -12,8 +12,6 @@ namespace Features.TileSystem
         }
         
         public abstract bool TryInteract(GameObject interactor);
-        
-        public virtual bool IsExchangeable(BaseTileComponent newBaseTileComponent) => true;
 
         public virtual bool IsMovable() => true;
     }

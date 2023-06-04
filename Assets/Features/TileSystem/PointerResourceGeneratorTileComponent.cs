@@ -7,26 +7,26 @@ namespace Features.TileSystem
         public GameObject InstantiatedGameObject { get; }
         
         private readonly bool _isMovable;
-        private readonly StackableBaseTileComponent _stackableBaseTileComponentPointer;
+        private readonly StackableItemTileComponent _stackableItemTileComponentPointer;
         private readonly Item _item;
         private readonly int _itemAmountCost;
         
         public PointerResourceGeneratorTileComponent(Tile tile, GameObject instantiatedGameObject, bool isMovable,
-            StackableBaseTileComponent stackableBaseTileComponentPointer, Item item, int itemAmountCost) : base(tile)
+            StackableItemTileComponent stackableItemTileComponentPointer, Item item, int itemAmountCost) : base(tile)
         {
             _isMovable = isMovable;
             InstantiatedGameObject = instantiatedGameObject;
-            _stackableBaseTileComponentPointer = stackableBaseTileComponentPointer;
+            _stackableItemTileComponentPointer = stackableItemTileComponentPointer;
             _item = item;
             _itemAmountCost = itemAmountCost;
         }
 
         public override bool TryInteract(GameObject interactor)
         {
-            if (!_stackableBaseTileComponentPointer.IsSuccessfulItemRemove(_itemAmountCost)) return false;
+            if (!_stackableItemTileComponentPointer.IsSuccessfulItemRemove(_itemAmountCost)) return false;
 
             var instantiatedObject = TileHelper.InstantiateOnTile(Tile, _item.prefab, Quaternion.identity);
-            return Tile.TryRegisterTileComponent(new UnstackableBaseTileComponent(Tile, _item, instantiatedObject));
+            return Tile.TryRegisterTileComponent(new UnstackableItemTileComponent(Tile, _item, instantiatedObject));
         }
         
         public override bool IsMovable()

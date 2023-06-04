@@ -5,6 +5,6 @@ namespace Features.TileSystem
 {
     public abstract class TileComponentFactory : ScriptableObject
     {
-        public abstract BaseTileComponent Generate(Tile tile, StackableBaseTileComponent tileComponent);
+        public abstract BaseTileComponent Generate(Tile tile, StackableItemTileComponent tileComponent);
     }
 }

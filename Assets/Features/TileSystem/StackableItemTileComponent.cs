@@ -2,14 +2,14 @@
 
 namespace Features.TileSystem
 {
-    public class StackableBaseTileComponent : BaseTileComponent, IInstantiatedGameObject
+    public class StackableItemTileComponent : ExchangeableBaseTileComponent, IInstantiatedGameObject
     {
         public GameObject InstantiatedGameObject { get; private set; }
         public Item ContainedItem { get; }
         
         private int _itemCount;
 
-        public StackableBaseTileComponent(Tile tile, Item containedItem, GameObject instantiatedObject) : base(tile)
+        public StackableItemTileComponent(Tile tile, Item containedItem, GameObject instantiatedObject) : base(tile)
         {
             ContainedItem = containedItem;
             InstantiatedGameObject = instantiatedObject;
@@ -19,14 +19,18 @@ namespace Features.TileSystem
         {
             switch (newBaseTileComponent)
             {
-                case UnstackableBaseTileComponent unstackableItemTileComponent when _itemCount <= 1 && ContainedItem != unstackableItemTileComponent.ContainedItem:
-                case StackableBaseTileComponent:
+                case UnstackableItemTileComponent unstackableItemTileComponent when _itemCount <= 1 && ContainedItem != unstackableItemTileComponent.ContainedItem:
+                case StackableItemTileComponent:
                     return false;
                 default:
-                    Object.Destroy(InstantiatedGameObject);
-                    InstantiatedGameObject = null;
                     return true;
             }
+        }
+
+        public override void OnExchange(BaseTileComponent newBaseTileComponent)
+        {
+            Object.Destroy(InstantiatedGameObject);
+            InstantiatedGameObject = null;
         }
 
         public override bool TryInteract(GameObject interactor)

@@ -2,14 +2,16 @@
 
 namespace Features.TileSystem
 {
-    public class EmptyBaseTileComponent : BaseTileComponent
+    public class EmptyItemTileComponent : ExchangeableBaseTileComponent
     {
-        public EmptyBaseTileComponent(Tile tile) : base(tile) { }
+        public EmptyItemTileComponent(Tile tile) : base(tile) { }
 
         public override bool IsExchangeable(BaseTileComponent newBaseTileComponent)
         {
             return true;
         }
+
+        public override void OnExchange(BaseTileComponent newBaseTileComponent) { }
 
         public override bool TryInteract(GameObject interactor)
         {
@@ -18,7 +20,8 @@ namespace Features.TileSystem
 
             var heldItem = heldItemBehaviour.HeldItem;
             var instantiatedObject = TileHelper.InstantiateOnTile(Tile, heldItem.prefab, Quaternion.identity);
-            var tileObjectComponent = new UnstackableBaseTileComponent(Tile, heldItem, instantiatedObject);
+            var tileObjectComponent = new UnstackableItemTileComponent(Tile, heldItem, instantiatedObject);
+            heldItemBehaviour.DropItem();
             return Tile.TryRegisterTileComponent(tileObjectComponent);
         }
 

@@ -27,7 +27,7 @@ public class TileContextRegistrator : MonoBehaviour
         ApplyRoundedPosition();
         
         _registeredPosition = TileHelper.TransformPositionToInt2(transform);
-        if (_tileManager.TryGetTileTypeAt(_registeredPosition, out Tile tile))
+        if (_tileManager.GetTileTypeAt(_registeredPosition, out Tile tile))
         {
             //TODO: create pointers
             _ownedExchangeable = tileComponentFactory.Generate(tile, );

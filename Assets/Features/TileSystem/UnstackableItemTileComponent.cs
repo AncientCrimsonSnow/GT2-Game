@@ -2,12 +2,12 @@
 
 namespace Features.TileSystem
 {
-    public class UnstackableBaseTileComponent : BaseTileComponent, IInstantiatedGameObject
+    public class UnstackableItemTileComponent : ExchangeableBaseTileComponent, IInstantiatedGameObject
     {
         public GameObject InstantiatedGameObject { get; private set; }
         public Item ContainedItem { get; }
 
-        public UnstackableBaseTileComponent(Tile tile, Item newItem, GameObject instantiatedObject) : base(tile)
+        public UnstackableItemTileComponent(Tile tile, Item newItem, GameObject instantiatedObject) : base(tile)
         {
             ContainedItem = newItem;
             InstantiatedGameObject = instantiatedObject;
@@ -17,14 +17,18 @@ namespace Features.TileSystem
         {
             switch (newBaseTileComponent)
             {
-                case StackableBaseTileComponent stackableItemTileComponent when ContainedItem != stackableItemTileComponent.ContainedItem:
-                case UnstackableBaseTileComponent:
+                case StackableItemTileComponent stackableItemTileComponent when ContainedItem != stackableItemTileComponent.ContainedItem:
+                case UnstackableItemTileComponent:
                     return false;
                 default:
-                    Object.Destroy(InstantiatedGameObject);
-                    InstantiatedGameObject = null;
                     return true;
             }
+        }
+
+        public override void OnExchange(BaseTileComponent newBaseTileComponent)
+        {
+            Object.Destroy(InstantiatedGameObject);
+            InstantiatedGameObject = null;
         }
 
         public override bool TryInteract(GameObject interactor)
@@ -32,7 +36,7 @@ namespace Features.TileSystem
             if (!interactor.TryGetComponent(out CarriedItemBaseBehaviour heldItemBehaviour) && heldItemBehaviour.IsCarrying()) return false;
             
             heldItemBehaviour.PickupItem(ContainedItem);
-            return Tile.TryRegisterTileComponent(new EmptyBaseTileComponent(Tile));
+            return Tile.TryRegisterTileComponent(new EmptyItemTileComponent(Tile));
         }
 
         public override bool IsMovable()

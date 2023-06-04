@@ -5,8 +5,7 @@ namespace Features.TileSystem
 {
     public interface ITileManager
     {
-        bool TryGetTileTypeAt<T>(int2 worldPosition, out T tileBase)
-            where T : IInteractable, ITileComponentRegistration, IMovable, IGridPosition;
+        Tile GetTileTypeAt(int2 worldPosition);
 
         void RegisterTileContext(BaseTileComponent baseTileComponent, int2 worldPosition);
 
