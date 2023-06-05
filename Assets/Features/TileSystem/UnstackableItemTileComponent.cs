@@ -2,41 +2,20 @@
 
 namespace Features.TileSystem
 {
-    public class UnstackableItemTileComponent : ExchangeableBaseTileComponent, IInstantiatedGameObject
+    public class UnstackableItemTileComponent : ItemTileComponent
     {
-        public GameObject InstantiatedGameObject { get; private set; }
-        public Item ContainedItem { get; }
-
-        public UnstackableItemTileComponent(Tile tile, Item newItem, GameObject instantiatedObject) : base(tile)
-        {
-            ContainedItem = newItem;
-            InstantiatedGameObject = instantiatedObject;
-        }
-
-        public override bool IsExchangeable(BaseTileComponent newBaseTileComponent)
-        {
-            switch (newBaseTileComponent)
-            {
-                case StackableItemTileComponent stackableItemTileComponent when ContainedItem != stackableItemTileComponent.ContainedItem:
-                case UnstackableItemTileComponent:
-                    return false;
-                default:
-                    return true;
-            }
-        }
-
-        public override void OnExchange(BaseTileComponent newBaseTileComponent)
-        {
-            Object.Destroy(InstantiatedGameObject);
-            InstantiatedGameObject = null;
-        }
+        public UnstackableItemTileComponent(Tile tile) : base(tile) { }
 
         public override bool TryInteract(GameObject interactor)
         {
-            if (!interactor.TryGetComponent(out CarriedItemBaseBehaviour heldItemBehaviour) && heldItemBehaviour.IsCarrying()) return false;
+            if (!interactor.TryGetComponent(out CarriedItemBaseBehaviour heldItemBehaviour) 
+                && heldItemBehaviour.IsCarrying() && Tile.ItemContainer.CanDestroyItem()) return false;
             
-            heldItemBehaviour.PickupItem(ContainedItem);
-            return Tile.TryRegisterTileComponent(new EmptyItemTileComponent(Tile));
+            heldItemBehaviour.PickupItem(Tile.ItemContainer.ContainedItem);
+            Tile.ItemContainer.AddItemCount(-1);
+            Tile.ItemContainer.DestroyItem();
+            Tile.ExchangeFirstTileComponentOfType<ItemTileComponent>(new EmptyItemTileComponent(Tile));
+            return true;
         }
 
         public override bool IsMovable()

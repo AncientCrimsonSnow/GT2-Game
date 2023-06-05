@@ -2,16 +2,9 @@
 
 namespace Features.TileSystem
 {
-    public class EmptyItemTileComponent : ExchangeableBaseTileComponent
+    public class EmptyItemTileComponent : ItemTileComponent
     {
         public EmptyItemTileComponent(Tile tile) : base(tile) { }
-
-        public override bool IsExchangeable(BaseTileComponent newBaseTileComponent)
-        {
-            return true;
-        }
-
-        public override void OnExchange(BaseTileComponent newBaseTileComponent) { }
 
         public override bool TryInteract(GameObject interactor)
         {
@@ -19,10 +12,10 @@ namespace Features.TileSystem
                 && !heldItemBehaviour.IsCarrying()) return false;
 
             var heldItem = heldItemBehaviour.HeldItem;
-            var instantiatedObject = TileHelper.InstantiateOnTile(Tile, heldItem.prefab, Quaternion.identity);
-            var tileObjectComponent = new UnstackableItemTileComponent(Tile, heldItem, instantiatedObject);
+            Tile.ItemContainer.InitializeItem(heldItem);
+            Tile.ExchangeFirstTileComponentOfType<ItemTileComponent>(new UnstackableItemTileComponent(Tile));
             heldItemBehaviour.DropItem();
-            return Tile.TryRegisterTileComponent(tileObjectComponent);
+            return true;
         }
 
         public override bool IsMovable() => true;

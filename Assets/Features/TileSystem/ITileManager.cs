@@ -7,10 +7,6 @@ namespace Features.TileSystem
     {
         Tile GetTileTypeAt(int2 worldPosition);
 
-        void RegisterTileContext(BaseTileComponent baseTileComponent, int2 worldPosition);
-
-        void UnregisterTileContext(BaseTileComponent baseTileComponent, int2 worldPosition);
-
         Tile[,] GetTileKernelAt(int2 originWorldPosition, int kernelSize);
     }
 }

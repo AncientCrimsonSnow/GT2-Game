@@ -11,67 +11,64 @@ namespace Features.TileSystem
         public int2 WorldPosition { get; }
         public int2 ArrayPosition { get; }
 
-        //TODO: solve this by decorator
-        private ExchangeableBaseTileComponent _exchangeableItemTileComponent;
+        public ItemContainer ItemContainer { get; private set; }
         
-        private readonly List<BaseTileComponent> _tileComponents;
+        private readonly List<ITileComponent> _tileComponents;
 
         public Tile(int2 worldPosition, int2 arrayPosition)
         {
             WorldPosition = worldPosition;
             ArrayPosition = arrayPosition;
-            _tileComponents = new List<BaseTileComponent>();
+            _tileComponents = new List<ITileComponent> { new EmptyItemTileComponent(this) };
 
-            _exchangeableItemTileComponent = new EmptyItemTileComponent(this);
+            ItemContainer = new ItemContainer(this);
+        }
+
+        public bool TryGetFirstTileComponentOfType<T>(out T tileComponent) where T : ITileComponent
+        {
+            tileComponent = default;
+            
+            foreach (var baseTileComponent in _tileComponents)
+            {
+                if (baseTileComponent is not T foundTileComponent) continue;
+                
+                tileComponent = foundTileComponent;
+                return true;
+            }
+
+            return false;
         }
         
-        public bool TryRegisterTileComponent(BaseTileComponent newExchangeable)
+        public void ExchangeFirstTileComponentOfType<T>(T newTileComponent) where T : ITileComponent, IExchangeable<ITileComponent>
         {
-            if (newExchangeable is ExchangeableBaseTileComponent exchangeableBaseTileComponent)
+            for (var index = 0; index < _tileComponents.Count; index++)
             {
-                if (!_exchangeableItemTileComponent.IsExchangeable(newExchangeable)) return false;
-
-                _exchangeableItemTileComponent.OnExchange(exchangeableBaseTileComponent);
-                _exchangeableItemTileComponent = exchangeableBaseTileComponent;
-                return true;
+                var baseTileComponent = _tileComponents[index];
+                if (baseTileComponent is not T typeTileComponent || !typeTileComponent.IsExchangeable(newTileComponent)) continue;
+                _tileComponents[index] = newTileComponent;
+                return;
             }
-
-            _tileComponents.Add(newExchangeable);
-            return true;
+        }
+        
+        public void RegisterTileComponent(ITileComponent newTileComponent)
+        {
+            _tileComponents.Add(newTileComponent);
         }
 
-        public bool TryUnregisterTileComponent(BaseTileComponent newExchangeable)
+        public void UnregisterTileComponent(ITileComponent newTileComponent)
         {
-            if (_exchangeableItemTileComponent == newExchangeable)
-            {
-                var emptyItemTileComponent = new EmptyItemTileComponent(this);
-                _exchangeableItemTileComponent.IsExchangeable(emptyItemTileComponent);
-                _exchangeableItemTileComponent = emptyItemTileComponent;
-                return true;
-            }
-            
-            _tileComponents.RemoveAll(x => ReferenceEquals(x, newExchangeable));
-            return true;
-        }
-
-        //TODO: put this into the storage instantiation -> TODO: destroy on building destroy
-        public void AddStackableTileObjectComponent(Item item)
-        {
-            var instantiatedObject = TileHelper.InstantiateOnTile(this, item.prefab, Quaternion.identity);
-            var tileObjectComponent = new StackableItemTileComponent(this, item, instantiatedObject);
-            TryRegisterTileComponent(tileObjectComponent);
+            _tileComponents.RemoveAll(x => ReferenceEquals(x, newTileComponent));
         }
 
         //TODO: After each interaction, this must be saved as an element in the current tick list. It must be ordered by interaction call.
         public bool TryInteract(GameObject interactor)
         {
-            return _exchangeableItemTileComponent.TryInteract(interactor) || 
-                   _tileComponents.Any(connectedTileContext => connectedTileContext.TryInteract(interactor));
+            return _tileComponents.Any(connectedTileContext => connectedTileContext.TryInteract(interactor));
         }
 
         public bool IsMovable()
         {
-            return _exchangeableItemTileComponent.IsMovable() && _tileComponents.All(tileInteractionContext => tileInteractionContext.IsMovable());
+            return _tileComponents.All(tileInteractionContext => tileInteractionContext.IsMovable());
         }
     }
 }

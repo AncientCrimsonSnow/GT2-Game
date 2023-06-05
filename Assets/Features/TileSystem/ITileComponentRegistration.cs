@@ -2,8 +2,8 @@
 {
     public interface ITileComponentRegistration
     {
-        public bool TryRegisterTileComponent(BaseTileComponent newExchangeable);
+        public void RegisterTileComponent(ITileComponent newTileComponent);
 
-        public bool TryUnregisterTileComponent(BaseTileComponent newExchangeable);
+        public void UnregisterTileComponent(ITileComponent newTileComponent);
     }
 }

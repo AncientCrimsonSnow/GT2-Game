@@ -2,31 +2,38 @@
 
 namespace Features.TileSystem
 {
-    public class PointerResourceGeneratorTileComponent : BaseTileComponent, IInstantiatedGameObject
+    public class PointerResourceGeneratorTileComponent : ItemTileComponent
     {
-        public GameObject InstantiatedGameObject { get; }
-        
         private readonly bool _isMovable;
-        private readonly StackableItemTileComponent _stackableItemTileComponentPointer;
-        private readonly Item _item;
+        private readonly Tile _itemTilePointer;
+        private readonly Item _itemLoot;
         private readonly int _itemAmountCost;
         
-        public PointerResourceGeneratorTileComponent(Tile tile, GameObject instantiatedGameObject, bool isMovable,
-            StackableItemTileComponent stackableItemTileComponentPointer, Item item, int itemAmountCost) : base(tile)
+        public PointerResourceGeneratorTileComponent(Tile tile, bool isMovable, Tile itemTilePointer, Item itemLoot, int itemAmountCost) : base(tile)
         {
             _isMovable = isMovable;
-            InstantiatedGameObject = instantiatedGameObject;
-            _stackableItemTileComponentPointer = stackableItemTileComponentPointer;
-            _item = item;
+            _itemTilePointer = itemTilePointer;
+            _itemLoot = itemLoot;
             _itemAmountCost = itemAmountCost;
         }
 
         public override bool TryInteract(GameObject interactor)
         {
-            if (!_stackableItemTileComponentPointer.IsSuccessfulItemRemove(_itemAmountCost)) return false;
+            if (!_itemTilePointer.ItemContainer.CanAddItemCount(_itemAmountCost) && !Tile.ItemContainer.ContainsItem()) return false;
+            
+            RemovePointerTileItem();
+            InitializeSelfTileItem();
+            return true;
+        }
 
-            var instantiatedObject = TileHelper.InstantiateOnTile(Tile, _item.prefab, Quaternion.identity);
-            return Tile.TryRegisterTileComponent(new UnstackableItemTileComponent(Tile, _item, instantiatedObject));
+        private void RemovePointerTileItem()
+        {
+            _itemTilePointer.ItemContainer.AddItemCount(_itemAmountCost);
+        }
+
+        private void InitializeSelfTileItem()
+        {
+            Tile.ItemContainer.InitializeItem(_itemLoot);
         }
         
         public override bool IsMovable()

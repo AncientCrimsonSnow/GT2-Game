@@ -1,11 +1,8 @@
 using Features.TileSystem;
 using Unity.Mathematics;
 using UnityEngine;
-using UnityEngine.Serialization;
 using Zenject;
 
-
-//TODO: this must be able to represent a building -> have a list af all registratable things and register at one spot
 /// <summary>
 /// This script automatically registers itself to the TileManager dependant on the position at Start.
 /// When changing it's position later, it will still be inside the same position inside the TileManager!
@@ -14,27 +11,33 @@ using Zenject;
 /// Current suitable concept for pooling: setting out-of-screenspace objects inactive. It got registered inside the TileManager.
 /// Thus, things will be able to interact with it, even though it is set inactive & out of screenspace (useful for the tick system).
 /// </summary>
-public class TileContextRegistrator : MonoBehaviour
+public abstract class TileComponentRegistrator : MonoBehaviour
 {
-    [FormerlySerializedAs("tileContextFactory")] [SerializeField] private TileComponentFactory tileComponentFactory;
-
+    public Tile Tile { get; private set; }
+    
     private ITileManager _tileManager;
-    private BaseTileComponent _ownedExchangeable;
+    private ITileComponent _ownedTileComponent;
     private int2 _registeredPosition;
 
+    [Inject]
+    public void Initialize(ITileManager tileManager)
+    {
+        _tileManager = tileManager;
+    }
+    
     private void Start()
     {
         ApplyRoundedPosition();
         
         _registeredPosition = TileHelper.TransformPositionToInt2(transform);
-        if (_tileManager.GetTileTypeAt(_registeredPosition, out Tile tile))
+
+        Tile = _tileManager.GetTileTypeAt(_registeredPosition);
+        if (CanRegisterTileComponent(Tile))
         {
-            //TODO: create pointers
-            _ownedExchangeable = tileComponentFactory.Generate(tile, );
-            _tileManager.RegisterTileContext(_ownedExchangeable, _registeredPosition);
+            _ownedTileComponent = RegisterTileComponent(Tile);
         }
     }
-
+    
     private void ApplyRoundedPosition()
     {
         var position = transform.position;
@@ -47,11 +50,9 @@ public class TileContextRegistrator : MonoBehaviour
         }
     }
 
-    [Inject]
-    public void Initialize(ITileManager tileManager)
-    {
-        _tileManager = tileManager;
-    }
+    protected virtual bool CanRegisterTileComponent(Tile tile) => true;
+
+    protected abstract ITileComponent RegisterTileComponent(Tile tile);
 
     private void OnDestroy()
     {
@@ -59,9 +60,16 @@ public class TileContextRegistrator : MonoBehaviour
 
         if (!_registeredPosition.Equals(new int2((int)position.x, (int)position.z)))
         {
-            Debug.LogWarning("You changed the position of this tile during Runtime!");
+            Debug.LogWarning("You changed the position of this tile during Runtime! It will still unregister itself from the registered Tile!");
         }
-        
-        _tileManager.UnregisterTileContext(_ownedExchangeable, _registeredPosition);
+
+        if (_ownedTileComponent != null && CanUnregisterTileComponent(Tile, _ownedTileComponent))
+        {
+            UnregisterTileComponent(Tile, _ownedTileComponent);
+        }
     }
+
+    protected virtual bool CanUnregisterTileComponent(Tile tile, ITileComponent tileComponent) => true;
+    
+    protected abstract void UnregisterTileComponent(Tile tile, ITileComponent tileComponent);
 }

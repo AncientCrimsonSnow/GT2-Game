@@ -26,38 +26,11 @@ namespace Features.TileSystem
             }
         }
 
-        
         public Tile GetTileTypeAt(int2 worldPosition)
         {
             var arrayPosition = TileHelper.WorldToArrayPosition(_mapOrigin, worldPosition);
 
             return _tileMap[arrayPosition.x, arrayPosition.y];
-        }
-
-        /// <summary>
-        /// Will always be called by the TileContentRegistrator after it got instantiated
-        /// </summary>
-        /// <param name="baseTileComponent"></param>
-        /// <param name="worldPosition"></param>
-        /// <param name="tileContextType"></param>
-        public void RegisterTileContext(BaseTileComponent baseTileComponent, int2 worldPosition)
-        {
-            var arrayPosition = TileHelper.WorldToArrayPosition(_mapOrigin, worldPosition);
-            
-            _tileMap[arrayPosition.x, arrayPosition.y].TryRegisterTileComponent(baseTileComponent);
-        }
-        
-        /// <summary>
-        /// Will always be called by the TileContentRegistrator after it got destroyed, in case it doesn't got cleaned up earlier.
-        /// </summary>
-        /// <param name="baseTileComponent"></param>
-        /// <param name="worldPosition"></param>
-        /// <param name="tileContextType"></param>
-        public void UnregisterTileContext(BaseTileComponent baseTileComponent, int2 worldPosition)
-        {
-            var arrayPosition = TileHelper.WorldToArrayPosition(_mapOrigin, worldPosition);
-            
-            _tileMap[arrayPosition.x, arrayPosition.y].TryUnregisterTileComponent(baseTileComponent);
         }
         
         public Tile[,] GetTileKernelAt(int2 originWorldPosition, int kernelSize)

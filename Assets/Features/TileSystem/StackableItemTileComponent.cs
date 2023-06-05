@@ -2,36 +2,11 @@
 
 namespace Features.TileSystem
 {
-    public class StackableItemTileComponent : ExchangeableBaseTileComponent, IInstantiatedGameObject
+    public class StackableItemTileComponent : ItemTileComponent
     {
-        public GameObject InstantiatedGameObject { get; private set; }
-        public Item ContainedItem { get; }
-        
         private int _itemCount;
 
-        public StackableItemTileComponent(Tile tile, Item containedItem, GameObject instantiatedObject) : base(tile)
-        {
-            ContainedItem = containedItem;
-            InstantiatedGameObject = instantiatedObject;
-        }
-
-        public override bool IsExchangeable(BaseTileComponent newBaseTileComponent)
-        {
-            switch (newBaseTileComponent)
-            {
-                case UnstackableItemTileComponent unstackableItemTileComponent when _itemCount <= 1 && ContainedItem != unstackableItemTileComponent.ContainedItem:
-                case StackableItemTileComponent:
-                    return false;
-                default:
-                    return true;
-            }
-        }
-
-        public override void OnExchange(BaseTileComponent newBaseTileComponent)
-        {
-            Object.Destroy(InstantiatedGameObject);
-            InstantiatedGameObject = null;
-        }
+        public StackableItemTileComponent(Tile tile) : base(tile) { }
 
         public override bool TryInteract(GameObject interactor)
         {
@@ -39,31 +14,19 @@ namespace Features.TileSystem
             
             if (heldItemBehaviour.IsCarrying())
             {
-                if (_itemCount >= ContainedItem.maxStack)
-                {
-                    Debug.LogWarning($"Cant add {heldItemBehaviour.HeldItem}! {GetType()} has reached it's max item count!");
-                    return false;
-                }
-                _itemCount++;
-                
+                if (!Tile.ItemContainer.CanAddItemCount(1)) return false;
+
+                Tile.ItemContainer.AddItemCount(1);
                 heldItemBehaviour.DropItem();
             }
             else
             {
-                if (IsSuccessfulItemRemove(-1))
-                {
-                    heldItemBehaviour.PickupItem(ContainedItem);
-                }
+                if (!Tile.ItemContainer.CanAddItemCount(-1)) return false;
+                
+                Tile.ItemContainer.AddItemCount(-1);
+                heldItemBehaviour.PickupItem(Tile.ItemContainer.ContainedItem);
             }
             
-            return true;
-        }
-        
-        public bool IsSuccessfulItemRemove(int amount)
-        {
-            if (_itemCount <= 0) return false;
-                
-            _itemCount -= amount;
             return true;
         }
 
