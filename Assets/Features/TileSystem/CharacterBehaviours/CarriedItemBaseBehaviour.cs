@@ -1,10 +1,11 @@
-﻿using UnityEngine;
+﻿using Features.TileSystem.ItemSystem;
+using UnityEngine;
 
 namespace Features.TileSystem.CharacterBehaviours
 {
     public abstract class CarriedItemBaseBehaviour : MonoBehaviour
     {
-        public Item.Item CarriedItem { get; protected set; }
+        public Item CarriedItem { get; protected set; }
         
         public bool IsCarrying() => CarriedItem != null;
 
@@ -24,7 +25,7 @@ namespace Features.TileSystem.CharacterBehaviours
         //TODO: handle visualisation of held item -> e.g. instantiate
         protected abstract void OnDropItem();
 
-        public void PickupItem(Item.Item newItem)
+        public void PickupItem(Item newItem)
         {
             if (CarriedItem != null)
             {

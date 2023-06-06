@@ -1,6 +1,6 @@
 ﻿using Unity.Mathematics;
 
-namespace Features.TileSystem.Tile
+namespace Features.TileSystem.TileSystem
 {
     public interface ITileManager
     {

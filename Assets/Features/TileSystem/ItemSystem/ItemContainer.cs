@@ -1,15 +1,15 @@
 ﻿using System.Collections.Generic;
 using Features.TileSystem.Registrator;
-using Features.TileSystem.Tile;
+using Features.TileSystem.TileSystem;
 using UnityEngine;
 
-namespace Features.TileSystem.Item
+namespace Features.TileSystem.ItemSystem
 {
     public class ItemContainer
     {
         public Item ContainedItem { get; private set; }
         
-        private readonly Tile.Tile _tile;
+        private readonly Tile _tile;
         
         private GameObject _instantiatedGameObject;
         private int _itemCount;
@@ -17,7 +17,7 @@ namespace Features.TileSystem.Item
 
         private List<TileInteractableRegistrator> _registrators;
 
-        public ItemContainer(Tile.Tile tile)
+        public ItemContainer(Tile tile)
         {
             _tile = tile;
             _registrators = new List<TileInteractableRegistrator>();

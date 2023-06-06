@@ -1,8 +1,8 @@
 ﻿using System;
 using Features.TileSystem;
 using Features.TileSystem.CharacterBehaviours;
-using Features.TileSystem.Item;
-using Features.TileSystem.Tile;
+using Features.TileSystem.ItemSystem;
+using Features.TileSystem.TileSystem;
 using UnityEngine;
 using Zenject;
 

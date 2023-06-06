@@ -1,21 +1,23 @@
-﻿using Features.TileSystem.TileComponents;
+﻿using Features.TileSystem.ItemSystem;
+using Features.TileSystem.TileComponents;
+using Features.TileSystem.TileSystem;
 using UnityEngine;
 
 namespace Features.TileSystem.Registrator
 {
     public class StackableTileInteractableRegistrator : TileInteractableRegistrator
     {
-        [SerializeField] private Item.Item itemType;
+        [SerializeField] private Item itemType;
         [SerializeField] private bool useThisGameObject;
         [SerializeField] private int containedItemAmountOnSpawn;
         [SerializeField] private int maxContainedItemCount;
 
-        protected override bool CanRegisterTileInteractable(Tile.Tile tile)
+        protected override bool CanRegisterTileInteractable(Tile tile)
         {
             return !tile.ItemContainer.ContainsItem() || tile.TryGetFirstTileInteractableOfType(out StackableItemTileInteractable _);
         }
 
-        protected override ITileInteractable RegisterTileInteractable(Tile.Tile tile)
+        protected override ITileInteractable RegisterTileInteractable(Tile tile)
         {
             if (tile.ItemContainer.ContainsItem())
             {

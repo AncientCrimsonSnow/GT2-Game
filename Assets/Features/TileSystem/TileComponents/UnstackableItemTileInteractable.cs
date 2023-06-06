@@ -1,11 +1,12 @@
 ﻿using Features.TileSystem.CharacterBehaviours;
+using Features.TileSystem.TileSystem;
 using UnityEngine;
 
 namespace Features.TileSystem.TileComponents
 {
     public class UnstackableItemTileInteractable : ItemTileInteractable
     {
-        public UnstackableItemTileInteractable(Tile.Tile tile) : base(tile) { }
+        public UnstackableItemTileInteractable(Tile tile) : base(tile) { }
 
         public override bool TryInteract(GameObject interactor)
         {

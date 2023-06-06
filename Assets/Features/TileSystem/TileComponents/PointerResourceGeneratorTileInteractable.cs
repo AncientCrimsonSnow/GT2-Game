@@ -1,15 +1,17 @@
-﻿using UnityEngine;
+﻿using Features.TileSystem.ItemSystem;
+using Features.TileSystem.TileSystem;
+using UnityEngine;
 
 namespace Features.TileSystem.TileComponents
 {
     public class PointerResourceGeneratorTileInteractable : ItemTileInteractable
     {
         private readonly bool _isMovable;
-        private readonly Tile.Tile _itemTilePointer;
-        private readonly Item.Item _itemLoot;
+        private readonly Tile _itemTilePointer;
+        private readonly Item _itemLoot;
         private readonly int _itemAmountCost;
         
-        public PointerResourceGeneratorTileInteractable(Tile.Tile tile, bool isMovable, Tile.Tile itemTilePointer, Item.Item itemLoot, int itemAmountCost) : base(tile)
+        public PointerResourceGeneratorTileInteractable(Tile tile, bool isMovable, Tile itemTilePointer, Item itemLoot, int itemAmountCost) : base(tile)
         {
             _isMovable = isMovable;
             _itemTilePointer = itemTilePointer;

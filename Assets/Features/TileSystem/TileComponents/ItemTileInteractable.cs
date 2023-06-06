@@ -1,12 +1,13 @@
-﻿using UnityEngine;
+﻿using Features.TileSystem.TileSystem;
+using UnityEngine;
 
 namespace Features.TileSystem.TileComponents
 {
     public abstract class ItemTileInteractable : ITileInteractable, IExchangeable<ITileInteractable>
     {
-        protected readonly Tile.Tile Tile;
+        protected readonly Tile Tile;
 
-        protected ItemTileInteractable(Tile.Tile tile)
+        protected ItemTileInteractable(Tile tile)
         {
             Tile = tile;
         }

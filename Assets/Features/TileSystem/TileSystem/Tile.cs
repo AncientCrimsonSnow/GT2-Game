@@ -1,12 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Features.TileSystem.Item;
+using Features.TileSystem.ItemSystem;
 using Features.TileSystem.Registrator;
 using Features.TileSystem.TileComponents;
 using Unity.Mathematics;
 using UnityEngine;
 
-namespace Features.TileSystem.Tile
+namespace Features.TileSystem.TileSystem
 {
     // TODO: implement a way, that buildings are able to do stuff by themself: e.g. a consumer building wants to consume items on tiles after all the other TileComponents interactions
     public class Tile : IInteractable, ITileComponentRegistration, IMovable, IGridPosition

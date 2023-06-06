@@ -1,4 +1,5 @@
 ﻿using Features.TileSystem.CharacterBehaviours;
+using Features.TileSystem.TileSystem;
 using UnityEngine;
 
 namespace Features.TileSystem.TileComponents
@@ -7,7 +8,7 @@ namespace Features.TileSystem.TileComponents
     {
         private int _itemCount;
 
-        public StackableItemTileInteractable(Tile.Tile tile) : base(tile) { }
+        public StackableItemTileInteractable(Tile tile) : base(tile) { }
 
         public override bool TryInteract(GameObject interactor)
         {

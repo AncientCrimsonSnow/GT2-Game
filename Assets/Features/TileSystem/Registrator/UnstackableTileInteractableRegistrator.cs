@@ -1,19 +1,21 @@
+using Features.TileSystem.ItemSystem;
 using Features.TileSystem.TileComponents;
+using Features.TileSystem.TileSystem;
 using UnityEngine;
 
 namespace Features.TileSystem.Registrator
 {
     public class UnstackableTileInteractableRegistrator : TileInteractableRegistrator
     {
-        [SerializeField] private Item.Item itemType;
+        [SerializeField] private Item itemType;
         [SerializeField] private bool useThisGameObject;
     
-        protected override bool CanRegisterTileInteractable(Tile.Tile tile)
+        protected override bool CanRegisterTileInteractable(Tile tile)
         {
             return !tile.ItemContainer.ContainsItem();
         }
 
-        protected override ITileInteractable RegisterTileInteractable(Tile.Tile tile)
+        protected override ITileInteractable RegisterTileInteractable(Tile tile)
         {
             if (tile.ItemContainer.ContainsItem()) return null;
         

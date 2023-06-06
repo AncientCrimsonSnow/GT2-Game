@@ -1,5 +1,5 @@
-using Features.TileSystem.Tile;
 using Features.TileSystem.TileComponents;
+using Features.TileSystem.TileSystem;
 using Unity.Mathematics;
 using UnityEngine;
 using Zenject;
@@ -16,7 +16,7 @@ namespace Features.TileSystem.Registrator
     /// </summary>
     public abstract class TileInteractableRegistrator : MonoBehaviour
     {
-        public Tile.Tile Tile { get; private set; }
+        public Tile Tile { get; private set; }
     
         private ITileManager _tileManager;
         private ITileInteractable _ownedTileInteractable;
@@ -52,9 +52,9 @@ namespace Features.TileSystem.Registrator
             }
         }
 
-        protected virtual bool CanRegisterTileInteractable(Tile.Tile tile) => true;
+        protected virtual bool CanRegisterTileInteractable(Tile tile) => true;
 
-        protected abstract ITileInteractable RegisterTileInteractable(Tile.Tile tile);
+        protected abstract ITileInteractable RegisterTileInteractable(Tile tile);
 
         protected virtual void OnDestroy()
         {
