@@ -1,9 +1,12 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Features.TileSystem.Item;
+using Features.TileSystem.Registrator;
+using Features.TileSystem.TileComponents;
 using Unity.Mathematics;
 using UnityEngine;
 
-namespace Features.TileSystem
+namespace Features.TileSystem.Tile
 {
     // TODO: implement a way, that buildings are able to do stuff by themself: e.g. a consumer building wants to consume items on tiles after all the other TileComponents interactions
     public class Tile : IInteractable, ITileComponentRegistration, IMovable, IGridPosition
@@ -13,22 +16,22 @@ namespace Features.TileSystem
 
         public ItemContainer ItemContainer { get; private set; }
         
-        private readonly List<ITileComponent> _tileComponents;
+        private readonly List<ITileInteractable> _tileInteractables;
 
         public Tile(int2 worldPosition, int2 arrayPosition)
         {
             WorldPosition = worldPosition;
             ArrayPosition = arrayPosition;
-            _tileComponents = new List<ITileComponent> { new EmptyItemTileComponent(this) };
+            _tileInteractables = new List<ITileInteractable> { new EmptyItemTileInteractable(this) };
 
             ItemContainer = new ItemContainer(this);
         }
 
-        public bool TryGetFirstTileComponentOfType<T>(out T tileComponent) where T : ITileComponent
+        public bool TryGetFirstTileInteractableOfType<T>(out T tileComponent) where T : ITileInteractable
         {
             tileComponent = default;
             
-            foreach (var baseTileComponent in _tileComponents)
+            foreach (var baseTileComponent in _tileInteractables)
             {
                 if (baseTileComponent is not T foundTileComponent) continue;
                 
@@ -39,36 +42,36 @@ namespace Features.TileSystem
             return false;
         }
         
-        public void ExchangeFirstTileComponentOfType<T>(T newTileComponent) where T : ITileComponent, IExchangeable<ITileComponent>
+        public void ExchangeFirstTileInteractableOfType<T>(T newTileComponent) where T : ITileInteractable, IExchangeable<ITileInteractable>
         {
-            for (var index = 0; index < _tileComponents.Count; index++)
+            for (var index = 0; index < _tileInteractables.Count; index++)
             {
-                var baseTileComponent = _tileComponents[index];
+                var baseTileComponent = _tileInteractables[index];
                 if (baseTileComponent is not T typeTileComponent || !typeTileComponent.IsExchangeable(newTileComponent)) continue;
-                _tileComponents[index] = newTileComponent;
+                _tileInteractables[index] = newTileComponent;
                 return;
             }
         }
         
-        public void RegisterTileComponent(ITileComponent newTileComponent)
+        public void RegisterTileInteractable(ITileInteractable newTileInteractable)
         {
-            _tileComponents.Add(newTileComponent);
+            _tileInteractables.Add(newTileInteractable);
         }
 
-        public void UnregisterTileComponent(ITileComponent newTileComponent)
+        public void UnregisterTileInteractable(ITileInteractable newTileInteractable)
         {
-            _tileComponents.RemoveAll(x => ReferenceEquals(x, newTileComponent));
+            _tileInteractables.RemoveAll(x => ReferenceEquals(x, newTileInteractable));
         }
 
         //TODO: After each interaction, this must be saved as an element in the current tick list. It must be ordered by interaction call.
         public bool TryInteract(GameObject interactor)
         {
-            return _tileComponents.Any(connectedTileContext => connectedTileContext.TryInteract(interactor));
+            return _tileInteractables.Any(connectedTileContext => connectedTileContext.TryInteract(interactor));
         }
 
         public bool IsMovable()
         {
-            return _tileComponents.All(tileInteractionContext => tileInteractionContext.IsMovable());
+            return _tileInteractables.All(tileInteractionContext => tileInteractionContext.IsMovable());
         }
     }
 }

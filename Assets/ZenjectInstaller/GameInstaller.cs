@@ -1,10 +1,11 @@
 ﻿using Features.TileSystem;
+using Features.TileSystem.Tile;
 using Unity.Mathematics;
 using Zenject;
 
 namespace ZenjectInstaller
 {
-    public class GameInstaller : MonoInstaller
+    public class GameInstaller : MonoInstaller<GameInstaller>
     {
         
         public override void InstallBindings()
@@ -14,7 +15,7 @@ namespace ZenjectInstaller
 
         private TileManager CreateTileManager(InjectContext arg)
         {
-            return new TileManager(new int2(10, 10), new int2(0,0));
+            return new TileManager(new int2(20, 20), new int2(-10,-10));
         }
     }
 }

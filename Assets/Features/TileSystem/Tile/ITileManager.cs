@@ -1,7 +1,6 @@
-﻿using System.Collections.Generic;
-using Unity.Mathematics;
+﻿using Unity.Mathematics;
 
-namespace Features.TileSystem
+namespace Features.TileSystem.Tile
 {
     public interface ITileManager
     {

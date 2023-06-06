@@ -1,4 +1,4 @@
-﻿namespace Features.TileSystem
+﻿namespace Features.TileSystem.TileComponents
 {
     public interface IMovable
     {

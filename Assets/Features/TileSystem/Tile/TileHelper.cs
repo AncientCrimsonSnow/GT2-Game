@@ -1,17 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
 using Unity.Mathematics;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
-namespace Features.TileSystem
+namespace Features.TileSystem.Tile
 {
     public static class TileHelper
     {
         public static int2 TransformPositionToInt2(Transform transform)
         {
             var position = transform.position;
-            return new int2((int)position.x, (int)position.z);
+            return new int2(Mathf.RoundToInt(position.x), Mathf.RoundToInt(position.z));
         }
         
         public static Tile[,] GetTileKernelAt(Tile[,] tilemap, int2 originArrayPosition, int kernelSize)
@@ -50,9 +49,9 @@ namespace Features.TileSystem
             return new int2(originPosition.x + arrayPosition.x, originPosition.y + arrayPosition.y);
         }
         
-        public static GameObject InstantiateOnTile(IGridPosition gridPosition, GameObject prefab, Quaternion rotation, Transform parent = null)
+        public static GameObject InstantiateOnTile(IGridPosition worldPosition, GameObject prefab, Quaternion rotation, Transform parent = null)
         {
-            var position = new Vector3(gridPosition.WorldPosition.x, 0, gridPosition.WorldPosition.x);
+            var position = new Vector3(worldPosition.WorldPosition.x, 0, worldPosition.WorldPosition.y);
             var instantiateObject = Object.Instantiate(prefab, position, rotation);
             if (parent != null) instantiateObject.transform.SetParent(parent);
             return instantiateObject;

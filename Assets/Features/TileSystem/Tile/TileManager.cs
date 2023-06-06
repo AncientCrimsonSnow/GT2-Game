@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using Unity.Mathematics;
-using UnityEngine;
+﻿using Unity.Mathematics;
 
-namespace Features.TileSystem
+namespace Features.TileSystem.Tile
 {
     public class TileManager : ITileManager
     {

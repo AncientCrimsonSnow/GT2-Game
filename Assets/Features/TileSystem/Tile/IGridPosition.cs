@@ -1,6 +1,6 @@
 ﻿using Unity.Mathematics;
 
-namespace Features.TileSystem
+namespace Features.TileSystem.Tile
 {
     public interface IGridPosition
     {

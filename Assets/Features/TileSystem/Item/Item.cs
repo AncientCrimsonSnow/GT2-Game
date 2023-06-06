@@ -1,12 +1,11 @@
 ﻿using UnityEngine;
 
-namespace Features.TileSystem
+namespace Features.TileSystem.Item
 {
     [CreateAssetMenu]
     public class Item : ScriptableObject
     {
         public string itemName;
         public GameObject prefab;
-        public int maxStack;
     }
 }

@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Features.TileSystem
+namespace Features.TileSystem.TileComponents
 {
     public interface IInteractable
     {
