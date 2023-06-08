@@ -167,6 +167,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7469fc35548d9c8499cff6402611c720, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tileManager: {fileID: 11400000, guid: 250008992667b5e458c740568aa31544, type: 2}
   itemType: {fileID: 11400000, guid: 2ee2fe4d488e4f44daf340f50291baf3, type: 2}
   useThisGameObject: 0
 --- !u!1 &320342692
@@ -229,6 +230,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a24bf33a5904bbf98faf00572ba59ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tileManager: {fileID: 11400000, guid: 250008992667b5e458c740568aa31544, type: 2}
   itemType: {fileID: 11400000, guid: 1b4ad7d3054f0db499c931667a74671d, type: 2}
   useThisGameObject: 1
   containedItemAmountOnSpawn: 5
@@ -312,7 +314,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc65d0510211c7a4cac499b9c18ebf81, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tickDurationInSeconds: 2
+  tickDurationInSeconds: 1
 --- !u!4 &375060685
 Transform:
   m_ObjectHideFlags: 0
@@ -326,7 +328,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &396688662
 GameObject:
@@ -373,6 +375,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a24bf33a5904bbf98faf00572ba59ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tileManager: {fileID: 11400000, guid: 250008992667b5e458c740568aa31544, type: 2}
   itemType: {fileID: 11400000, guid: 1b4ad7d3054f0db499c931667a74671d, type: 2}
   useThisGameObject: 1
   containedItemAmountOnSpawn: 2
@@ -533,6 +536,22 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 6e745652-5b14-424b-ac33-64e36ec16a89
     m_ActionName: Player/Magic[/Keyboard/q]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 11400000, guid: 34de74de615798744afafe8616be9db9, type: 2}
+        m_TargetAssemblyTypeName: MagicInputFocus, Assembly-CSharp
+        m_MethodName: OnInterruptMagic
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: dfc32115-90c5-417c-a7bd-c8255a83badc
+    m_ActionName: Player/InterruptMagic[/Keyboard/f]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Player
@@ -551,7 +570,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &912882088
 GameObject:
@@ -584,7 +603,7 @@ Transform:
   m_Children:
   - {fileID: 1042839855}
   m_Father: {fileID: 0}
-  m_RootOrder: 9
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &912882090
 MonoBehaviour:
@@ -897,6 +916,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a1ca3beb50e84ae693fcefd7031300fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tileManager: {fileID: 11400000, guid: 250008992667b5e458c740568aa31544, type: 2}
   isMovable: 1
   itemLoot: {fileID: 11400000, guid: 2ee2fe4d488e4f44daf340f50291baf3, type: 2}
   pointerRegistrator: {fileID: 320342695}
@@ -1095,7 +1115,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1399483293
 GameObject:
@@ -1142,6 +1162,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a1ca3beb50e84ae693fcefd7031300fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tileManager: {fileID: 11400000, guid: 250008992667b5e458c740568aa31544, type: 2}
   isMovable: 1
   itemLoot: {fileID: 11400000, guid: 2ee2fe4d488e4f44daf340f50291baf3, type: 2}
   pointerRegistrator: {fileID: 396688664}
@@ -1211,50 +1232,6 @@ Transform:
   m_Father: {fileID: 1534074894}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1461383246
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1461383248}
-  - component: {fileID: 1461383247}
-  m_Layer: 0
-  m_Name: Installer
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1461383247
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1461383246}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cbd1b183a6ca43a1850f4e73670cf7ef, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!4 &1461383248
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1461383246}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.15874122, y: -0.36931717, z: -0.28711152}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 5
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1534074893
 GameObject:
   m_ObjectHideFlags: 0
@@ -1290,71 +1267,7 @@ Transform:
   - {fileID: 99944619}
   - {fileID: 2004247354}
   m_Father: {fileID: 0}
-  m_RootOrder: 11
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1581345480
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1581345482}
-  - component: {fileID: 1581345481}
-  m_Layer: 0
-  m_Name: SceneContext
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1581345481
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1581345480}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 89715ad69b973a14899afa2c6730b30b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _scriptableObjectInstallers: []
-  _monoInstallers:
-  - {fileID: 1461383247}
-  _installerPrefabs: []
-  _autoRun: 1
-  OnPreInstall:
-    m_PersistentCalls:
-      m_Calls: []
-  OnPostInstall:
-    m_PersistentCalls:
-      m_Calls: []
-  OnPreResolve:
-    m_PersistentCalls:
-      m_Calls: []
-  OnPostResolve:
-    m_PersistentCalls:
-      m_Calls: []
-  _parentNewObjectsUnderSceneContext: 0
-  _contractNames: []
-  _parentContractNames: []
---- !u!4 &1581345482
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1581345480}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1783447512
 GameObject:
@@ -1366,10 +1279,11 @@ GameObject:
   m_Component:
   - component: {fileID: 1783447513}
   - component: {fileID: 1783447516}
-  - component: {fileID: 1783447515}
+  - component: {fileID: 1783447518}
+  - component: {fileID: 1783447519}
   - component: {fileID: 1783447517}
   m_Layer: 0
-  m_Name: PlayerCharacter
+  m_Name: Necromancer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1389,22 +1303,8 @@ Transform:
   m_Children:
   - {fileID: 989308226}
   m_Father: {fileID: 0}
-  m_RootOrder: 10
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1783447515
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1783447512}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b29fd2623665454ca942b330133eb3a2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  heldItemAtAwake: {fileID: 11400000, guid: 1b4ad7d3054f0db499c931667a74671d, type: 2}
-  takeItemAtAwake: 0
 --- !u!114 &1783447516
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1418,7 +1318,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   easeType: 1
-  movementSpeed: 3
 --- !u!114 &1783447517
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1428,9 +1327,47 @@ MonoBehaviour:
   m_GameObject: {fileID: 1783447512}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: db548b6d15e68044cb4e5efc4a060044, type: 3}
+  m_Script: {fileID: 11500000, guid: 53ec8ae30c311b04db0484c4d64799d7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  magicInputFocus: {fileID: 11400000, guid: 34de74de615798744afafe8616be9db9, type: 2}
+  magicInputBehaviour: {fileID: 1783447518}
+  awake: 1
+  start: 0
+--- !u!114 &1783447518
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1783447512}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e25cce8112c516248af118bc6e9db9a7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  virtualCamera: {fileID: 912882090}
+  movementInputFocus: {fileID: 11400000, guid: eec3e3054ef80274ab87f9dee2a5d97a, type: 2}
+  interactionInputFocus: {fileID: 11400000, guid: 2336b63a164002e4884c139ac9deda41,
+    type: 2}
+  magicInstantiationPrefab: {fileID: 3783118011973604103, guid: 3a76c15e73c6d0e409f62d605fb6103d,
+    type: 3}
+--- !u!114 &1783447519
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1783447512}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 203cdb60c4a4bd448ae3d12d888446e8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  movementInputFocus: {fileID: 11400000, guid: eec3e3054ef80274ab87f9dee2a5d97a, type: 2}
+  movementInputBehaviour: {fileID: 1783447516}
+  awake: 1
+  start: 0
 --- !u!1001 &1840603537
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1578,6 +1515,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7469fc35548d9c8499cff6402611c720, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tileManager: {fileID: 11400000, guid: 250008992667b5e458c740568aa31544, type: 2}
   itemType: {fileID: 11400000, guid: 2ee2fe4d488e4f44daf340f50291baf3, type: 2}
   useThisGameObject: 1
 --- !u!135 &2004247356

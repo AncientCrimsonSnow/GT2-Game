@@ -9,17 +9,16 @@ namespace NewReplaySystem
     {
         [SerializeField] private float tickDurationInSeconds;
 
-        public float TickTimeInSeconds => tickDurationInSeconds;
+        public float TickDurationInSeconds => tickDurationInSeconds;
         public int AdvancedTicks { get; private set; }
         
         private bool HasCurrentReplayController => _replayControllerList.Count > 0;
         private ReplayController CurrentReplayController => _replayControllerList[^1];
         
-        
         private readonly List<ReplayController> _replayControllerList = new List<ReplayController>();
         private bool _tickPerformed;
         private float _tickTimeDelta;
-
+        
         #region Singleton
         
         public static ReplayManager Instance { get; private set; }
@@ -38,7 +37,6 @@ namespace NewReplaySystem
         }
 
         #endregion
-
         
         private void Update()
         {
@@ -72,6 +70,7 @@ namespace NewReplaySystem
             AdvancedTicks++;
         }
         
+        //TODO: a replayOriginator may have multiple different OriginatorScripts - fix it
         public void InitializeRecording(IReplayOriginator replayOriginator)
         {
             if (_replayControllerList.Any(controller => controller.IsRecording))
@@ -103,6 +102,12 @@ namespace NewReplaySystem
                 Debug.LogError("The passed replayable must match the current recording replayable!");
                 return;
             }
+
+            if (!CurrentReplayController.IsRecording)
+            {
+                Debug.LogWarning("You can't stop recording during a replay!");
+                return;
+            }
             
             CurrentReplayController.StartReplay(isLoop, () =>
             {
@@ -113,25 +118,20 @@ namespace NewReplaySystem
 
         public void StopReplay(IReplayOriginator replayOriginator)
         {
-            foreach (var replayController in _replayControllerList)
+            foreach (var replayController in _replayControllerList.Where(replayController => replayController.ReplayOriginator == replayOriginator))
             {
                 if (replayController.IsRecording)
                 {
-                    Debug.LogWarning("You can only stop a replay during a replay!");
+                    Debug.LogWarning("You can't stop a replay during a record!");
                 }
-                
-                if (replayController.ReplayOriginator == replayOriginator)
+                else
                 {
                     replayController.StopReplay();
                 }
-            }
-            
-            if (_replayControllerList.Any(controller => controller.ReplayOriginator == replayOriginator))
-            {
-                
+
                 return;
             }
-            
+
             Debug.LogWarning("The passed replayable wasn't found!");
         }
 

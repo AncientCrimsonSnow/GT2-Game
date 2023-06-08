@@ -1,14 +1,12 @@
-using System;
 using DG.Tweening;
 using Features.TileSystem.TileSystem;
-using JetBrains.Annotations;
+using NewReplaySystem;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class CharacterMovementInput : BaseMovementInput
 {
     [SerializeField] private Ease easeType;
-    [SerializeField] private float movementSpeed;
     
     private Animator _characterAnimator;
     private Vector2 _storedInputVector;
@@ -30,7 +28,7 @@ public class CharacterMovementInput : BaseMovementInput
 
     private void Update()
     {
-        if (DOTween.IsTweening(transform)) return;
+        if (DOTween.IsTweening(transform) || _storedInputVector == Vector2.zero) return;
         var inputMovement = new Vector3(_storedInputVector.x, 0, _storedInputVector.y);
         TweenMove(inputMovement);
         //SetMovementAnimation(inputVector);
@@ -39,10 +37,8 @@ public class CharacterMovementInput : BaseMovementInput
     private void TweenMove(Vector3 inputVector)
     {
         var position = TileHelper.TransformPositionToVector3(transform);
-        var nextPosition = position + inputVector;
-        float distance = Vector3.Distance(position, nextPosition);
-        float movementTime = distance / movementSpeed;
-        transform.DOMove(nextPosition, movementTime).SetEase(easeType);
+        Debug.Log("TweenMove " + position + " " + position + inputVector);
+        transform.DOMove(position + inputVector, ReplayManager.Instance.TickDurationInSeconds).SetEase(easeType);
     }
     
     private void SetMovementAnimation(Vector2 inputVector)

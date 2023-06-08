@@ -1,3 +1,4 @@
+using System;
 using Features.TileSystem.TileComponents;
 using Features.TileSystem.TileSystem;
 using Unity.Mathematics;
@@ -16,24 +17,19 @@ namespace Features.TileSystem.Registrator
     /// </summary>
     public abstract class TileInteractableRegistrator : MonoBehaviour
     {
+        [SerializeField] private TileManager tileManager;
+        
         public Tile Tile { get; private set; }
     
-        private ITileManager _tileManager;
         private ITileInteractable _ownedTileInteractable;
         private int2 _registeredPosition;
 
-        [Inject]
-        public void Initialize(ITileManager tileManager)
-        {
-            _tileManager = tileManager;
-        
-            ApplyRoundedPosition();
-            _registeredPosition = TileHelper.TransformPositionToInt2(transform);
-            Tile = _tileManager.GetTileTypeAt(_registeredPosition);
-        }
-    
         private void Start()
         {
+            ApplyRoundedPosition();
+            _registeredPosition = TileHelper.TransformPositionToInt2(transform);
+            Tile = tileManager.GetTileTypeAt(_registeredPosition);
+            
             if (CanRegisterTileInteractable(Tile))
             {
                 _ownedTileInteractable = RegisterTileInteractable(Tile);

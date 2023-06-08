@@ -7,6 +7,14 @@ public class InteractionInputFocus : Focus_SO<BaseInteractionInput>
 {
     public void OnInteractionInput(InputAction.CallbackContext context)
     {
+        if (!context.started) return;
+        
+        if (!ContainsFocus()) return;
+        
         Focus.OnInteractionInput(context);
     }
+
+    public bool ContainsFocus() => Focus != null;
+
+    public void Restore() => Focus = null;
 }

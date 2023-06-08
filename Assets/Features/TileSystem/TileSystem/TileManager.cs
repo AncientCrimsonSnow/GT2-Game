@@ -1,14 +1,53 @@
-﻿using Unity.Mathematics;
+﻿using System;
+using Unity.Mathematics;
+using UnityEngine;
 
 namespace Features.TileSystem.TileSystem
 {
-    public class TileManager : ITileManager
+    [CreateAssetMenu(fileName = "new TileManager", menuName = "TileManager")]
+    public class TileManager : ScriptableObject, ITileManager
     {
-        private readonly int2 _mapOrigin;
-        private readonly Tile[,] _tileMap;
+        [SerializeField] private int2 mapSize;
+        [SerializeField] private int2 mapOrigin;
+        
+        private int2 _mapOrigin;
+        private Tile[,] _tileMap;
 
+        private bool _isInitialized;
+
+        private void OnEnable()
+        {
+            _isInitialized = false;
+        }
+
+        public Tile GetTileTypeAt(int2 worldPosition)
+        {
+            Setup();
+            
+            var arrayPosition = TileHelper.WorldToArrayPosition(_mapOrigin, worldPosition);
+
+            return _tileMap[arrayPosition.x, arrayPosition.y];
+        }
+        
+        public Tile[,] GetTileKernelAt(int2 originWorldPosition, int kernelSize)
+        {
+            Setup();
+            
+            var arrayPosition = TileHelper.WorldToArrayPosition(_mapOrigin, originWorldPosition);
+
+            return TileHelper.GetTileKernelAt(_tileMap, arrayPosition, kernelSize);
+        }
+        
+        private void Setup()
+        {
+            if (_isInitialized) return;
+            
+            Initialize();
+            _isInitialized = true;
+        }
+        
         //positions currently expects, that it doesnt use negative values
-        public TileManager(int2 mapSize, int2 mapOrigin)
+        private void Initialize()
         {
             _mapOrigin = mapOrigin;
             _tileMap = new Tile[mapSize.x, mapSize.y];
@@ -21,20 +60,6 @@ namespace Features.TileSystem.TileSystem
                     _tileMap[x, y] = new Tile(TileHelper.ArrayToWorldPosition(_mapOrigin, new int2(x, y)), arrayPosition);
                 }
             }
-        }
-
-        public Tile GetTileTypeAt(int2 worldPosition)
-        {
-            var arrayPosition = TileHelper.WorldToArrayPosition(_mapOrigin, worldPosition);
-
-            return _tileMap[arrayPosition.x, arrayPosition.y];
-        }
-        
-        public Tile[,] GetTileKernelAt(int2 originWorldPosition, int kernelSize)
-        {
-            var arrayPosition = TileHelper.WorldToArrayPosition(_mapOrigin, originWorldPosition);
-
-            return TileHelper.GetTileKernelAt(_tileMap, arrayPosition, kernelSize);
         }
     }
 }
