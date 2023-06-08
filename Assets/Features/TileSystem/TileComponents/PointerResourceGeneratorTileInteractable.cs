@@ -31,12 +31,14 @@ namespace Features.TileSystem.TileComponents
         private void RemovePointerTileItem()
         {
             _itemTilePointer.ItemContainer.AddItemCount(_itemTilePointer.ItemContainer.ContainedItem, -_itemAmountCost);
+            Debug.Log("Removed item from pointer.");
         }
 
         private void InitializeSelfTileItem()
         {
             Tile.ItemContainer.InitializeItem(_itemLoot);
             Tile.ExchangeFirstTileInteractableOfType<ItemTileInteractable>(new UnstackableItemTileInteractable(Tile));
+            Debug.Log("Dropped item by crafting.");
         }
         
         public override bool IsMovable()
