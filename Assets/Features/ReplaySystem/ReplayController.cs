@@ -6,32 +6,33 @@ namespace NewReplaySystem
 {
     public class ReplayController
     {
-        public IReplayable Replayable { get; private set; }
+        public IReplayOriginator ReplayOriginator { get; private set; }
         public bool IsRecording { get; private set; }
 
         private readonly ReplayManager _replayManager;
-        private readonly List<IRecord> _ticks;
+        private readonly List<IRecordSnapshot> _ticks;
         
         private int _registrationTick;
         private int _currentIndex;
+        private Action _onCompleteReplay;
         private bool _isLoop;
         
 
-        public ReplayController(ReplayManager replayManager, IReplayable replayable)
+        public ReplayController(ReplayManager replayManager, IReplayOriginator replayOriginator)
         {
-            Replayable = replayable;
+            ReplayOriginator = replayOriginator;
             _replayManager = replayManager;
-            _ticks = new List<IRecord>();
+            _ticks = new List<IRecordSnapshot>();
             
-            Replayable.ProvideReplayEventFrames += ProvideReplayEventFrame;
+            ReplayOriginator.ProvideReplaySnapshot += ProvideReplayEventFrame;
             IsRecording = true;
         }
 
-        public void StopRecording(Action onCompleteReplay)
+        public void StartReplay(bool isLoop, Action onCompleteReplay)
         {
-            Replayable.ProvideReplayEventFrames -= ProvideReplayEventFrame;
+            ReplayOriginator.ProvideReplaySnapshot -= ProvideReplayEventFrame;
             IsRecording = false;
-            
+            _onCompleteReplay = onCompleteReplay;
             _isLoop = isLoop;
         }
 
@@ -39,7 +40,7 @@ namespace NewReplaySystem
         {
             if (IsRecording)
             {
-                Debug.LogWarning("You can only register Records during ReplayState");
+                Debug.LogWarning("You can only register Records during a replay");
                 return;
             }
             
@@ -49,7 +50,7 @@ namespace NewReplaySystem
                 return;
             }
             
-            _ticks[_currentIndex].PerformRecordBehaviourForward();
+            _ticks[_currentIndex].Tick();
             _currentIndex++;
 
             if (_currentIndex < _ticks.Count) return;
@@ -59,11 +60,16 @@ namespace NewReplaySystem
             }
             else
             {
-                OnUnregisterReplayController();
+                StopReplay();
             }
         }
+
+        public void StopReplay()
+        {
+            _onCompleteReplay.Invoke();
+        }
         
-        private void ProvideReplayEventFrame(IRecord record)
+        private void ProvideReplayEventFrame(IRecordSnapshot recordSnapshot)
         {
             if (_replayManager.AdvancedTicks == _registrationTick)
             {
@@ -72,7 +78,7 @@ namespace NewReplaySystem
             }
             
             _registrationTick = _replayManager.AdvancedTicks;
-            _ticks.Add(record);
+            _ticks.Add(recordSnapshot);
         }
     }
 }

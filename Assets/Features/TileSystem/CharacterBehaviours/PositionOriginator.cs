@@ -5,18 +5,9 @@ using NewReplaySystem;
 using UnityEngine;
 
 //TODO: how to restore destroyed gameObjects?
-public class PositionOriginator : MonoBehaviour, IOriginator, IReplayable
+public class PositionOriginator : MonoBehaviour
 {
-    public Action<IRecord> ProvideReplayEventFrames { get; set; }
-    IEnumerable<IRecord> IReplayable.CreateSnapshot()
-    {
-        throw new NotImplementedException();
-    }
-
-    public ISnapshot CreateSnapshot()
-    {
-        return new PositionSnapshot(transform);
-    }
+    
 }
 
 public class PositionSnapshot : ISnapshot

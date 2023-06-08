@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using Zenject;
 
-public class InteractBehaviour : MonoBehaviour
+public class InteractionInputBehaviour : BaseInteractionInput
 {
     private ITileManager _tileManager;
     
@@ -16,7 +16,7 @@ public class InteractBehaviour : MonoBehaviour
         _tileManager = tileManager;
     }
     
-    public void Interact(InputAction.CallbackContext context)
+    public override void OnInteractionInput(InputAction.CallbackContext context)
     {
         if (!context.started) return;
 

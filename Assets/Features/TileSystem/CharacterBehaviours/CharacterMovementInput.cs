@@ -5,7 +5,7 @@ using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class CharacterMovement : MonoBehaviour
+public class CharacterMovementInput : BaseMovementInput
 {
     [SerializeField] private Ease easeType;
     [SerializeField] private float movementSpeed;
@@ -23,7 +23,7 @@ public class CharacterMovement : MonoBehaviour
         //_characterAnimator = GetComponent<Animator>();
     }
     
-    public void SetMovementInput(InputAction.CallbackContext context)
+    public override void OnMovementInput(InputAction.CallbackContext context)
     {
         _storedInputVector = context.ReadValue<Vector2>();
     }

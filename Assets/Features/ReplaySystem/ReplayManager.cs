@@ -72,7 +72,7 @@ namespace NewReplaySystem
             AdvancedTicks++;
         }
         
-        public void InitializeRecording(IReplayable replayable)
+        public void InitializeRecording(IReplayOriginator replayOriginator)
         {
             if (_replayControllerList.Any(controller => controller.IsRecording))
             {
@@ -80,11 +80,17 @@ namespace NewReplaySystem
                 return;
             }
             
-            var replayController = new ReplayController(this, replayable);
+            if (_replayControllerList.Any(controller => controller.ReplayOriginator == replayOriginator))
+            {
+                Debug.LogError("A replayable can only be initialized once!");
+                return;
+            }
+            
+            var replayController = new ReplayController(this, replayOriginator);
             _replayControllerList.Add(replayController);
         }
 
-        public void StartReplay(IReplayable replayable, bool isLoop)
+        public void StartReplay(IReplayOriginator replayOriginator, bool isLoop, Action onCompleteReplay = null)
         {
             if (!HasCurrentReplayController)
             {
@@ -92,24 +98,55 @@ namespace NewReplaySystem
                 return;
             }
 
-            if (CurrentReplayController.Replayable != replayable)
+            if (CurrentReplayController.ReplayOriginator != replayOriginator)
             {
                 Debug.LogError("The passed replayable must match the current recording replayable!");
                 return;
             }
             
-            CurrentReplayController.StopRecording(isLoop);
+            CurrentReplayController.StartReplay(isLoop, () =>
+            {
+                UnregisterReplayable(replayOriginator);
+                onCompleteReplay?.Invoke();
+            });
         }
 
-        public void UnregisterReplayable(IReplayable replayable)
+        public void StopReplay(IReplayOriginator replayOriginator)
+        {
+            foreach (var replayController in _replayControllerList)
+            {
+                if (replayController.IsRecording)
+                {
+                    Debug.LogWarning("You can only stop a replay during a replay!");
+                }
+                
+                if (replayController.ReplayOriginator == replayOriginator)
+                {
+                    replayController.StopReplay();
+                }
+            }
+            
+            if (_replayControllerList.Any(controller => controller.ReplayOriginator == replayOriginator))
+            {
+                
+                return;
+            }
+            
+            Debug.LogWarning("The passed replayable wasn't found!");
+        }
+
+        private void UnregisterReplayable(IReplayOriginator replayOriginator)
         {
             for (var index = _replayControllerList.Count - 1; index >= 0; index--)
             {
                 var replayController = _replayControllerList[index];
-                if (replayController.Replayable != replayable) continue;
+                if (replayController.ReplayOriginator != replayOriginator) continue;
                 
                 _replayControllerList.RemoveAt(index);
+                return;
             }
+            
+            Debug.LogWarning("The ReplayManager doesn't contain the Replayable and thus weren't removed!");
         }
     }
 }
