@@ -1,76 +1,54 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using Object = UnityEngine.Object;
 
 namespace NewReplaySystem
 {
     public class ReplayController
     {
-        private int _currentIndex;
-
-        private int _registrationTick;
+        public IReplayable Replayable { get; private set; }
+        public bool IsRecording { get; private set; }
 
         private readonly ReplayManager _replayManager;
-        private readonly IReplayable _replayable;
+        private readonly List<IRecord> _ticks;
+        
+        private int _registrationTick;
+        private int _currentIndex;
         private bool _isLoop;
-        private List<IRecord> _ticks;
-
-        private bool _isRecording;
+        
 
         public ReplayController(ReplayManager replayManager, IReplayable replayable)
         {
+            Replayable = replayable;
             _replayManager = replayManager;
-            _replayable = replayable;
             _ticks = new List<IRecord>();
-            RegisterReplayable(replayable);
-
-            _isRecording = true;
-        }
-
-        private void RegisterReplayable(IReplayable replayable)
-        {
-            replayable.ProvideReplayEventFrames += ProvideReplayEventFrame;
-        }
-
-        public void UnregisterReplayable(IReplayable replayable)
-        {
-            replayable.ProvideReplayEventFrames -= ProvideReplayEventFrame;
-        }
-        
-        private void ProvideReplayEventFrame(IRecord record)
-        {
-            if (!IsRecording())
-            {
-                Debug.LogWarning("You can only register Records during RecordState");
-                return;
-            }
-
-            if (_replayManager.AdvancedTicks == _registrationTick)
-            {
-                Debug.LogWarning("You can only register one record per tick!");
-                return;
-            }
-
-            //TODO: perform tick
             
-            _registrationTick = _replayManager.AdvancedTicks;
-            _ticks.Add(record);
+            Replayable.ProvideReplayEventFrames += ProvideReplayEventFrame;
+            IsRecording = true;
         }
 
-        public void StopRecording(bool isLoop)
+        public void StopRecording(Action onCompleteReplay)
         {
+            Replayable.ProvideReplayEventFrames -= ProvideReplayEventFrame;
+            IsRecording = false;
+            
             _isLoop = isLoop;
-            _isRecording = false;
-        }
-        
-        public bool IsRecording()
-        {
-            return _isRecording;
         }
 
-        public void Tick(float totalTickTime)
+        public void Tick()
         {
+            if (IsRecording)
+            {
+                Debug.LogWarning("You can only register Records during ReplayState");
+                return;
+            }
+            
+            if (_ticks.Count == 0)
+            {
+                Debug.LogWarning("There are no ticks registered for replay");
+                return;
+            }
+            
             _ticks[_currentIndex].PerformRecordBehaviourForward();
             _currentIndex++;
 
@@ -81,13 +59,20 @@ namespace NewReplaySystem
             }
             else
             {
-                OnReplayCompleted();
+                OnUnregisterReplayController();
             }
         }
-
-        private void OnReplayCompleted()
+        
+        private void ProvideReplayEventFrame(IRecord record)
         {
-            //TODO: unregister from replayManager
+            if (_replayManager.AdvancedTicks == _registrationTick)
+            {
+                Debug.LogWarning("You can only register one record per tick!");
+                return;
+            }
+            
+            _registrationTick = _replayManager.AdvancedTicks;
+            _ticks.Add(record);
         }
     }
 }

@@ -1,30 +1,28 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace NewReplaySystem
 {
-    //TODO: replayables must be differentiated between own behaviour, own behaviour + record, replay
-    //TODO: make replayables be able to unregister itself -> do this, when some systems need it
-    
-    //TODO: method for replayables, when the state switches
-    
-    /// <summary>
-    /// 
-    /// </summary>
     public class ReplayManager : MonoBehaviour
     {
-        public static ReplayManager Instance { get; private set; }
+        [SerializeField] private float tickDurationInSeconds;
 
-        public float AdvancedTime => _advancedTime;
-        
+        public float TickTimeInSeconds => tickDurationInSeconds;
         public int AdvancedTicks { get; private set; }
-
+        
         private bool HasCurrentReplayController => _replayControllerList.Count > 0;
         private ReplayController CurrentReplayController => _replayControllerList[^1];
         
-        private float _advancedTime;
+        
         private readonly List<ReplayController> _replayControllerList = new List<ReplayController>();
+        private bool _tickPerformed;
+        private float _tickTimeDelta;
+
+        #region Singleton
+        
+        public static ReplayManager Instance { get; private set; }
         
         private void Awake()
         {
@@ -39,13 +37,9 @@ namespace NewReplaySystem
             }
         }
 
-        [SerializeField] private float tickDurationInSeconds;
+        #endregion
 
-        private bool _tickPerformed;
-        private float _tickTimeDelta;
-
-        private int _currentTick;
-
+        
         private void Update()
         {
             if (!_tickPerformed) return;
@@ -60,96 +54,62 @@ namespace NewReplaySystem
             }
         }
 
-        private void Tick()
+        public void Tick()
         {
-            if (_tickPerformed) return;
+            if (_tickPerformed)
+            {
+                Debug.LogWarning("You can't start a new tick, while a tick is being performed!");
+                return;
+            }
+            
+            _tickPerformed = true;
+            _tickTimeDelta = 0;
 
             foreach (var replayController in _replayControllerList)
             {
-                replayController.Tick(tickDurationInSeconds);
+                replayController.Tick();
             }
-
-            _tickPerformed = true;
-            _tickTimeDelta = 0;
+            AdvancedTicks++;
         }
         
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="replayable"></param>
-        public void InitializeRecord(IReplayable replayable)
+        public void InitializeRecording(IReplayable replayable)
         {
-            //TODO: implement action as condition, if tick is valid
+            if (_replayControllerList.Any(controller => controller.IsRecording))
+            {
+                Debug.LogError("You can only initialize a new record, when there is no other object currently recording!");
+                return;
+            }
+            
             var replayController = new ReplayController(this, replayable);
             _replayControllerList.Add(replayController);
         }
 
-        public void StopRecording(bool isLoop)
+        public void StartReplay(IReplayable replayable, bool isLoop)
         {
-            CurrentReplayController.StopRecording(isLoop);
-        }
-
-        public void UnregisterReplayable()
-        {
-            
-        }
-        
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="replayable"></param>
-        public void UnregisterReplayable(IReplayable replayable)
-        {
-            if (!_registeredReplayables.Remove(replayable))
+            if (!HasCurrentReplayController)
             {
-                Debug.LogError("Removing of a replayable inside the ReplayManager failed! Maybe it was not found inside the collection!");
-            }
-
-            foreach (var replayController in _replayControllerList)
-            {
-                replayController.UnregisterReplayable(replayable);
-            }
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="duration"></param>
-        /// <param name="reverseTimeScale"></param>
-        /// <param name="forwardTimeScale"></param>
-        public void StartReplayRotation(float duration, float reverseTimeScale = 3f, float forwardTimeScale = 1f)
-        {
-            if (HasCurrentReplayController && CurrentReplayController.IsRecording(typeof(RecordSequenceState), typeof(ReverseReplaySequenceState)))
-            {
-                Debug.LogWarning("Cant create a new ReplayController while inside the ReplaySequenceState or ReverseReplayState");
+                Debug.LogError("There is currently no replayable registered!");
                 return;
             }
 
-            var newReplayController = new ReplayController(_replayControllerList, _advancedTime, 
-                duration, reverseTimeScale, forwardTimeScale);
-            newReplayController.RegisterMultipleReplayables(_registeredReplayables);
-            _replayControllerList.Add(newReplayController);
+            if (CurrentReplayController.Replayable != replayable)
+            {
+                Debug.LogError("The passed replayable must match the current recording replayable!");
+                return;
+            }
+            
+            CurrentReplayController.StopRecording(isLoop);
         }
 
-        /// <summary>
-        /// Checks if the ReplayManager is i a certain state.
-        /// </summary>
-        /// <param name="replaySequenceStates">The requested states. If none is passed, it will look, if it has any state</param>
-        /// <returns>Result, if the requested state was found</returns>
-        public bool IsInState(params Type[] replaySequenceStates)
+        public void UnregisterReplayable(IReplayable replayable)
         {
-            return HasCurrentReplayController && CurrentReplayController.IsRecording(replaySequenceStates);
-        }
-
-        /// <summary>
-        /// Directly ends the recording state of the replay system. It is based on the advanced time since the StartReplayRotation method call.
-        /// Will get skipped, if the replay system isn't in the record state or there is no ongoing replay at all.
-        /// </summary>
-        public void FastForwardRecord()
-        {
-            if (!HasCurrentReplayController && !CurrentReplayController.IsRecording(typeof(RecordSequenceState))) return;
-
-            CurrentReplayController.OverrideEndingTime(_advancedTime);
+            for (var index = _replayControllerList.Count - 1; index >= 0; index--)
+            {
+                var replayController = _replayControllerList[index];
+                if (replayController.Replayable != replayable) continue;
+                
+                _replayControllerList.RemoveAt(index);
+            }
         }
     }
 }
