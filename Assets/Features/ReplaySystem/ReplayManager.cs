@@ -11,13 +11,13 @@ namespace NewReplaySystem
 
         public float TickDurationInSeconds => tickDurationInSeconds;
         public int AdvancedTicks { get; private set; }
-        
-        private bool HasCurrentReplayController => _replayControllerList.Count > 0;
-        private ReplayController CurrentReplayController => _replayControllerList[^1];
-        
+
         private readonly List<ReplayController> _replayControllerList = new List<ReplayController>();
         private bool _tickPerformed;
         private float _tickTimeDelta;
+        
+        private bool HasCurrentReplayController => _replayControllerList.Count > 0;
+        private ReplayController CurrentReplayController => _replayControllerList[^1];
         
         #region Singleton
         
@@ -69,27 +69,47 @@ namespace NewReplaySystem
             }
             AdvancedTicks++;
         }
-        
+
         //TODO: a replayOriginator may have multiple different OriginatorScripts - fix it
-        public void InitializeRecording(IReplayOriginator replayOriginator)
+        public void InitializeRecording(GameObject originatorGameObject)
         {
-            if (_replayControllerList.Any(controller => controller.IsRecording))
+            if (_replayControllerList.Any(replayController => replayController.IsRecording))
             {
                 Debug.LogError("You can only initialize a new record, when there is no other object currently recording!");
                 return;
             }
             
-            if (_replayControllerList.Any(controller => controller.ReplayOriginator == replayOriginator))
+            if (_replayControllerList.Any(replayController => replayController.OriginatorGameObject == originatorGameObject))
             {
-                Debug.LogError("A replayable can only be initialized once!");
+                Debug.LogError("A replayable GameObject can only be initialized once!");
                 return;
             }
             
-            var replayController = new ReplayController(this, replayOriginator);
+            var replayController = new ReplayController(this, originatorGameObject);
             _replayControllerList.Add(replayController);
         }
+        
+        public void RegisterOriginator(GameObject originatorGameObject, IReplayOriginator replayOriginator)
+        {
+            foreach (var replayController in _replayControllerList
+                .Where(replayController => replayController.OriginatorGameObject == originatorGameObject))
+            {
+                replayController.RegisterOriginator(replayOriginator);
+                return;
+            }
+        }
 
-        public void StartReplay(IReplayOriginator replayOriginator, bool isLoop, Action onCompleteReplay = null)
+        public void UnregisterOriginator(GameObject originatorGameObject, IReplayOriginator replayOriginator)
+        {
+            foreach (var replayController in 
+                _replayControllerList.Where(replayController => replayController.OriginatorGameObject == originatorGameObject))
+            {
+                replayController.UnregisterOriginator(replayOriginator);
+                return;
+            }
+        }
+
+        public void StartReplay(GameObject originatorGameObject, bool isLoop, Action onCompleteReplay = null)
         {
             if (!HasCurrentReplayController)
             {
@@ -97,7 +117,7 @@ namespace NewReplaySystem
                 return;
             }
 
-            if (CurrentReplayController.ReplayOriginator != replayOriginator)
+            if (CurrentReplayController.OriginatorGameObject != originatorGameObject)
             {
                 Debug.LogError("The passed replayable must match the current recording replayable!");
                 return;
@@ -111,14 +131,15 @@ namespace NewReplaySystem
             
             CurrentReplayController.StartReplay(isLoop, () =>
             {
-                UnregisterReplayable(replayOriginator);
+                UnregisterReplayable(originatorGameObject);
                 onCompleteReplay?.Invoke();
             });
         }
 
-        public void StopReplay(IReplayOriginator replayOriginator)
+        public void StopReplay(GameObject originatorGameObject)
         {
-            foreach (var replayController in _replayControllerList.Where(replayController => replayController.ReplayOriginator == replayOriginator))
+            foreach (var replayController in _replayControllerList
+                .Where(replayController => replayController.OriginatorGameObject == originatorGameObject))
             {
                 if (replayController.IsRecording)
                 {
@@ -135,12 +156,12 @@ namespace NewReplaySystem
             Debug.LogWarning("The passed replayable wasn't found!");
         }
 
-        private void UnregisterReplayable(IReplayOriginator replayOriginator)
+        private void UnregisterReplayable(GameObject originatorGameObject)
         {
             for (var index = _replayControllerList.Count - 1; index >= 0; index--)
             {
                 var replayController = _replayControllerList[index];
-                if (replayController.ReplayOriginator != replayOriginator) continue;
+                if (replayController.OriginatorGameObject != originatorGameObject) continue;
                 
                 _replayControllerList.RemoveAt(index);
                 return;
