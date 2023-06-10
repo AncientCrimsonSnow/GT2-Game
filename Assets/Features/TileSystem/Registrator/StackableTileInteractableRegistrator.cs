@@ -27,8 +27,7 @@ namespace Features.TileSystem.Registrator
             
             if (!Tile.ContainsTileInteractableOfType<EmptyItemTileInteractable>()) return;
 
-            Debug.Log("o/");
-            ItemTileInteractable tileComponent = useThisGameObject ? 
+            ItemTileInteractable tileComponent = useThisGameObject ?
                 new StackableItemTileInteractable(Tile, isMovable, itemType, maxContainedItemCount, containedItemAmountOnSpawn, gameObject) 
                 : new StackableItemTileInteractable(Tile, isMovable, itemType, maxContainedItemCount, containedItemAmountOnSpawn);
             Tile.ExchangeFirstTileInteractableOfType(tileComponent);
