@@ -1,9 +1,7 @@
-using System;
 using Features.TileSystem.TileComponents;
 using Features.TileSystem.TileSystem;
 using Unity.Mathematics;
 using UnityEngine;
-using Zenject;
 
 namespace Features.TileSystem.Registrator
 {
@@ -21,7 +19,6 @@ namespace Features.TileSystem.Registrator
         
         public Tile Tile { get; private set; }
     
-        private ITileInteractable _ownedTileInteractable;
         private int2 _registeredPosition;
 
         private void Start()
@@ -30,9 +27,9 @@ namespace Features.TileSystem.Registrator
             _registeredPosition = TileHelper.TransformPositionToInt2(transform);
             Tile = tileManager.GetTileTypeAt(_registeredPosition);
             
-            if (CanRegisterTileInteractable(Tile))
+            if (CanRegisterTileInteractable())
             {
-                _ownedTileInteractable = RegisterTileInteractable(Tile);
+                RegisterTileInteractable();
             }
         }
     
@@ -48,9 +45,9 @@ namespace Features.TileSystem.Registrator
             }
         }
 
-        protected virtual bool CanRegisterTileInteractable(Tile tile) => true;
+        protected virtual bool CanRegisterTileInteractable() => true;   //TODO: implement, if stackable
 
-        protected abstract ITileInteractable RegisterTileInteractable(Tile tile);
+        protected abstract void RegisterTileInteractable();
 
         protected virtual void OnDestroy()
         {
@@ -61,16 +58,14 @@ namespace Features.TileSystem.Registrator
                 Debug.LogWarning("You changed the position of this tile during Runtime! It will still unregister itself from the registered Tile!");
             }
 
-            if (_ownedTileInteractable == null) return;
-
-            if (CanUnregisterTileInteractable(_ownedTileInteractable))
+            if (CanUnregisterTileInteractable())
             {
-                UnregisterTileInteractable(_ownedTileInteractable);
+                UnregisterTileInteractable();
             }
         }
 
-        protected virtual bool CanUnregisterTileInteractable(ITileInteractable tileInteractable) => true;
+        protected virtual bool CanUnregisterTileInteractable() => true;   //TODO: implement, if stackable
     
-        protected abstract void UnregisterTileInteractable(ITileInteractable tileInteractable);
+        protected abstract void UnregisterTileInteractable();
     }
 }

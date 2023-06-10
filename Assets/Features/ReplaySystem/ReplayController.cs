@@ -12,25 +12,26 @@ namespace NewReplaySystem
         
         private readonly ReplayManager _replayManager;
         private readonly List<IReplayOriginator> _replayOriginators;
-        private readonly List<List<IRecordSnapshot>> _ticks;
+        private readonly List<IInputSnapshot> _ticks;
         
         private int _registrationTick;
         private int _currentIndex;
         private Action _onCompleteReplay;
         private bool _isLoop;
+        private bool _stopNextTick;
         
         public ReplayController(ReplayManager replayManager, GameObject originatorGroup)
         {
             OriginatorGameObject = originatorGroup;
             _replayManager = replayManager;
             _replayOriginators = new List<IReplayOriginator>();
-            _ticks = new List<List<IRecordSnapshot>>();
+            _ticks = new List<IInputSnapshot>();
             IsRecording = true;
         }
         
         public void RegisterOriginator(IReplayOriginator replayOriginator)
         {
-            replayOriginator.ProvideReplaySnapshot += ProvideReplayEventFrame;
+            replayOriginator.PushNewTick += PushNewTick;
             
             _replayOriginators.Add(replayOriginator);
         }
@@ -39,7 +40,7 @@ namespace NewReplaySystem
         {
             foreach (var originator in _replayOriginators.Where(originator => originator == replayOriginator))
             {
-                originator.ProvideReplaySnapshot -= ProvideReplayEventFrame;
+                originator.PushNewTick -= PushNewTick;
             }
 
             _replayOriginators.Remove(replayOriginator);
@@ -54,22 +55,13 @@ namespace NewReplaySystem
 
         public void Tick()
         {
-            if (IsRecording)
+            if (_stopNextTick || _ticks.Count == 0)
             {
-                Debug.LogWarning("You can only register Records during a replay");
+                StopReplay();
                 return;
             }
             
-            if (_ticks.Count == 0)
-            {
-                Debug.LogWarning("There are no ticks registered for replay");
-                return;
-            }
-            
-            foreach (var recordSnapshot in _ticks[_currentIndex])
-            {
-                recordSnapshot.Tick();
-            }
+            _ticks[_currentIndex].Tick(_replayManager.TickDurationInSeconds);
             _currentIndex++;
 
             if (_currentIndex < _ticks.Count) return;
@@ -79,7 +71,7 @@ namespace NewReplaySystem
             }
             else
             {
-                StopReplay();
+                _stopNextTick = true;
             }
         }
 
@@ -88,15 +80,11 @@ namespace NewReplaySystem
             _onCompleteReplay.Invoke();
         }
         
-        private void ProvideReplayEventFrame(IRecordSnapshot recordSnapshot)
+        private void PushNewTick(IInputSnapshot inputSnapshot)
         {
-            if (_replayManager.AdvancedTicks != _registrationTick)
-            {
-                _registrationTick = _replayManager.AdvancedTicks;
-                _ticks.Add(new List<IRecordSnapshot>());
-            }
-            
-            _ticks[^1].Add(recordSnapshot);
+            _replayManager.Tick();
+            inputSnapshot.Tick(_replayManager.TickDurationInSeconds);
+            _ticks.Add(inputSnapshot);
         }
     }
 }

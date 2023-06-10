@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class InteractionInputregistrator : MonoBehaviour
+public class InteractionInputRegistrator : MonoBehaviour
 {
     [Header("Topic")]
     [SerializeField] private InteractionInputFocus interactionInputFocus;

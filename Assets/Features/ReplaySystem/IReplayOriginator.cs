@@ -8,8 +8,6 @@ namespace NewReplaySystem
         /// <summary>
         /// Method for passing a record towards the ReplayManager as an event.
         /// </summary>
-        Action<IRecordSnapshot> ProvideReplaySnapshot { get; set; }
-        
-        //TODO: make this also execute a tick
+        Action<IInputSnapshot> PushNewTick { get; set; }
     }
 }

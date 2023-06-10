@@ -10,42 +10,25 @@ namespace Features.TileSystem.Registrator
         [SerializeField] private Item itemType;
         [SerializeField] private bool useThisGameObject;
     
-        protected override bool CanRegisterTileInteractable(Tile tile)
+        protected override bool CanRegisterTileInteractable()
         {
-            return !tile.ItemContainer.ContainsItem();
+            return !Tile.ItemContainer.ContainsItem();
         }
 
-        protected override ITileInteractable RegisterTileInteractable(Tile tile)
+        protected override void RegisterTileInteractable()
         {
-            if (tile.ItemContainer.ContainsItem()) return null;
-        
-            if (useThisGameObject)
-            {
-                tile.ItemContainer.InitializeItem(itemType, gameObject);
-            }
-            else
-            {
-                tile.ItemContainer.InitializeItem(itemType);
-            }
-            var tileComponent = new UnstackableItemTileInteractable(tile);
-            tile.ExchangeFirstTileInteractableOfType<ItemTileInteractable>(tileComponent);
-            return tileComponent;
+            ItemTileInteractable tileComponent = useThisGameObject ? new UnstackableItemTileInteractable(Tile, itemType, gameObject) 
+                : new UnstackableItemTileInteractable(Tile, itemType);
+            Tile.ExchangeFirstTileInteractableOfType(tileComponent);
         }
 
-        protected override bool CanUnregisterTileInteractable(ITileInteractable tileInteractable)
+        protected override bool CanUnregisterTileInteractable()
         {
             return Tile.ItemContainer.CanDestroyItem(1);
         }
 
-        protected override void UnregisterTileInteractable(ITileInteractable tileInteractable)
+        protected override void UnregisterTileInteractable()
         {
-            if (!Tile.ItemContainer.CanDestroyItem(1))
-            {
-                Debug.LogError("Cant destroy the item");
-                return;
-            }
-        
-            Tile.ItemContainer.DestroyItem(1);
             Tile.ExchangeFirstTileInteractableOfType<ItemTileInteractable>(new EmptyItemTileInteractable(Tile));
         }
     }

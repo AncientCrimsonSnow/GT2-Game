@@ -13,10 +13,10 @@ namespace Features.TileSystem.TileSystem
             return new int2(Mathf.RoundToInt(position.x), Mathf.RoundToInt(position.z));
         }
         
-        public static Vector3 TransformPositionToVector3(Transform transform)
+        public static Vector3Int TransformPositionToVector3Int(Transform transform)
         {
             var position = transform.position;
-            return new Vector3(Mathf.RoundToInt(position.x), 0, Mathf.RoundToInt(position.z));
+            return new Vector3Int(Mathf.RoundToInt(position.x), 0, Mathf.RoundToInt(position.z));
         }
         
         public static Tile[,] GetTileKernelAt(Tile[,] tilemap, int2 originArrayPosition, int kernelSize)

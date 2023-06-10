@@ -10,6 +10,7 @@ namespace NewReplaySystem
         [SerializeField] private float tickDurationInSeconds;
 
         public float TickDurationInSeconds => tickDurationInSeconds;
+        public bool IsTickPerformed => _tickPerformed;
         public int AdvancedTicks { get; private set; }
 
         private readonly List<ReplayController> _replayControllerList = new List<ReplayController>();
@@ -54,23 +55,20 @@ namespace NewReplaySystem
 
         public void Tick()
         {
-            if (_tickPerformed)
-            {
-                Debug.LogWarning("You can't start a new tick, while a tick is being performed!");
-                return;
-            }
+            if (_tickPerformed) return;
             
             _tickPerformed = true;
             _tickTimeDelta = 0;
 
-            foreach (var replayController in _replayControllerList)
+            for (var index = _replayControllerList.Count - 1; index >= 0; index--)
             {
+                var replayController = _replayControllerList[index];
+                if (replayController.IsRecording) continue;
                 replayController.Tick();
             }
             AdvancedTicks++;
         }
 
-        //TODO: a replayOriginator may have multiple different OriginatorScripts - fix it
         public void InitializeRecording(GameObject originatorGameObject)
         {
             if (_replayControllerList.Any(replayController => replayController.IsRecording))
@@ -109,7 +107,7 @@ namespace NewReplaySystem
             }
         }
 
-        public void StartReplay(GameObject originatorGameObject, bool isLoop, Action onCompleteReplay = null)
+        public void StartReplay(GameObject originatorGameObject, bool isLoop)
         {
             if (!HasCurrentReplayController)
             {
@@ -132,7 +130,7 @@ namespace NewReplaySystem
             CurrentReplayController.StartReplay(isLoop, () =>
             {
                 UnregisterReplayable(originatorGameObject);
-                onCompleteReplay?.Invoke();
+                Destroy(originatorGameObject);
             });
         }
 

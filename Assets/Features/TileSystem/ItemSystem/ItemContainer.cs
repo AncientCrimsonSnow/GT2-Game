@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using Features.TileSystem.Registrator;
-using Features.TileSystem.TileSystem;
+﻿using Features.TileSystem.TileSystem;
 using UnityEngine;
 
 namespace Features.TileSystem.ItemSystem
@@ -15,12 +13,9 @@ namespace Features.TileSystem.ItemSystem
         private int _itemCount;
         private int _maxContainedItemCount;
 
-        private List<TileInteractableRegistrator> _registrators;
-
         public ItemContainer(Tile tile)
         {
             _tile = tile;
-            _registrators = new List<TileInteractableRegistrator>();
         }
 
         public bool ContainsItem()
@@ -50,19 +45,10 @@ namespace Features.TileSystem.ItemSystem
         
         public bool CanDestroyItem(int maxItemDestructionCount)
         {
-            if (_itemCount > maxItemDestructionCount)
-            {
-                Debug.LogWarning($"You can only destroy the Item, when there are at most {maxItemDestructionCount} items on it! There are/is currently {_itemCount}");
-                return false;
-            }
+            if (_itemCount <= maxItemDestructionCount) return true;
             
-            if (_registrators.Count != 0)
-            {
-                Debug.LogWarning("There is still a Registrator referencing this tile!");
-                return false;
-            }
-            
-            return true;
+            Debug.LogWarning($"You can only destroy the Item, when there are at most {maxItemDestructionCount} items on it! There are/is currently {_itemCount}");
+            return false;
         }
 
         public void DestroyItem(int maxItemDestructionCount)
@@ -103,16 +89,6 @@ namespace Features.TileSystem.ItemSystem
             }
             
             return true;
-        }
-        
-        public void AddRegistrator(TileInteractableRegistrator tileInteractableRegistrator)
-        {
-            _registrators.Add(tileInteractableRegistrator);
-        }
-        
-        public void RemoveRegistrator(TileInteractableRegistrator tileInteractableRegistrator)
-        {
-            _registrators.Remove(tileInteractableRegistrator);
         }
     }
 }

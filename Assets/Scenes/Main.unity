@@ -314,7 +314,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc65d0510211c7a4cac499b9c18ebf81, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tickDurationInSeconds: 1
+  tickDurationInSeconds: 0.5
 --- !u!4 &375060685
 Transform:
   m_ObjectHideFlags: 0
@@ -1278,7 +1278,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1783447513}
-  - component: {fileID: 1783447516}
+  - component: {fileID: 1783447520}
   - component: {fileID: 1783447518}
   - component: {fileID: 1783447519}
   - component: {fileID: 1783447517}
@@ -1305,19 +1305,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1783447516
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1783447512}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0fc55d32af2c25241b6f009cca842749, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  easeType: 1
 --- !u!114 &1783447517
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1365,9 +1352,24 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   movementInputFocus: {fileID: 11400000, guid: eec3e3054ef80274ab87f9dee2a5d97a, type: 2}
-  movementInputBehaviour: {fileID: 1783447516}
+  movementInputBehaviour: {fileID: 1783447520}
   awake: 1
   start: 0
+--- !u!114 &1783447520
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1783447512}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f61a12f56b5983546abcfc119e69f697, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  easeType: 1
+  movementSpeed: 5
+  animator: {fileID: 0}
 --- !u!1001 &1840603537
 PrefabInstance:
   m_ObjectHideFlags: 0

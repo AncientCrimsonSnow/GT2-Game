@@ -22,9 +22,14 @@ namespace Features.TileSystem.TileSystem
         {
             WorldPosition = worldPosition;
             ArrayPosition = arrayPosition;
-            _tileInteractables = new List<ITileInteractable> { new EmptyItemTileInteractable(this) };
-
             ItemContainer = new ItemContainer(this);
+            
+            _tileInteractables = new List<ITileInteractable> { new EmptyItemTileInteractable(this) };
+        }
+        
+        public bool ContainsTileInteractableOfType<T>() where T : ITileInteractable
+        {
+            return _tileInteractables.Any(baseTileComponent => baseTileComponent is T);
         }
 
         public bool TryGetFirstTileInteractableOfType<T>(out T tileComponent) where T : ITileInteractable
@@ -63,7 +68,6 @@ namespace Features.TileSystem.TileSystem
             _tileInteractables.RemoveAll(x => ReferenceEquals(x, newTileInteractable));
         }
 
-        //TODO: After each interaction, this must be saved as an element in the current tick list. It must be ordered by interaction call.
         public bool TryInteract(GameObject interactor)
         {
             return _tileInteractables.Any(connectedTileContext => connectedTileContext.TryInteract(interactor));

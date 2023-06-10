@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System;
+using NewReplaySystem;
+using UnityEngine;
 using UnityEngine.InputSystem;
 
 public abstract class BaseMovementInput : MonoBehaviour

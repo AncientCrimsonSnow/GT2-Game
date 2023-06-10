@@ -1,6 +1,5 @@
 ﻿using Features.TileSystem.ItemSystem;
 using Features.TileSystem.TileComponents;
-using Features.TileSystem.TileSystem;
 using UnityEngine;
 
 namespace Features.TileSystem.Registrator
@@ -12,61 +11,21 @@ namespace Features.TileSystem.Registrator
         [SerializeField] private int containedItemAmountOnSpawn;
         [SerializeField] private int maxContainedItemCount;
 
-        protected override bool CanRegisterTileInteractable(Tile tile)
+        protected override void RegisterTileInteractable()
         {
-            return !tile.ItemContainer.ContainsItem() || tile.TryGetFirstTileInteractableOfType(out StackableItemTileInteractable _);
+            if (!Tile.ContainsTileInteractableOfType<EmptyItemTileInteractable>()) return;
+
+            ItemTileInteractable tileComponent = useThisGameObject ? 
+                new StackableItemTileInteractable(Tile, itemType, maxContainedItemCount, containedItemAmountOnSpawn, gameObject) 
+                : new StackableItemTileInteractable(Tile, itemType, maxContainedItemCount, containedItemAmountOnSpawn);
+            Tile.ExchangeFirstTileInteractableOfType<ItemTileInteractable>(tileComponent);
         }
 
-        protected override ITileInteractable RegisterTileInteractable(Tile tile)
+        protected override void UnregisterTileInteractable()
         {
-            if (tile.ItemContainer.ContainsItem())
-            {
-                if (tile.TryGetFirstTileInteractableOfType(out StackableItemTileInteractable stackableItemTileComponent))
-                {
-                    tile.ItemContainer.AddRegistrator(this);
-                    return stackableItemTileComponent;
-                }
-                
-                Debug.LogError("On the ItemContainer is currently an item. You need to remove it, until you can Initialize a new Item on it!");
-                return null;
-            }
+            if (!Tile.ItemContainer.CanDestroyItem(0) || !Tile.ContainsTileInteractableOfType<EmptyItemTileInteractable>()) return;
             
-            tile.ItemContainer.AddRegistrator(this);
-            if (useThisGameObject)
-            {
-                tile.ItemContainer.InitializeItem(itemType, gameObject, maxContainedItemCount, containedItemAmountOnSpawn);
-            }
-            else
-            {
-                tile.ItemContainer.InitializeItem(itemType, maxContainedItemCount, containedItemAmountOnSpawn);
-            }
-            var tileComponent = new StackableItemTileInteractable(tile);
-            tile.ExchangeFirstTileInteractableOfType<ItemTileInteractable>(tileComponent);
-            return tileComponent;
-        }
-
-        protected override bool CanUnregisterTileInteractable(ITileInteractable tileInteractable)
-        {
-            return Tile.ItemContainer.CanDestroyItem(0);
-        }
-
-        protected override void UnregisterTileInteractable(ITileInteractable tileInteractable)
-        {
-            if (!Tile.ItemContainer.CanDestroyItem(0))
-            {
-                Debug.LogWarning("On the ItemContainer is no item to remove!");
-                return;
-            }
-            
-            Tile.ItemContainer.RemoveRegistrator(this);
-            Tile.ItemContainer.DestroyItem(0);
             Tile.ExchangeFirstTileInteractableOfType<ItemTileInteractable>(new EmptyItemTileInteractable(Tile));
-        }
-        
-        protected override void OnDestroy()
-        {
-            base.OnDestroy();
-            Tile.ItemContainer.RemoveRegistrator(this);
         }
     }
 }

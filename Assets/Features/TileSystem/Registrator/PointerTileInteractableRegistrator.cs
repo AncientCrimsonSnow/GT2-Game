@@ -1,6 +1,5 @@
 ﻿using Features.TileSystem.ItemSystem;
 using Features.TileSystem.TileComponents;
-using Features.TileSystem.TileSystem;
 using UnityEngine;
 
 namespace Features.TileSystem.Registrator
@@ -13,16 +12,18 @@ namespace Features.TileSystem.Registrator
         [SerializeField] private TileInteractableRegistrator pointerRegistrator;
         [SerializeField] private int craftAmount;
 
-        protected override ITileInteractable RegisterTileInteractable(Tile tile)
+        private ITileInteractable _tileInteractable;
+
+        protected override void RegisterTileInteractable()
         {
-            var tileComponent = new PointerResourceGeneratorTileInteractable(tile, isMovable, pointerRegistrator.Tile, itemLoot, craftAmount);
-            tile.RegisterTileInteractable(tileComponent);
-            return tileComponent;
+            var tileComponent = new PointerResourceGeneratorTileInteractable(Tile, isMovable, pointerRegistrator.Tile, itemLoot, craftAmount);
+            Tile.RegisterTileInteractable(tileComponent);
+            _tileInteractable = tileComponent;
         }
 
-        protected override void UnregisterTileInteractable(ITileInteractable tileInteractable)
+        protected override void UnregisterTileInteractable()
         {
-            Tile.UnregisterTileInteractable(tileInteractable);
+            Tile.UnregisterTileInteractable(_tileInteractable);
         }
     }
 }

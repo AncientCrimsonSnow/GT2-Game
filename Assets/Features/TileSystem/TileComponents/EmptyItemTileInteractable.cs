@@ -6,7 +6,10 @@ namespace Features.TileSystem.TileComponents
 {
     public class EmptyItemTileInteractable : ItemTileInteractable
     {
-        public EmptyItemTileInteractable(Tile tile) : base(tile) { }
+        public EmptyItemTileInteractable(Tile tile) : base(tile)
+        {
+            Tile.ItemContainer.DestroyItem(1);
+        }
 
         public override bool TryInteract(GameObject interactor)
         {
@@ -23,8 +26,7 @@ namespace Features.TileSystem.TileComponents
             }
 
             var heldItem = heldItemBehaviour.CarriedItem;
-            Tile.ItemContainer.InitializeItem(heldItem);
-            Tile.ExchangeFirstTileInteractableOfType<ItemTileInteractable>(new UnstackableItemTileInteractable(Tile));
+            Tile.ExchangeFirstTileInteractableOfType<ItemTileInteractable>(new UnstackableItemTileInteractable(Tile, heldItem));
             heldItemBehaviour.DropItem();
             return true;
         }

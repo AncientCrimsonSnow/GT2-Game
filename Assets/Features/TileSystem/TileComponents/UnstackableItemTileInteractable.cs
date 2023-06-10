@@ -1,4 +1,5 @@
 ﻿using Features.TileSystem.CharacterBehaviours;
+using Features.TileSystem.ItemSystem;
 using Features.TileSystem.TileSystem;
 using UnityEngine;
 
@@ -6,7 +7,17 @@ namespace Features.TileSystem.TileComponents
 {
     public class UnstackableItemTileInteractable : ItemTileInteractable
     {
-        public UnstackableItemTileInteractable(Tile tile) : base(tile) { }
+        public UnstackableItemTileInteractable(Tile tile, Item itemType, GameObject useThisGameObject = null) : base(tile)
+        {
+            if (useThisGameObject)
+            {
+                Tile.ItemContainer.InitializeItem(itemType, useThisGameObject);
+            }
+            else
+            {
+                Tile.ItemContainer.InitializeItem(itemType);
+            }
+        }
 
         public override bool TryInteract(GameObject interactor)
         {
@@ -30,7 +41,6 @@ namespace Features.TileSystem.TileComponents
             }
 
             heldItemBehaviour.PickupItem(Tile.ItemContainer.ContainedItem);
-            Tile.ItemContainer.DestroyItem(1);
             Tile.ExchangeFirstTileInteractableOfType<ItemTileInteractable>(new EmptyItemTileInteractable(Tile));
             return true;
         }

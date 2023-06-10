@@ -36,8 +36,7 @@ namespace Features.TileSystem.TileComponents
 
         private void InitializeSelfTileItem()
         {
-            Tile.ItemContainer.InitializeItem(_itemLoot);
-            Tile.ExchangeFirstTileInteractableOfType<ItemTileInteractable>(new UnstackableItemTileInteractable(Tile));
+            Tile.ExchangeFirstTileInteractableOfType<ItemTileInteractable>(new UnstackableItemTileInteractable(Tile, _itemLoot));
             Debug.Log("Dropped item by crafting.");
         }
         
