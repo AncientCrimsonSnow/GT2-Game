@@ -7,7 +7,7 @@ namespace Features.TileSystem.TileComponents
 {
     public class UnstackableItemTileInteractable : ItemTileInteractable
     {
-        public UnstackableItemTileInteractable(Tile tile, Item itemType, GameObject useThisGameObject = null) : base(tile)
+        public UnstackableItemTileInteractable(Tile tile, bool isMovable, Item itemType, GameObject useThisGameObject = null) : base(tile, isMovable)
         {
             if (useThisGameObject)
             {
@@ -42,11 +42,6 @@ namespace Features.TileSystem.TileComponents
 
             heldItemBehaviour.PickupItem(Tile.ItemContainer.ContainedItem);
             Tile.ExchangeFirstTileInteractableOfType<ItemTileInteractable>(new EmptyItemTileInteractable(Tile));
-            return true;
-        }
-
-        public override bool IsMovable()
-        {
             return true;
         }
     }

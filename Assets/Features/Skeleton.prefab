@@ -47,6 +47,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0fc55d32af2c25241b6f009cca842749, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tileManager: {fileID: 11400000, guid: 250008992667b5e458c740568aa31544, type: 2}
   easeType: 1
 --- !u!114 &6722982202627417132
 MonoBehaviour:

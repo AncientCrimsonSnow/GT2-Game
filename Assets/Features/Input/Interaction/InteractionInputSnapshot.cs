@@ -16,7 +16,7 @@ public class InteractionInputSnapshot : IInputSnapshot
     public void Tick(float tickDurationInSeconds)
     {
         var registeredPosition = TileHelper.TransformPositionToInt2(_interactor.transform);
-        var tile = _tileManager.GetTileTypeAt(registeredPosition);
+        var tile = _tileManager.GetTileAt(registeredPosition);
         tile.TryInteract(_interactor);
     }
 }

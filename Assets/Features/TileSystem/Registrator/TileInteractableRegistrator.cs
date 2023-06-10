@@ -25,7 +25,7 @@ namespace Features.TileSystem.Registrator
         {
             ApplyRoundedPosition();
             _registeredPosition = TileHelper.TransformPositionToInt2(transform);
-            Tile = tileManager.GetTileTypeAt(_registeredPosition);
+            Tile = tileManager.GetTileAt(_registeredPosition);
             
             if (CanRegisterTileInteractable())
             {

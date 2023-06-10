@@ -9,7 +9,8 @@ namespace Features.TileSystem.TileComponents
     {
         private int _itemCount;
 
-        public StackableItemTileInteractable(Tile tile, Item itemType, int maxContainedItemCount, int containedItemAmountOnSpawn, GameObject useThisGameObject = null) : base(tile)
+        public StackableItemTileInteractable(Tile tile, bool isMovable, Item itemType, 
+            int maxContainedItemCount, int containedItemAmountOnSpawn, GameObject useThisGameObject = null) : base(tile, isMovable)
         {
             if (useThisGameObject)
             {
@@ -44,11 +45,6 @@ namespace Features.TileSystem.TileComponents
                 heldItemBehaviour.PickupItem(Tile.ItemContainer.ContainedItem);
             }
             
-            return true;
-        }
-
-        public override bool IsMovable()
-        {
             return true;
         }
     }

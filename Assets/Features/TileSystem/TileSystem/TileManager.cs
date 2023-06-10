@@ -20,7 +20,7 @@ namespace Features.TileSystem.TileSystem
             _isInitialized = false;
         }
 
-        public Tile GetTileTypeAt(int2 worldPosition)
+        public Tile GetTileAt(int2 worldPosition)
         {
             Setup();
             
