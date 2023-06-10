@@ -9,10 +9,13 @@ namespace Features.TileSystem.Registrator
     {
         [SerializeField] private Item itemType;
         [SerializeField] private bool useThisGameObject;
+        
+        private bool _canBeUnregistered;
     
         protected override bool CanRegisterTileInteractable()
         {
-            return !Tile.ItemContainer.ContainsItem();
+            _canBeUnregistered = Tile.ContainsTileInteractableOfType<EmptyItemTileInteractable>();
+            return _canBeUnregistered;
         }
 
         protected override void RegisterTileInteractable()
@@ -24,7 +27,7 @@ namespace Features.TileSystem.Registrator
 
         protected override bool CanUnregisterTileInteractable()
         {
-            return Tile.ItemContainer.CanDestroyItem(1);
+            return Tile.ItemContainer.CanDestroyItem(1) && _canBeUnregistered;
         }
 
         protected override void UnregisterTileInteractable()

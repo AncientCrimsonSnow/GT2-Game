@@ -45,7 +45,11 @@ namespace Features.TileSystem.Registrator
             }
         }
 
-        protected virtual bool CanRegisterTileInteractable() => true;   //TODO: implement, if stackable
+        /// <summary>
+        /// Method for defining, if this interactable can be registered -> also relevant for buildingKernel
+        /// </summary>
+        /// <returns></returns>
+        protected virtual bool CanRegisterTileInteractable() => true;
 
         protected abstract void RegisterTileInteractable();
 
@@ -64,7 +68,7 @@ namespace Features.TileSystem.Registrator
             }
         }
 
-        protected virtual bool CanUnregisterTileInteractable() => true;   //TODO: implement, if stackable
+        protected virtual bool CanUnregisterTileInteractable() => true;
     
         protected abstract void UnregisterTileInteractable();
     }
