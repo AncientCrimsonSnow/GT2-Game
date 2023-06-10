@@ -21,7 +21,8 @@ namespace Features.TileSystem.TileComponents
 
         public override bool TryInteract(GameObject interactor)
         {
-            if (!_itemTilePointer.ItemContainer.CanAddItemCount(_itemTilePointer.ItemContainer.ContainedItem, -_itemAmountCost) || Tile.ItemContainer.ContainsItem()) return false;
+            if (!_itemTilePointer.ItemContainer.CanAddItemCount(_itemTilePointer.ItemContainer.ContainedItem, -_itemAmountCost) 
+                || !Tile.ContainsTileInteractableOfType<EmptyItemTileInteractable>()) return false;
 
             RemovePointerTileItem();
             InitializeSelfTileItem();

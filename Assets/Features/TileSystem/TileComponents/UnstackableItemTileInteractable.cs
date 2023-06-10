@@ -33,7 +33,7 @@ namespace Features.TileSystem.TileComponents
                 return false;
             }
 
-            if (!Tile.ItemContainer.ContainsItem() || !Tile.ItemContainer.CanDestroyItem(1))
+            if (Tile.ContainsTileInteractableOfType<EmptyItemTileInteractable>() || !Tile.ItemContainer.CanDestroyItem(1))
             {
                 Debug.LogError("Either, the UnstackableItemTileComponent doesn't have an Item, even though it should " +
                                "or something with destroying of the current TileContainer failed!");

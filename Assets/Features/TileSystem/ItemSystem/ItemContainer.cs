@@ -12,17 +12,18 @@ namespace Features.TileSystem.ItemSystem
         private GameObject _instantiatedGameObject;
         private int _itemCount;
         private int _maxContainedItemCount;
+        private int _registratorStack;
 
         public ItemContainer(Tile tile)
         {
             _tile = tile;
         }
-
+        
         public bool ContainsItem()
         {
             return _instantiatedGameObject != null && ContainedItem != null;
         }
-        
+
         public void InitializeItem(Item newItem, GameObject instantiatedObject, int maxContainedItemCount = 1, int itemCount = 1)
         {
             if (ContainsItem()) return;
@@ -45,7 +46,7 @@ namespace Features.TileSystem.ItemSystem
         
         public bool CanDestroyItem(int maxItemDestructionCount)
         {
-            if (_itemCount <= maxItemDestructionCount) return true;
+            if (_itemCount <= maxItemDestructionCount && _registratorStack <= 0) return true;
             
             Debug.LogWarning($"You can only destroy the Item, when there are at most {maxItemDestructionCount} items on it! There are/is currently {_itemCount}");
             return false;
@@ -89,6 +90,16 @@ namespace Features.TileSystem.ItemSystem
             }
             
             return true;
+        }
+
+        public void AddRegistratorStack()
+        {
+            _registratorStack++;
+        }
+        
+        public void RemoveRegistratorStack()
+        {
+            _registratorStack--;
         }
     }
 }

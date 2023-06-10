@@ -11,19 +11,36 @@ namespace Features.TileSystem.Registrator
         [SerializeField] private int containedItemAmountOnSpawn;
         [SerializeField] private int maxContainedItemCount;
 
+        private bool _canBeUnregistered;
+
+        protected override bool CanRegisterTileInteractable()
+        {
+            _canBeUnregistered = !Tile.ContainsTileInteractableOfType<UnstackableItemTileInteractable>() && Tile.ItemContainer.ContainedItem == itemType;
+            return _canBeUnregistered;
+        }
+
         protected override void RegisterTileInteractable()
         {
+            Tile.ItemContainer.AddRegistratorStack();
+            
             if (!Tile.ContainsTileInteractableOfType<EmptyItemTileInteractable>()) return;
 
             ItemTileInteractable tileComponent = useThisGameObject ? 
                 new StackableItemTileInteractable(Tile, itemType, maxContainedItemCount, containedItemAmountOnSpawn, gameObject) 
                 : new StackableItemTileInteractable(Tile, itemType, maxContainedItemCount, containedItemAmountOnSpawn);
-            Tile.ExchangeFirstTileInteractableOfType<ItemTileInteractable>(tileComponent);
+            Tile.ExchangeFirstTileInteractableOfType(tileComponent);
+        }
+
+        protected override bool CanUnregisterTileInteractable()
+        {
+            return _canBeUnregistered;
         }
 
         protected override void UnregisterTileInteractable()
         {
-            if (!Tile.ItemContainer.CanDestroyItem(0) || !Tile.ContainsTileInteractableOfType<EmptyItemTileInteractable>()) return;
+            Tile.ItemContainer.RemoveRegistratorStack();
+            
+            if (!Tile.ItemContainer.CanDestroyItem(0)) return;
             
             Tile.ExchangeFirstTileInteractableOfType<ItemTileInteractable>(new EmptyItemTileInteractable(Tile));
         }
