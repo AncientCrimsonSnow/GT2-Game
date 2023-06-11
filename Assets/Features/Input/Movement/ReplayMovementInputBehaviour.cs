@@ -11,6 +11,7 @@ public class ReplayMovementInputBehaviour : BaseMovementInput, IReplayOriginator
     public Action<IInputSnapshot> PushNewTick { get; set; }
 
     [SerializeField] private TileManager tileManager;
+    [SerializeField, Layer] private int editorLayer;
     [SerializeField] private Ease easeType;
     
     private Vector2 _storedInputVector;
@@ -40,5 +41,18 @@ public class ReplayMovementInputBehaviour : BaseMovementInput, IReplayOriginator
         {
             PushNewTick.Invoke(new EmptySnapshot());
         }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (editorLayer == other.gameObject.layer)
+        {
+            ReplayManager.Instance.StopReplay(gameObject);
+        }
+    }
+
+    private void OnDestroy()
+    {
+        DOTween.Kill(gameObject);
     }
 }

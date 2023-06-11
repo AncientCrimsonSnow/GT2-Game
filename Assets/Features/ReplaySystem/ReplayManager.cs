@@ -69,7 +69,7 @@ namespace NewReplaySystem
             AdvancedTicks++;
         }
 
-        public void InitializeRecording(GameObject originatorGameObject)
+        public void InitializeRecording(GameObject originatorGameObject, Action onCompleteAction)
         {
             if (_replayControllerList.Any(replayController => replayController.IsRecording))
             {
@@ -83,7 +83,7 @@ namespace NewReplaySystem
                 return;
             }
             
-            var replayController = new ReplayController(this, originatorGameObject);
+            var replayController = new ReplayController(this, originatorGameObject, onCompleteAction.Invoke);
             _replayControllerList.Add(replayController);
         }
         
@@ -127,11 +127,7 @@ namespace NewReplaySystem
                 return;
             }
             
-            CurrentReplayController.StartReplay(isLoop, () =>
-            {
-                UnregisterReplayable(originatorGameObject);
-                Destroy(originatorGameObject);
-            });
+            CurrentReplayController.StartReplay(isLoop);
         }
 
         public void StopReplay(GameObject originatorGameObject)
@@ -154,7 +150,7 @@ namespace NewReplaySystem
             Debug.LogWarning("The passed replayable wasn't found!");
         }
 
-        private void UnregisterReplayable(GameObject originatorGameObject)
+        public void UnregisterReplayable(GameObject originatorGameObject)
         {
             for (var index = _replayControllerList.Count - 1; index >= 0; index--)
             {

@@ -18,7 +18,6 @@ namespace Features.TileSystem.TileComponents
 
         public bool IsMovable()
         {
-            Debug.Log(_isMovable + " " + GetType());
             return _isMovable;
         }
 

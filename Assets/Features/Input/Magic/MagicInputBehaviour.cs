@@ -51,7 +51,20 @@ public class MagicInputBehaviour : BaseMagicInput
     {
         _entryMovementInput = movementInputFocus.GetFocus();
         _newestInstantiatedSkeleton = Instantiate(magicInstantiationPrefab, transform.position, Quaternion.identity);
-        ReplayManager.Instance.InitializeRecording(_newestInstantiatedSkeleton);
+
+        //the newestInstantiatedSkeleton must be buffered, because it will be null during replay
+        var bufferInstantiation = _newestInstantiatedSkeleton;
+        ReplayManager.Instance.InitializeRecording(_newestInstantiatedSkeleton, () =>
+        {
+            //destroy, if a record gets interrupted
+            if (_newestInstantiatedSkeleton != null)
+            {
+                ResetFocus();
+            }
+            
+            ReplayManager.Instance.UnregisterReplayable(bufferInstantiation);
+            Destroy(bufferInstantiation);
+        });
 
         _entryCameraFollow = virtualCamera.Follow;
         SetCameraFollow(_newestInstantiatedSkeleton.transform);

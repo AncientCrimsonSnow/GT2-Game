@@ -16,14 +16,15 @@ namespace NewReplaySystem
         
         private int _registrationTick;
         private int _currentIndex;
-        private Action _onCompleteReplay;
+        private readonly Action _onCompleteReplay;
         private bool _isLoop;
         private bool _stopNextTick;
         
-        public ReplayController(ReplayManager replayManager, GameObject originatorGroup)
+        public ReplayController(ReplayManager replayManager, GameObject originatorGroup, Action onCompleteReplay)
         {
             OriginatorGameObject = originatorGroup;
             _replayManager = replayManager;
+            _onCompleteReplay = onCompleteReplay;
             _replayOriginators = new List<IReplayOriginator>();
             _ticks = new List<IInputSnapshot>();
             IsRecording = true;
@@ -46,10 +47,9 @@ namespace NewReplaySystem
             _replayOriginators.Remove(replayOriginator);
         }
 
-        public void StartReplay(bool isLoop, Action onCompleteReplay)
+        public void StartReplay(bool isLoop)
         {
             IsRecording = false;
-            _onCompleteReplay = onCompleteReplay;
             _isLoop = isLoop;
         }
 
