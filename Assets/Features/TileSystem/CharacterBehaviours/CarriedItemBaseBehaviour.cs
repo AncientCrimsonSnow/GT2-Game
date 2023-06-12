@@ -5,13 +5,13 @@ namespace Features.TileSystem.CharacterBehaviours
 {
     public abstract class CarriedItemBaseBehaviour : MonoBehaviour
     {
-        public Item CarriedItem { get; protected set; }
+        public BaseItem CarriedBaseItem { get; protected set; }
         
-        public bool IsCarrying() => CarriedItem != null;
+        public bool IsCarrying() => CarriedBaseItem != null;
 
         public void DropItem()
         {
-            if (CarriedItem == null)
+            if (CarriedBaseItem == null)
             {
                 Debug.LogWarning($"{gameObject.name} is currently not carrying any item.");
                 return;
@@ -19,24 +19,24 @@ namespace Features.TileSystem.CharacterBehaviours
 
             OnDropItem();
             Debug.Log("Drop");
-            CarriedItem = null;
+            CarriedBaseItem = null;
         }
 
         //TODO: handle visualisation of held item -> e.g. instantiate
         protected abstract void OnDropItem();
 
-        public void PickupItem(Item newItem)
+        public void PickupItem(BaseItem newBaseItem)
         {
-            if (CarriedItem != null)
+            if (CarriedBaseItem != null)
             {
-                Debug.LogWarning($"{gameObject.name} is already Carrying the item {CarriedItem.itemName}! " +
-                                 $"You cant pick up {newItem.itemName}!");
+                Debug.LogWarning($"{gameObject.name} is already Carrying the item {CarriedBaseItem.itemName}! " +
+                                 $"You cant pick up {newBaseItem.itemName}!");
                 return;
             }
 
             OnPickupItem();
             Debug.Log("Pickup");
-            CarriedItem = newItem;
+            CarriedBaseItem = newBaseItem;
         }
         
         //TODO: handle visualisation of held item -> e.g. destroy

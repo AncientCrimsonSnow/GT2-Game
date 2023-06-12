@@ -1,13 +1,14 @@
 using Features.TileSystem.ItemSystem;
 using Features.TileSystem.TileComponents;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Features.TileSystem.Registrator
 {
     public class UnstackableTileInteractableRegistrator : TileInteractableRegistrator
     {
         [SerializeField] private bool isMovable;
-        [SerializeField] private Item itemType;
+        [FormerlySerializedAs("itemType")] [SerializeField] private BaseItem baseItemType;
         [SerializeField] private bool useThisGameObject;
         
         private bool _canBeUnregistered;
@@ -20,8 +21,8 @@ namespace Features.TileSystem.Registrator
 
         protected override void RegisterTileInteractable()
         {
-            ItemTileInteractable tileComponent = useThisGameObject ? new UnstackableItemTileInteractable(Tile, isMovable, itemType, gameObject) 
-                : new UnstackableItemTileInteractable(Tile, isMovable, itemType);
+            ItemTileInteractable tileComponent = useThisGameObject ? new UnstackableItemTileInteractable(Tile, isMovable, baseItemType, gameObject) 
+                : new UnstackableItemTileInteractable(Tile, isMovable, baseItemType);
             Tile.ExchangeFirstTileInteractableOfType(tileComponent);
         }
 

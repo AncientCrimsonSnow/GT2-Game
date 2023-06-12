@@ -73,6 +73,11 @@ namespace Features.TileSystem.TileSystem
             return _tileInteractables.Any(connectedTileContext => connectedTileContext.TryInteract(interactor));
         }
 
+        public bool TryCastMagic(GameObject caster)
+        {
+            return _tileInteractables.Any(connectedTileContext => connectedTileContext.TryCastMagic(caster));
+        }
+
         public bool IsMovable()
         {
             return _tileInteractables.All(tileInteractionContext => tileInteractionContext.IsMovable());

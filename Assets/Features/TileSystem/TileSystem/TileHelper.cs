@@ -45,6 +45,59 @@ namespace Features.TileSystem.TileSystem
             return neighboringCells;
         }
         
+        public static Tile FindClosestCell(Tile[,] tilemap, int2 startPosition, Func<Tile, bool> condition)
+        {
+            int rows = tilemap.GetLength(0);
+            int columns = tilemap.GetLength(1);
+            
+            int radius = 0;
+            int maxRadius = 10;
+
+            while (true)
+            {
+                if (radius >= maxRadius)
+                {
+                    Debug.LogError("Couldn't find an empty item slot!");
+                    return null;
+                }
+                
+                // Iterate over the top and bottom edges
+                for (int x = -radius; x <= radius; x++)
+                {
+                    int curX = startPosition.x + x;
+                    int botY = startPosition.y - radius;
+                    int topY = startPosition.y + radius;
+
+                    //bot edge
+                    if (IsInBounds(curX, botY, rows, columns) && condition(tilemap[curX, botY])) return tilemap[curX, botY];
+                    
+                    //top edge
+                    if (IsInBounds(curX, topY, rows, columns) && condition(tilemap[curX, topY])) return tilemap[curX, topY];
+                }
+                
+                // Iterate over the left and right edges (excluding corners)
+                for (int y = -radius + 1; y < radius; y++)
+                {
+                    int leftX = startPosition.x - radius;
+                    int rightX = startPosition.x + radius;
+                    int curY = startPosition.y + y;
+                    
+                    //left edge
+                    if (IsInBounds(leftX, curY, rows, columns) && condition(tilemap[leftX, curY])) return tilemap[leftX, curY];
+                    
+                    //right edge
+                    if (IsInBounds(rightX, curY, rows, columns) && condition(tilemap[rightX, curY])) return tilemap[rightX, curY];
+                }
+
+                radius++;
+            }
+        }
+
+        private static bool IsInBounds(int x, int y, int rows, int columns)
+        {
+            return x >= 0 && x < rows && y >= 0 && y < columns;
+        }
+        
         public static int2 WorldToArrayPosition(int2 originPosition, int2 worldPosition)
         {
             return new int2(-originPosition.x + worldPosition.x, -originPosition.y + worldPosition.y);

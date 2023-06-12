@@ -13,8 +13,4 @@ public class InteractionInputFocus : Focus_SO<BaseInteractionInput>
         
         Focus.OnInteractionInput(context);
     }
-
-    public bool ContainsFocus() => Focus != null;
-
-    public void Restore() => Focus = null;
 }

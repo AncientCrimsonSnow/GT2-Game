@@ -37,7 +37,13 @@ namespace Features.TileSystem.TileSystem
 
             return TileHelper.GetTileKernelAt(_tileMap, arrayPosition, kernelSize);
         }
-        
+
+        public Tile SearchPlaceableTile(int2 worldPosition, Func<Tile, bool> condition)
+        {
+            var arrayPosition = TileHelper.WorldToArrayPosition(_mapOrigin, worldPosition);
+            return TileHelper.FindClosestCell(_tileMap, arrayPosition, condition);
+        }
+
         private void Setup()
         {
             if (_isInitialized) return;

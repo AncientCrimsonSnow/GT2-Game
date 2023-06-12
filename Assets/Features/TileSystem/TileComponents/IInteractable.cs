@@ -10,5 +10,7 @@ namespace Features.TileSystem.TileComponents
         /// <param name="interactor"></param>
         /// <returns>Whether the interaction was successful or not</returns>
         public bool TryInteract(GameObject interactor);
+
+        public bool TryCastMagic(GameObject caster);
     }
 }

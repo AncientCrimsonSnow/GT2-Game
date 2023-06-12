@@ -7,15 +7,15 @@ namespace Features.TileSystem.TileComponents
 {
     public class UnstackableItemTileInteractable : ItemTileInteractable
     {
-        public UnstackableItemTileInteractable(Tile tile, bool isMovable, Item itemType, GameObject useThisGameObject = null) : base(tile, isMovable)
+        public UnstackableItemTileInteractable(Tile tile, bool isMovable, BaseItem baseItemType, GameObject useThisGameObject = null) : base(tile, isMovable)
         {
             if (useThisGameObject)
             {
-                Tile.ItemContainer.InitializeItem(itemType, useThisGameObject);
+                Tile.ItemContainer.InitializeItem(baseItemType, useThisGameObject);
             }
             else
             {
-                Tile.ItemContainer.InitializeItem(itemType);
+                Tile.ItemContainer.InitializeItem(baseItemType);
             }
         }
 
@@ -33,14 +33,18 @@ namespace Features.TileSystem.TileComponents
                 return false;
             }
 
-            if (Tile.ContainsTileInteractableOfType<EmptyItemTileInteractable>() || !Tile.ItemContainer.CanDestroyItem(1))
-            {
-                Debug.LogError("Either, the UnstackableItemTileComponent doesn't have an Item, even though it should " +
-                               "or something with destroying of the current TileContainer failed!");
-                return false;
-            }
+            if (!Tile.ItemContainer.CanDestroyItem(1)) return false;
 
-            heldItemBehaviour.PickupItem(Tile.ItemContainer.ContainedItem);
+            heldItemBehaviour.PickupItem(Tile.ItemContainer.ContainedBaseItem);
+            Tile.ExchangeFirstTileInteractableOfType<ItemTileInteractable>(new EmptyItemTileInteractable(Tile));
+            return true;
+        }
+
+        public override bool TryCastMagic(GameObject caster)
+        {
+            if (!Tile.ItemContainer.CanDestroyItem(1)) return false;
+            if (!Tile.ItemContainer.ContainedBaseItem.TryCastMagic(caster)) return false;
+            
             Tile.ExchangeFirstTileInteractableOfType<ItemTileInteractable>(new EmptyItemTileInteractable(Tile));
             return true;
         }

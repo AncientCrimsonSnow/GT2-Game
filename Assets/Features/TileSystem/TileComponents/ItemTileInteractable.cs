@@ -15,6 +15,8 @@ namespace Features.TileSystem.TileComponents
         }
         
         public abstract bool TryInteract(GameObject interactor);
+        
+        public abstract bool TryCastMagic(GameObject caster);
 
         public bool IsMovable()
         {

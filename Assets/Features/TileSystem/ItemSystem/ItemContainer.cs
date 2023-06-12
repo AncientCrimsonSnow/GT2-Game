@@ -5,7 +5,7 @@ namespace Features.TileSystem.ItemSystem
 {
     public class ItemContainer
     {
-        public Item ContainedItem { get; private set; }
+        public BaseItem ContainedBaseItem { get; private set; }
         
         private readonly Tile _tile;
         
@@ -21,35 +21,44 @@ namespace Features.TileSystem.ItemSystem
         
         public bool ContainsItem()
         {
-            return _instantiatedGameObject != null && ContainedItem != null;
+            return _instantiatedGameObject != null && ContainedBaseItem != null;
         }
 
-        public void InitializeItem(Item newItem, GameObject instantiatedObject, int maxContainedItemCount = 1, int itemCount = 1)
+        public void InitializeItem(BaseItem newBaseItem, GameObject instantiatedObject, int maxContainedItemCount = 1, int itemCount = 1)
         {
             if (ContainsItem()) return;
 
             _itemCount = itemCount;
             _maxContainedItemCount = maxContainedItemCount;
-            ContainedItem = newItem;
+            ContainedBaseItem = newBaseItem;
             _instantiatedGameObject = instantiatedObject;
         }
 
-        public void InitializeItem(Item newItem, int maxItemCount = 1, int itemCount = 1)
+        public void InitializeItem(BaseItem newBaseItem, int maxItemCount = 1, int itemCount = 1)
         {
             if (ContainsItem()) return;
 
             _itemCount = itemCount;
             _maxContainedItemCount = maxItemCount;
-            ContainedItem = newItem;
-            _instantiatedGameObject = TileHelper.InstantiateOnTile(_tile, newItem.prefab, Quaternion.identity);
+            ContainedBaseItem = newBaseItem;
+            _instantiatedGameObject = TileHelper.InstantiateOnTile(_tile, newBaseItem.prefab, Quaternion.identity);
         }
         
         public bool CanDestroyItem(int maxItemDestructionCount)
         {
-            if (_itemCount <= maxItemDestructionCount && _registratorStack <= 0) return true;
-            
-            Debug.LogWarning($"You can only destroy the Item, when there are at most {maxItemDestructionCount} items on it! There are/is currently {_itemCount}");
-            return false;
+            if (_itemCount > maxItemDestructionCount)
+            {
+                Debug.LogWarning($"You can only destroy the Item, when there are at most {maxItemDestructionCount} items on it! There are/is currently {_itemCount}");
+                return false;
+            }
+
+            if (_registratorStack > 0)
+            {
+                Debug.LogWarning($"There are still registrators linked with this item!");
+                return false;
+            }
+
+            return true;
         }
 
         public void DestroyItem(int maxItemDestructionCount)
@@ -57,21 +66,21 @@ namespace Features.TileSystem.ItemSystem
             if (!CanDestroyItem(maxItemDestructionCount)) return;
             
             Object.Destroy(_instantiatedGameObject);
-            ContainedItem = null;
+            ContainedBaseItem = null;
             _maxContainedItemCount = 0;
         }
 
-        public void AddItemCount(Item item, int change)
+        public void AddItemCount(BaseItem baseItem, int change)
         {
-            if (CanAddItemCount(item, change))
+            if (CanAddItemCount(baseItem, change))
             {
                 _itemCount += change;
             }
         }
 
-        public bool CanAddItemCount(Item item, int change)
+        public bool CanAddItemCount(BaseItem baseItem, int change)
         {
-            if (ContainedItem != item)
+            if (ContainedBaseItem != baseItem)
             {
                 Debug.LogWarning("You cant add a different item to this ItemContainer!");
                 return false;

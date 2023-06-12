@@ -25,10 +25,15 @@ namespace Features.TileSystem.TileComponents
                 return false;
             }
 
-            var heldItem = heldItemBehaviour.CarriedItem;
+            var heldItem = heldItemBehaviour.CarriedBaseItem;
             Tile.ExchangeFirstTileInteractableOfType<ItemTileInteractable>(new UnstackableItemTileInteractable(Tile, IsMovable(), heldItem));
             heldItemBehaviour.DropItem();
             return true;
+        }
+
+        public override bool TryCastMagic(GameObject caster)
+        {
+            return false;
         }
     }
 }

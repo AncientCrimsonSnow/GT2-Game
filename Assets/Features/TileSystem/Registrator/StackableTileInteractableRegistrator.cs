@@ -1,13 +1,14 @@
 ﻿using Features.TileSystem.ItemSystem;
 using Features.TileSystem.TileComponents;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Features.TileSystem.Registrator
 {
     public class StackableTileInteractableRegistrator : TileInteractableRegistrator
     {
         [SerializeField] private bool isMovable;
-        [SerializeField] private Item itemType;
+        [FormerlySerializedAs("itemType")] [SerializeField] private BaseItem baseItemType;
         [SerializeField] private bool useThisGameObject;
         [SerializeField] private int containedItemAmountOnSpawn;
         [SerializeField] private int maxContainedItemCount;
@@ -17,7 +18,7 @@ namespace Features.TileSystem.Registrator
         protected override bool CanRegisterTileInteractable()
         {
             _canBeUnregistered = Tile.ContainsTileInteractableOfType<EmptyItemTileInteractable>() || 
-                                 Tile.ContainsTileInteractableOfType<StackableItemTileInteractable>() && Tile.ItemContainer.ContainedItem == itemType;
+                                 Tile.ContainsTileInteractableOfType<StackableItemTileInteractable>() && Tile.ItemContainer.ContainedBaseItem == baseItemType;
             return _canBeUnregistered;
         }
 
@@ -28,8 +29,8 @@ namespace Features.TileSystem.Registrator
             if (!Tile.ContainsTileInteractableOfType<EmptyItemTileInteractable>()) return;
 
             ItemTileInteractable tileComponent = useThisGameObject ?
-                new StackableItemTileInteractable(Tile, isMovable, itemType, maxContainedItemCount, containedItemAmountOnSpawn, gameObject) 
-                : new StackableItemTileInteractable(Tile, isMovable, itemType, maxContainedItemCount, containedItemAmountOnSpawn);
+                new StackableItemTileInteractable(Tile, isMovable, baseItemType, maxContainedItemCount, containedItemAmountOnSpawn, gameObject) 
+                : new StackableItemTileInteractable(Tile, isMovable, baseItemType, maxContainedItemCount, containedItemAmountOnSpawn);
             Tile.ExchangeFirstTileInteractableOfType(tileComponent);
         }
 

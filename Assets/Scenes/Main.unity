@@ -168,8 +168,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tileManager: {fileID: 11400000, guid: 250008992667b5e458c740568aa31544, type: 2}
-  isMovable: 0
-  itemType: {fileID: 11400000, guid: 2ee2fe4d488e4f44daf340f50291baf3, type: 2}
+  isMovable: 1
+  baseItemType: {fileID: 11400000, guid: 2856e0fa757df554fa2e03cf94cc6e62, type: 2}
   useThisGameObject: 0
 --- !u!1 &320342692
 GameObject:
@@ -232,8 +232,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tileManager: {fileID: 11400000, guid: 250008992667b5e458c740568aa31544, type: 2}
-  isMovable: 0
-  itemType: {fileID: 11400000, guid: 1b4ad7d3054f0db499c931667a74671d, type: 2}
+  isMovable: 1
+  baseItemType: {fileID: 11400000, guid: 1b4ad7d3054f0db499c931667a74671d, type: 2}
   useThisGameObject: 1
   containedItemAmountOnSpawn: 5
   maxContainedItemCount: 5
@@ -349,7 +349,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tileManager: {fileID: 11400000, guid: 250008992667b5e458c740568aa31544, type: 2}
   isMovable: 1
-  itemLoot: {fileID: 11400000, guid: 1b4ad7d3054f0db499c931667a74671d, type: 2}
+  baseItemLoot: {fileID: 11400000, guid: 1b4ad7d3054f0db499c931667a74671d, type: 2}
   pointerRegistrator: {fileID: 1618719011}
   craftAmount: 3
 --- !u!23 &328479687
@@ -493,8 +493,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tileManager: {fileID: 11400000, guid: 250008992667b5e458c740568aa31544, type: 2}
-  isMovable: 0
-  itemType: {fileID: 11400000, guid: 1b4ad7d3054f0db499c931667a74671d, type: 2}
+  isMovable: 1
+  baseItemType: {fileID: 11400000, guid: 1b4ad7d3054f0db499c931667a74671d, type: 2}
   useThisGameObject: 1
   containedItemAmountOnSpawn: 2
   maxContainedItemCount: 5
@@ -625,7 +625,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tileManager: {fileID: 11400000, guid: 250008992667b5e458c740568aa31544, type: 2}
   isMovable: 1
-  itemLoot: {fileID: 11400000, guid: 1b4ad7d3054f0db499c931667a74671d, type: 2}
+  baseItemLoot: {fileID: 11400000, guid: 1b4ad7d3054f0db499c931667a74671d, type: 2}
   pointerRegistrator: {fileID: 1618719011}
   craftAmount: 3
 --- !u!23 &623329088
@@ -1172,7 +1172,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tileManager: {fileID: 11400000, guid: 250008992667b5e458c740568aa31544, type: 2}
   isMovable: 1
-  itemLoot: {fileID: 11400000, guid: 2ee2fe4d488e4f44daf340f50291baf3, type: 2}
+  baseItemLoot: {fileID: 11400000, guid: 2ee2fe4d488e4f44daf340f50291baf3, type: 2}
   pointerRegistrator: {fileID: 320342695}
   craftAmount: 2
 --- !u!23 &1017263863
@@ -1433,7 +1433,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tileManager: {fileID: 11400000, guid: 250008992667b5e458c740568aa31544, type: 2}
   isMovable: 1
-  itemLoot: {fileID: 11400000, guid: 1b4ad7d3054f0db499c931667a74671d, type: 2}
+  baseItemLoot: {fileID: 11400000, guid: 1b4ad7d3054f0db499c931667a74671d, type: 2}
   pointerRegistrator: {fileID: 1618719011}
   craftAmount: 3
 --- !u!23 &1369819346
@@ -1533,7 +1533,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tileManager: {fileID: 11400000, guid: 250008992667b5e458c740568aa31544, type: 2}
   isMovable: 1
-  itemLoot: {fileID: 11400000, guid: 2ee2fe4d488e4f44daf340f50291baf3, type: 2}
+  baseItemLoot: {fileID: 11400000, guid: 2ee2fe4d488e4f44daf340f50291baf3, type: 2}
   pointerRegistrator: {fileID: 396688664}
   craftAmount: 2
 --- !u!23 &1399483296
@@ -1673,7 +1673,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tileManager: {fileID: 11400000, guid: 250008992667b5e458c740568aa31544, type: 2}
   isMovable: 0
-  itemType: {fileID: 11400000, guid: 1b4ad7d3054f0db499c931667a74671d, type: 2}
+  baseItemType: {fileID: 11400000, guid: 1b4ad7d3054f0db499c931667a74671d, type: 2}
   useThisGameObject: 1
   containedItemAmountOnSpawn: 10
   maxContainedItemCount: 10
@@ -1819,12 +1819,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e25cce8112c516248af118bc6e9db9a7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  virtualCamera: {fileID: 912882090}
-  movementInputFocus: {fileID: 11400000, guid: eec3e3054ef80274ab87f9dee2a5d97a, type: 2}
-  interactionInputFocus: {fileID: 11400000, guid: 2336b63a164002e4884c139ac9deda41,
+  breakAutoTicksEntry: 0
+  tileManager: {fileID: 11400000, guid: 250008992667b5e458c740568aa31544, type: 2}
+  skeletonFocus: {fileID: 11400000, guid: c331b643c11d29344b88a3e861edf8f9, type: 2}
+  cinemachineVirtualCameraFocus: {fileID: 11400000, guid: fec216cec1f7775458570390ba57e2cc,
     type: 2}
-  magicInstantiationPrefab: {fileID: 3783118011973604103, guid: 3a76c15e73c6d0e409f62d605fb6103d,
-    type: 3}
+  virtualCamera: {fileID: 912882090}
 --- !u!114 &1783447519
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2018,7 +2018,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tileManager: {fileID: 11400000, guid: 250008992667b5e458c740568aa31544, type: 2}
   isMovable: 1
-  itemLoot: {fileID: 11400000, guid: 1b4ad7d3054f0db499c931667a74671d, type: 2}
+  baseItemLoot: {fileID: 11400000, guid: 1b4ad7d3054f0db499c931667a74671d, type: 2}
   pointerRegistrator: {fileID: 1618719011}
   craftAmount: 3
 --- !u!23 &1889950399
@@ -2119,8 +2119,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tileManager: {fileID: 11400000, guid: 250008992667b5e458c740568aa31544, type: 2}
-  isMovable: 0
-  itemType: {fileID: 11400000, guid: 2ee2fe4d488e4f44daf340f50291baf3, type: 2}
+  isMovable: 1
+  baseItemType: {fileID: 11400000, guid: 2ee2fe4d488e4f44daf340f50291baf3, type: 2}
   useThisGameObject: 1
 --- !u!135 &2004247356
 SphereCollider:
@@ -2130,7 +2130,7 @@ SphereCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2004247353}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.5

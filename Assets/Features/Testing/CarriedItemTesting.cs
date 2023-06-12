@@ -1,19 +1,20 @@
 ﻿using Features.TileSystem.CharacterBehaviours;
 using Features.TileSystem.ItemSystem;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Features.Testing
 {
     public class CarriedItemTesting : CarriedItemBaseBehaviour
     {
-        [SerializeField] private Item heldItemAtAwake;
+        [FormerlySerializedAs("heldItemAtAwake")] [SerializeField] private BaseItem heldBaseItemAtAwake;
         [SerializeField] private bool takeItemAtAwake;
         
         private void Awake()
         {
             if (takeItemAtAwake)
             {
-                CarriedItem = heldItemAtAwake;
+                CarriedBaseItem = heldBaseItemAtAwake;
             }
         }
         
