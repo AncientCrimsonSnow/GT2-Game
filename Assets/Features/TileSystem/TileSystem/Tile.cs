@@ -9,7 +9,6 @@ using UnityEngine;
 namespace Features.TileSystem.TileSystem
 {
     // TODO: implement a way, that buildings are able to do stuff by themself: e.g. a consumer building wants to consume items on tiles after all the other TileComponents interactions
-    //TODO: implement blocked tile
     public class Tile : IInteractable, ITileComponentRegistration, IMovable, IGridPosition
     {
         public int2 WorldPosition { get; }

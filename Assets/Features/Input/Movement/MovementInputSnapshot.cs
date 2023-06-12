@@ -38,7 +38,7 @@ public class MovementInputSnapshot : IInputSnapshot
         else
         {
             //TODO: solve differently (to much singleton dependencies all over the place)
-            ReplayManager.Instance.StopReplay(_transform.gameObject);
+            ReplayManager.Instance.StopReplayable(_transform.gameObject);
         }
     }
     

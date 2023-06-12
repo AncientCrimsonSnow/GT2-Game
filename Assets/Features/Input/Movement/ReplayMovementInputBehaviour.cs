@@ -45,14 +45,13 @@ public class ReplayMovementInputBehaviour : BaseMovementInput, IReplayOriginator
 
     private void OnTriggerEnter(Collider other)
     {
-        if (editorLayer == other.gameObject.layer)
-        {
-            ReplayManager.Instance.StopReplay(gameObject);
-        }
+        if (editorLayer != other.gameObject.layer) return;
+        
+        ReplayManager.Instance.StopReplayable(gameObject);
     }
 
     private void OnDestroy()
     {
-        DOTween.Kill(gameObject);
+        DOTween.Kill(transform);
     }
 }

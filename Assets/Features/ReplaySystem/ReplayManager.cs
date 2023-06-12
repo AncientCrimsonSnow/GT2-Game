@@ -130,20 +130,12 @@ namespace NewReplaySystem
             CurrentReplayController.StartReplay(isLoop);
         }
 
-        public void StopReplay(GameObject originatorGameObject)
+        public void StopReplayable(GameObject originatorGameObject)
         {
             foreach (var replayController in _replayControllerList
                 .Where(replayController => replayController.OriginatorGameObject == originatorGameObject))
             {
-                if (replayController.IsRecording)
-                {
-                    Debug.LogWarning("You can't stop a replay during a record!");
-                }
-                else
-                {
-                    replayController.StopReplay();
-                }
-
+                replayController.StopReplay();
                 return;
             }
 

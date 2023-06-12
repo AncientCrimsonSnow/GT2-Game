@@ -6,9 +6,9 @@ using NewReplaySystem;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-//TODO: if move of skeleton ain't valid -> destroy him
 public class MagicInputBehaviour : BaseMagicInput
 {
+    [SerializeField] private bool breakAutoTicksEntry;
     [SerializeField] private CinemachineVirtualCamera virtualCamera;
     [SerializeField] private MovementInputFocus movementInputFocus;
     [SerializeField] private InteractionInputFocus interactionInputFocus;
@@ -18,10 +18,16 @@ public class MagicInputBehaviour : BaseMagicInput
     private GameObject _newestInstantiatedSkeleton;
     private BaseMovementInput _entryMovementInput;
     private Transform _entryCameraFollow;
+    private bool _breakAutoTick;
+
+    private void Awake()
+    {
+        _breakAutoTick = breakAutoTicksEntry;
+    }
 
     private void Update()
     {
-        if (_newestInstantiatedSkeleton != null) return;
+        if (_newestInstantiatedSkeleton != null || _breakAutoTick) return;
         
         ReplayManager.Instance.Tick();
     }
@@ -34,17 +40,21 @@ public class MagicInputBehaviour : BaseMagicInput
         }
         else
         {
+            SetLoop();
             ResetFocus();
         }
     }
     
     public override void OnInterruptMagic(InputAction.CallbackContext context)
     {
-        if (_newestInstantiatedSkeleton == null) return;
-        
-        movementInputFocus.SetFocus(_entryMovementInput);
-        interactionInputFocus.Restore();
-        Destroy(_newestInstantiatedSkeleton);
+        if (_newestInstantiatedSkeleton == null)
+        {
+            _breakAutoTick = !_breakAutoTick;
+        }
+        else
+        {
+            ReplayManager.Instance.StopReplayable(_newestInstantiatedSkeleton);
+        }
     }
 
     private void FocusSkeleton()
@@ -79,12 +89,15 @@ public class MagicInputBehaviour : BaseMagicInput
             interactionInputFocus.SetFocus(baseInteractionInput);
         }
     }
-
-    private void ResetFocus()
+    
+    private void SetLoop()
     {
         var isLoop = TileHelper.TransformPositionToVector3Int(_newestInstantiatedSkeleton.transform) == TileHelper.TransformPositionToVector3Int(transform);
         ReplayManager.Instance.StartReplay(_newestInstantiatedSkeleton, isLoop);
-            
+    }
+
+    private void ResetFocus()
+    {
         movementInputFocus.SetFocus(_entryMovementInput);
         interactionInputFocus.Restore();
 
