@@ -1,59 +1,62 @@
 using DG.Tweening;
-using Features.TileSystem.TileSystem;
+using Features.TileSystem.Scripts;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class SpeedMovementInputBehaviour : BaseMovementInput
+namespace Features.Character.Scripts.Movement
 {
-    [SerializeField] private Ease easeType;
-    [SerializeField] private float movementSpeed;
-    [SerializeField] private Animator animator;
+    public class SpeedMovementInputBehaviour : BaseMovementInput
+    {
+        [SerializeField] private Ease easeType;
+        [SerializeField] private float movementSpeed;
+        [SerializeField] private Animator animator;
     
-    private Vector2 _storedInputVector;
+        private Vector2 _storedInputVector;
     
-    //TODO: duplicate
-    private static readonly int MoveX = Animator.StringToHash("MoveX");
-    private static readonly int MoveZ = Animator.StringToHash("MoveZ");
-    private static readonly int LastMoveX = Animator.StringToHash("LastMoveX");
-    private static readonly int LastMoveZ = Animator.StringToHash("LastMoveZ");
+        //TODO: duplicate
+        private static readonly int MoveX = Animator.StringToHash("MoveX");
+        private static readonly int MoveZ = Animator.StringToHash("MoveZ");
+        private static readonly int LastMoveX = Animator.StringToHash("LastMoveX");
+        private static readonly int LastMoveZ = Animator.StringToHash("LastMoveZ");
 
 
-    private void Awake()
-    {
-        animator = GetComponent<Animator>();
-    }
+        private void Awake()
+        {
+            animator = GetComponent<Animator>();
+        }
 
-    public override void OnMovementInput(InputAction.CallbackContext context)
-    {
-        _storedInputVector = context.ReadValue<Vector2>();
-    }
+        public override void OnMovementInput(InputAction.CallbackContext context)
+        {
+            _storedInputVector = context.ReadValue<Vector2>();
+        }
 
-    private void Update()
-    {
-        if (DOTween.IsTweening(transform) || _storedInputVector == Vector2.zero) return;
+        private void Update()
+        {
+            if (DOTween.IsTweening(transform) || _storedInputVector == Vector2.zero) return;
 
-        TweenMove();
-        //SetMovementAnimation();
-    }
+            TweenMove();
+            //SetMovementAnimation();
+        }
     
-    private void TweenMove()
-    {
-        var inputMovement = new Vector3(_storedInputVector.x, 0, _storedInputVector.y);
-        var position = TileHelper.TransformPositionToVector3Int(transform);
-        var distance = Vector3.Distance(position, position + inputMovement);
-        var movementTime = distance / movementSpeed;
-        transform.DOMove(position + inputMovement, movementTime).SetEase(easeType);
-    }
+        private void TweenMove()
+        {
+            var inputMovement = new Vector3(_storedInputVector.x, 0, _storedInputVector.y);
+            var position = TileHelper.TransformPositionToVector3Int(transform);
+            var distance = Vector3.Distance(position, position + inputMovement);
+            var movementTime = distance / movementSpeed;
+            transform.DOMove(position + inputMovement, movementTime).SetEase(easeType);
+        }
     
-    private void SetMovementAnimation()
-    {
-        //Set animation to movement
-        animator.SetFloat(MoveX, _storedInputVector.x);
-        animator.SetFloat(MoveZ, _storedInputVector.y);
+        private void SetMovementAnimation()
+        {
+            //Set animation to movement
+            animator.SetFloat(MoveX, _storedInputVector.x);
+            animator.SetFloat(MoveZ, _storedInputVector.y);
 
-        //Set the correct idle animation
-        if (_storedInputVector is { x: 0, y: 0 }) return;
-        animator.SetFloat(LastMoveX, _storedInputVector.x);
-        animator.SetFloat(LastMoveZ, _storedInputVector.y);
+            //Set the correct idle animation
+            if (_storedInputVector is { x: 0, y: 0 }) return;
+            animator.SetFloat(LastMoveX, _storedInputVector.x);
+            animator.SetFloat(LastMoveZ, _storedInputVector.y);
+        }
     }
 }

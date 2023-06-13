@@ -1,16 +1,19 @@
-﻿using Features;
+﻿using Uilities.Focus;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-[CreateAssetMenu(fileName = "InteractionInputFocus", menuName = "Focus/Input/Interaction")]
-public class InteractionInputFocus : RestorableFocus_SO<BaseInteractionInput>
+namespace Features.Character.Scripts.Interaction
 {
-    public void OnInteractionInput(InputAction.CallbackContext context)
+    [CreateAssetMenu(fileName = "InteractionInputFocus", menuName = "Focus/Input/Interaction")]
+    public class InteractionInputFocus : RestorableFocus_SO<BaseInteractionInput>
     {
-        if (!context.started) return;
+        public void OnInteractionInput(InputAction.CallbackContext context)
+        {
+            if (!context.started) return;
         
-        if (!ContainsFocus()) return;
+            if (!ContainsFocus()) return;
         
-        Focus.OnInteractionInput(context);
+            Focus.OnInteractionInput(context);
+        }
     }
 }

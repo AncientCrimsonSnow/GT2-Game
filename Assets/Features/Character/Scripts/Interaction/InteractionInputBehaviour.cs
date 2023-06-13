@@ -1,24 +1,28 @@
 using System;
-using Features.TileSystem.TileSystem;
-using NewReplaySystem;
+using Features.ReplaySystem;
+using Features.ReplaySystem.Record;
+using Features.TileSystem.Scripts;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class InteractionInputBehaviour : BaseInteractionInput, IReplayOriginator
+namespace Features.Character.Scripts.Interaction
 {
-    public Action<IInputSnapshot> PushNewTick { get; set; }
+    public class InteractionInputBehaviour : BaseInteractionInput, IReplayOriginator
+    {
+        public Action<IInputSnapshot> PushNewTick { get; set; }
     
-    [SerializeField] private TileManager tileManager;
+        [SerializeField] private TileManager tileManager;
 
-    private void Start()
-    {
-        ReplayManager.Instance.RegisterOriginator(gameObject, this);
-    }
+        private void Start()
+        {
+            ReplayManager.Instance.RegisterOriginator(gameObject, this);
+        }
 
-    public override void OnInteractionInput(InputAction.CallbackContext context)
-    {
-        if (ReplayManager.Instance.IsTickPerformed) return;
+        public override void OnInteractionInput(InputAction.CallbackContext context)
+        {
+            if (ReplayManager.Instance.IsTickPerformed) return;
         
-        PushNewTick.Invoke(new InteractionInputSnapshot(gameObject, tileManager));
+            PushNewTick.Invoke(new InteractionInputSnapshot(gameObject, tileManager));
+        }
     }
 }

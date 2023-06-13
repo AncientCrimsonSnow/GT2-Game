@@ -1,9 +1,8 @@
-﻿using Features.TileSystem.ItemSystem;
-using Features.TileSystem.TileComponents;
+﻿using Features.Items.Scripts;
 using UnityEngine;
 using UnityEngine.Serialization;
 
-namespace Features.TileSystem.Registrator
+namespace Features.TileSystem.Scripts.Registrator
 {
     public class StackableBaseTileInteractableRegistrator : BaseTileInteractableRegistrator
     {

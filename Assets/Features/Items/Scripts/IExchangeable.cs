@@ -1,4 +1,4 @@
-﻿namespace Features.TileSystem
+﻿namespace Features.Items.Scripts
 {
     public interface IExchangeable<in T>
     {

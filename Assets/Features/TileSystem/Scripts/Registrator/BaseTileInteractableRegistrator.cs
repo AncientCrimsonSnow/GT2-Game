@@ -1,9 +1,7 @@
-using Features.TileSystem.TileComponents;
-using Features.TileSystem.TileSystem;
 using Unity.Mathematics;
 using UnityEngine;
 
-namespace Features.TileSystem.Registrator
+namespace Features.TileSystem.Scripts.Registrator
 {
     /// <summary>
     /// This script automatically registers itself to the TileManager dependant on the position at Start.

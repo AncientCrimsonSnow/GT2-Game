@@ -1,9 +1,7 @@
-﻿using Features.TileSystem.CharacterBehaviours;
-using Features.TileSystem.ItemSystem;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.Serialization;
 
-namespace Features.Testing
+namespace Features.Items.Scripts
 {
     public class ItemCarryBehaviour : BaseItemCarryBehaviour
     {

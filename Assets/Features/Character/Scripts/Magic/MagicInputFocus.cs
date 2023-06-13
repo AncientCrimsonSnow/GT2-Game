@@ -1,22 +1,24 @@
-﻿using Features;
-using Features.TileSystem.CharacterBehaviours;
+﻿using Uilities.Focus;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-[CreateAssetMenu(fileName = "MagicInputFocus", menuName = "Focus/Input/Magic")]
-public class MagicInputFocus : RestorableFocus_SO<BaseMagicInput>
+namespace Features.Character.Scripts.Magic
 {
-    public void OnMagicInput(InputAction.CallbackContext context)
+    [CreateAssetMenu(fileName = "MagicInputFocus", menuName = "Focus/Input/Magic")]
+    public class MagicInputFocus : RestorableFocus_SO<BaseMagicInput>
     {
-        if (!context.started) return;
+        public void OnMagicInput(InputAction.CallbackContext context)
+        {
+            if (!context.started) return;
         
-        Focus.OnMagicInput(context);
-    }
+            Focus.OnMagicInput(context);
+        }
 
-    public void OnInterruptMagic(InputAction.CallbackContext context)
-    {
-        if (!context.started) return;
+        public void OnInterruptMagic(InputAction.CallbackContext context)
+        {
+            if (!context.started) return;
         
-        Focus.OnInterruptMagic(context);
+            Focus.OnInterruptMagic(context);
+        }
     }
 }

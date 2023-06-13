@@ -1,6 +1,9 @@
-using NewReplaySystem;
+using Features.ReplaySystem.Record;
 
-public class EmptySnapshot : IInputSnapshot
+namespace Features.Character.Scripts
 {
-    public void Tick(float tickDurationInSeconds) { }
+    public class EmptySnapshot : IInputSnapshot
+    {
+        public void Tick(float tickDurationInSeconds) { }
+    }
 }

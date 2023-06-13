@@ -1,7 +1,7 @@
-﻿using Features.TileSystem.TileSystem;
+﻿using Features.TileSystem.Scripts;
 using UnityEngine;
 
-namespace Features.TileSystem.ItemSystem
+namespace Features.Items.Scripts
 {
     public class ItemContainer
     {

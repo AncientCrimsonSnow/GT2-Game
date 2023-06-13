@@ -1,9 +1,10 @@
-﻿using System;
-using NewReplaySystem;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.InputSystem;
 
-public abstract class BaseMovementInput : MonoBehaviour
+namespace Features.Character.Scripts.Movement
 {
-    public abstract void OnMovementInput(InputAction.CallbackContext context);
+    public abstract class BaseMovementInput : MonoBehaviour
+    {
+        public abstract void OnMovementInput(InputAction.CallbackContext context);
+    }
 }

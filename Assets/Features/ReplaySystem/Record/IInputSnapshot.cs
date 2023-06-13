@@ -1,5 +1,5 @@
 
-namespace NewReplaySystem
+namespace Features.ReplaySystem.Record
 {
     public interface IInputSnapshot
     {

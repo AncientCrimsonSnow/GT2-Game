@@ -1,8 +1,7 @@
-﻿using System;
-using Unity.VisualScripting;
+﻿using Unity.VisualScripting;
 using UnityEngine;
 
-namespace Features
+namespace Uilities.Focus
 {
     public abstract class Focus_SO<T> : ScriptableObject
     {

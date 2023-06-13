@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-namespace NewReplaySystem
+namespace Features.ReplaySystem
 {
     public class ReplayManager : MonoBehaviour
     {

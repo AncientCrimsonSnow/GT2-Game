@@ -3,7 +3,7 @@ using Unity.Mathematics;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
-namespace Features.TileSystem.TileSystem
+namespace Features.TileSystem.Scripts
 {
     public static class TileHelper
     {

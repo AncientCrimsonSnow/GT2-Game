@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Features.TileSystem.ItemSystem
+namespace Features.Items.Scripts
 {
     [CreateAssetMenu]
     public class BaseItem_SO : ScriptableObject

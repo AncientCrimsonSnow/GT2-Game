@@ -1,7 +1,6 @@
-﻿using Features.TileSystem.ItemSystem;
-using UnityEngine;
+﻿using UnityEngine;
 
-namespace Features.TileSystem.CharacterBehaviours
+namespace Features.Items.Scripts
 {
     public abstract class BaseItemCarryBehaviour : MonoBehaviour
     {

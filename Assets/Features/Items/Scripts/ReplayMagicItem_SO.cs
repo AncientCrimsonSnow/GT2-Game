@@ -1,11 +1,13 @@
-using Features.Input;
-using Features.TileSystem.CharacterBehaviours;
-using Features.TileSystem.TileComponents;
-using Features.TileSystem.TileSystem;
-using NewReplaySystem;
+using Features.Camera;
+using Features.Character.Scripts;
+using Features.Character.Scripts.Interaction;
+using Features.Character.Scripts.Magic;
+using Features.Character.Scripts.Movement;
+using Features.ReplaySystem;
+using Features.TileSystem.Scripts;
 using UnityEngine;
 
-namespace Features.TileSystem.ItemSystem
+namespace Features.Items.Scripts
 {
     [CreateAssetMenu]
     public class ReplayMagicItem_SO : BaseItem_SO

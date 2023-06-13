@@ -1,7 +1,10 @@
 ﻿using UnityEngine;
 using UnityEngine.InputSystem;
 
-public abstract class BaseInteractionInput : MonoBehaviour
+namespace Features.Character.Scripts.Interaction
 {
-    public abstract void OnInteractionInput(InputAction.CallbackContext context);
+    public abstract class BaseInteractionInput : MonoBehaviour
+    {
+        public abstract void OnInteractionInput(InputAction.CallbackContext context);
+    }
 }

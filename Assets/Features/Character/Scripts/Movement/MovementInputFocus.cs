@@ -1,11 +1,15 @@
+using Uilities.Focus;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-[CreateAssetMenu(fileName = "MovementInputFocus", menuName = "Focus/Input/Movement")]
-public class MovementInputFocus : RestorableFocus_SO<BaseMovementInput>
+namespace Features.Character.Scripts.Movement
 {
-    public void OnMovementInput(InputAction.CallbackContext context)
+    [CreateAssetMenu(fileName = "MovementInputFocus", menuName = "Focus/Input/Movement")]
+    public class MovementInputFocus : RestorableFocus_SO<BaseMovementInput>
     {
-        Focus.OnMovementInput(context);
+        public void OnMovementInput(InputAction.CallbackContext context)
+        {
+            Focus.OnMovementInput(context);
+        }
     }
 }

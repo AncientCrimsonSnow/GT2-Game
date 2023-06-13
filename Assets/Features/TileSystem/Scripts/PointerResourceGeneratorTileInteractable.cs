@@ -1,8 +1,7 @@
-﻿using Features.TileSystem.ItemSystem;
-using Features.TileSystem.TileSystem;
+﻿using Features.Items.Scripts;
 using UnityEngine;
 
-namespace Features.TileSystem.TileComponents
+namespace Features.TileSystem.Scripts
 {
     public class PointerResourceGeneratorTileInteractable : ITileInteractable
     {

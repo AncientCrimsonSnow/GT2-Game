@@ -1,14 +1,17 @@
 using Cinemachine;
 using UnityEngine;
 
-public class CinemachineVirtualCameraFocusRegistrator : MonoBehaviour
+namespace Features.Camera
 {
-    [SerializeField] private CinemachineVirtualCameraFocus cinemachineVirtualCameraFocus;
-    [SerializeField] private CinemachineVirtualCamera cinemachineVirtualCamera;
-
-    private void Awake()
+    public class CinemachineVirtualCameraFocusRegistrator : MonoBehaviour
     {
-        cinemachineVirtualCameraFocus.SetFocus(cinemachineVirtualCamera);
-        cinemachineVirtualCameraFocus.SetFollow(cinemachineVirtualCamera.Follow).SetCurrentFollowAsRestore();
+        [SerializeField] private CinemachineVirtualCameraFocus cinemachineVirtualCameraFocus;
+        [SerializeField] private CinemachineVirtualCamera cinemachineVirtualCamera;
+
+        private void Awake()
+        {
+            cinemachineVirtualCameraFocus.SetFocus(cinemachineVirtualCamera);
+            cinemachineVirtualCameraFocus.SetFollow(cinemachineVirtualCamera.Follow).SetCurrentFollowAsRestore();
+        }
     }
 }

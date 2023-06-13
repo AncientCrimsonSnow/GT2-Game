@@ -1,28 +1,31 @@
 using UnityEngine;
 
-public class MovementInputRegistrator : MonoBehaviour
+namespace Features.Character.Scripts.Movement
 {
-    [Header("Topic")]
-    [SerializeField] private MovementInputFocus movementInputFocus;
-    [SerializeField] private BaseMovementInput movementInputBehaviour;
-
-    [Header("RegistrationTime")] 
-    [SerializeField] private bool awake;
-    [SerializeField] private bool start;
-
-    private void Awake()
+    public class MovementInputRegistrator : MonoBehaviour
     {
-        if (awake)
+        [Header("Topic")]
+        [SerializeField] private MovementInputFocus movementInputFocus;
+        [SerializeField] private BaseMovementInput movementInputBehaviour;
+
+        [Header("RegistrationTime")] 
+        [SerializeField] private bool awake;
+        [SerializeField] private bool start;
+
+        private void Awake()
         {
-            movementInputFocus.SetFocus(movementInputBehaviour);
+            if (awake)
+            {
+                movementInputFocus.SetFocus(movementInputBehaviour);
+            }
         }
-    }
 
-    private void Start()
-    {
-        if (start)
+        private void Start()
         {
-            movementInputFocus.SetFocus(movementInputBehaviour);
+            if (start)
+            {
+                movementInputFocus.SetFocus(movementInputBehaviour);
+            }
         }
     }
 }

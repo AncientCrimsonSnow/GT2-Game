@@ -1,6 +1,4 @@
-﻿using Features.TileSystem.TileComponents;
-
-namespace Features.TileSystem.Registrator
+﻿namespace Features.TileSystem.Scripts.Registrator
 {
     public interface ITileComponentRegistration
     {

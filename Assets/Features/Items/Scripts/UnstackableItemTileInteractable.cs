@@ -1,9 +1,7 @@
-﻿using Features.TileSystem.CharacterBehaviours;
-using Features.TileSystem.ItemSystem;
-using Features.TileSystem.TileSystem;
+﻿using Features.TileSystem.Scripts;
 using UnityEngine;
 
-namespace Features.TileSystem.TileComponents
+namespace Features.Items.Scripts
 {
     public class UnstackableItemTileInteractable : ItemTileInteractable
     {

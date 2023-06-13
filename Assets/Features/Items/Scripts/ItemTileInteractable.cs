@@ -1,7 +1,7 @@
-﻿using Features.TileSystem.TileSystem;
+﻿using Features.TileSystem.Scripts;
 using UnityEngine;
 
-namespace Features.TileSystem.TileComponents
+namespace Features.Items.Scripts
 {
     public abstract class ItemTileInteractable : ITileInteractable, IExchangeable<ITileInteractable>
     {

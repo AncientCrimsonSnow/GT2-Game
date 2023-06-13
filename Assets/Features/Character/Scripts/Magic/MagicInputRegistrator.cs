@@ -1,29 +1,31 @@
-using Features.TileSystem.CharacterBehaviours;
 using UnityEngine;
 
-public class MagicInputRegistrator : MonoBehaviour
+namespace Features.Character.Scripts.Magic
 {
-    [Header("Topic")]
-    [SerializeField] private MagicInputFocus magicInputFocus;
-    [SerializeField] private BaseMagicInput magicInputBehaviour;
-
-    [Header("RegistrationTime")] 
-    [SerializeField] private bool awake;
-    [SerializeField] private bool start;
-
-    private void Awake()
+    public class MagicInputRegistrator : MonoBehaviour
     {
-        if (awake)
+        [Header("Topic")]
+        [SerializeField] private MagicInputFocus magicInputFocus;
+        [SerializeField] private BaseMagicInput magicInputBehaviour;
+
+        [Header("RegistrationTime")] 
+        [SerializeField] private bool awake;
+        [SerializeField] private bool start;
+
+        private void Awake()
         {
-            magicInputFocus.SetFocus(magicInputBehaviour);
+            if (awake)
+            {
+                magicInputFocus.SetFocus(magicInputBehaviour);
+            }
         }
-    }
 
-    private void Start()
-    {
-        if (start)
+        private void Start()
         {
-            magicInputFocus.SetFocus(magicInputBehaviour);
+            if (start)
+            {
+                magicInputFocus.SetFocus(magicInputBehaviour);
+            }
         }
     }
 }

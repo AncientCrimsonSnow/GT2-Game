@@ -1,39 +1,41 @@
-using Features.Input;
-using Features.TileSystem.CharacterBehaviours;
-using Features.TileSystem.TileSystem;
-using NewReplaySystem;
+using Features.Character.Scripts.Movement;
+using Features.ReplaySystem;
+using Features.TileSystem.Scripts;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class MagicInputBehaviour : BaseMagicInput
+namespace Features.Character.Scripts.Magic
 {
-    [SerializeField] private bool breakAutoTicksEntry;
-    [SerializeField] private TileManager tileManager;
-
-    private BaseMovementInput _entryMovementInput;
-    private bool _breakAutoTick;
-
-    #region figure this out
-    private void Awake()
+    public class MagicInputBehaviour : BaseMagicInput
     {
-        _breakAutoTick = breakAutoTicksEntry;
-    }
+        [SerializeField] private bool breakAutoTicksEntry;
+        [SerializeField] private TileManager tileManager;
 
-    private void Update()
-    {
-        if (ReplayManager.Instance.IsRecording() || _breakAutoTick) return;
+        private BaseMovementInput _entryMovementInput;
+        private bool _breakAutoTick;
+
+        #region figure this out
+        private void Awake()
+        {
+            _breakAutoTick = breakAutoTicksEntry;
+        }
+
+        private void Update()
+        {
+            if (ReplayManager.Instance.IsRecording() || _breakAutoTick) return;
         
-        ReplayManager.Instance.Tick();
-    }
-    #endregion
+            ReplayManager.Instance.Tick();
+        }
+        #endregion
 
-    public override void OnMagicInput(InputAction.CallbackContext context)
-    {
-        tileManager.GetTileAt(TileHelper.TransformPositionToInt2(transform)).TryCastMagic(gameObject);
-    }
+        public override void OnMagicInput(InputAction.CallbackContext context)
+        {
+            tileManager.GetTileAt(TileHelper.TransformPositionToInt2(transform)).TryCastMagic(gameObject);
+        }
     
-    public override void OnInterruptMagic(InputAction.CallbackContext context)
-    {
-        _breakAutoTick = !_breakAutoTick;
+        public override void OnInterruptMagic(InputAction.CallbackContext context)
+        {
+            _breakAutoTick = !_breakAutoTick;
+        }
     }
 }

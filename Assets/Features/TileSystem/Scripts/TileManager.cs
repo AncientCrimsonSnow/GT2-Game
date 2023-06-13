@@ -1,9 +1,8 @@
 ﻿using System;
-using Features.TileSystem.TileComponents;
 using Unity.Mathematics;
 using UnityEngine;
 
-namespace Features.TileSystem.TileSystem
+namespace Features.TileSystem.Scripts
 {
     [CreateAssetMenu(fileName = "new TileManager", menuName = "TileManager")]
     public class TileManager : ScriptableObject, ITileManager

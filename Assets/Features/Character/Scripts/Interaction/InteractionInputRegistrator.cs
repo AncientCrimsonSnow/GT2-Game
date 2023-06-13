@@ -1,30 +1,31 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class InteractionInputRegistrator : MonoBehaviour
+namespace Features.Character.Scripts.Interaction
 {
-    [Header("Topic")]
-    [SerializeField] private InteractionInputFocus interactionInputFocus;
-    [SerializeField] private BaseInteractionInput interactionInputBehaviour;
-
-    [Header("RegistrationTime")] 
-    [SerializeField] private bool awake;
-    [SerializeField] private bool start;
-
-    private void Awake()
+    public class InteractionInputRegistrator : MonoBehaviour
     {
-        if (awake)
+        [Header("Topic")]
+        [SerializeField] private InteractionInputFocus interactionInputFocus;
+        [SerializeField] private BaseInteractionInput interactionInputBehaviour;
+
+        [Header("RegistrationTime")] 
+        [SerializeField] private bool awake;
+        [SerializeField] private bool start;
+
+        private void Awake()
         {
-            interactionInputFocus.SetFocus(interactionInputBehaviour);
+            if (awake)
+            {
+                interactionInputFocus.SetFocus(interactionInputBehaviour);
+            }
         }
-    }
 
-    private void Start()
-    {
-        if (start)
+        private void Start()
         {
-            interactionInputFocus.SetFocus(interactionInputBehaviour);
+            if (start)
+            {
+                interactionInputFocus.SetFocus(interactionInputBehaviour);
+            }
         }
     }
 }

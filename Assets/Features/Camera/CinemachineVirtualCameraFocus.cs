@@ -1,51 +1,54 @@
 using Cinemachine;
-using Features;
+using Uilities.Focus;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "CinemachineVirtualCameraFocus", menuName = "Focus/CinemachineVirtualCamera")]
-public class CinemachineVirtualCameraFocus : Focus_SO<CinemachineVirtualCamera>
+namespace Features.Camera
 {
-    private Transform _restoreTransform;
-    private Transform _currentFollow;
+    [CreateAssetMenu(fileName = "CinemachineVirtualCameraFocus", menuName = "Focus/CinemachineVirtualCamera")]
+    public class CinemachineVirtualCameraFocus : Focus_SO<CinemachineVirtualCamera>
+    {
+        private Transform _restoreTransform;
+        private Transform _currentFollow;
 
-    public CinemachineVirtualCameraFocus SetFollow(Transform follow)
-    {
-        _currentFollow = follow;
-        return this;
-    }
-    
-    public void ApplyFollow()
-    {
-        if (!ContainsFocus() || _currentFollow == null)
+        public CinemachineVirtualCameraFocus SetFollow(Transform follow)
         {
-            Debug.LogWarning("Couldn't apply Follow!");
-            return;
+            _currentFollow = follow;
+            return this;
         }
+    
+        public void ApplyFollow()
+        {
+            if (!ContainsFocus() || _currentFollow == null)
+            {
+                Debug.LogWarning("Couldn't apply Follow!");
+                return;
+            }
         
-        Focus.Follow = _currentFollow;
-        Focus.LookAt = _currentFollow;
-    }
+            Focus.Follow = _currentFollow;
+            Focus.LookAt = _currentFollow;
+        }
 
-    public void RestoreFollow()
-    {
-        if (!ContainsFocus() || _currentFollow == null)
+        public void RestoreFollow()
         {
-            Debug.LogWarning("Couldn't apply Follow!");
-            return;
-        }
+            if (!ContainsFocus() || _currentFollow == null)
+            {
+                Debug.LogWarning("Couldn't apply Follow!");
+                return;
+            }
         
-        Focus.Follow = _restoreTransform;
-        Focus.LookAt = _restoreTransform;
-    }
+            Focus.Follow = _restoreTransform;
+            Focus.LookAt = _restoreTransform;
+        }
     
-    public void SetCurrentFollowAsRestore()
-    {
-        if (_currentFollow == null)
+        public void SetCurrentFollowAsRestore()
         {
-            Debug.LogWarning("Couldn't set current Follow as restore!");
-            return;
-        }
+            if (_currentFollow == null)
+            {
+                Debug.LogWarning("Couldn't set current Follow as restore!");
+                return;
+            }
         
-        _restoreTransform = _currentFollow;
+            _restoreTransform = _currentFollow;
+        }
     }
 }

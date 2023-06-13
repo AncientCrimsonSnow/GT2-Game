@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.InputSystem;
 
-namespace Features.TileSystem.CharacterBehaviours
+namespace Features.Character.Scripts.Magic
 {
     public abstract class BaseMagicInput : MonoBehaviour
     {
