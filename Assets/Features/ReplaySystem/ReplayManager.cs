@@ -155,5 +155,10 @@ namespace NewReplaySystem
             
             Debug.LogWarning("The ReplayManager doesn't contain the Replayable and thus weren't removed!");
         }
+
+        public bool IsRecording()
+        {
+            return _replayControllerList.Any(replayController => replayController.IsRecording);
+        }
     }
 }
