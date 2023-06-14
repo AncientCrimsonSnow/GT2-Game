@@ -1,3 +1,4 @@
+using System;
 using Features.Camera;
 using Features.Character.Scripts.Interaction;
 using Features.Character.Scripts.Movement;
@@ -29,7 +30,6 @@ namespace Features.Character.Scripts.Magic
         public override void OnMagicInput(InputAction.CallbackContext context)
         {
             SetLoop();
-            ResetFocus();
         }
 
         public override void OnInterruptMagic(InputAction.CallbackContext context)
@@ -43,14 +43,9 @@ namespace Features.Character.Scripts.Magic
             ReplayManager.Instance.StartReplay(skeletonFocus.GetFocus(), isLoop);
         }
 
-        //TODO: duplicate code
-        private void ResetFocus()
+        private void OnMouseDown()
         {
-            movementInputFocus.Restore();
-            interactionInputFocus.Restore();
-            magicInputFocus.Restore();
-            cinemachineVirtualCameraFocus.RestoreFollow();
-            skeletonFocus.Restore();
+            ReplayManager.Instance.StopReplayable(gameObject);
         }
     }
 }

@@ -66,6 +66,7 @@ namespace Features.TileSystem.Scripts.Registrator
             }
         }
 
+        //TODO: this needs to be a "can destroy tile interactable"
         protected virtual bool CanUnregisterTileInteractable() => true;
     
         protected abstract void UnregisterTileInteractable();
