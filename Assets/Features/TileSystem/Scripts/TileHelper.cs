@@ -19,7 +19,7 @@ namespace Features.TileSystem.Scripts
             return new Vector3Int(Mathf.RoundToInt(position.x), 0, Mathf.RoundToInt(position.z));
         }
         
-        public static Tile[,] GetTileKernelAt(Tile[,] tilemap, int2 originArrayPosition, int kernelSize)
+        public static T[,] GetTileKernelAt<T>(T[,] tilemap, int2 originArrayPosition, int kernelSize)
         {
             var numRows = tilemap.GetLength(0);
             var numCols = tilemap.GetLength(1);
@@ -32,7 +32,7 @@ namespace Features.TileSystem.Scripts
             var startCol = Math.Max(0, originArrayPosition.y - kernelOffset);
             var endCol = Math.Min(numCols - 1, originArrayPosition.y + kernelOffset);
 
-            Tile[,] neighboringCells = new Tile[endRow - startRow + 1, endCol - startCol + 1];
+            T[,] neighboringCells = new T[endRow - startRow + 1, endCol - startCol + 1];
 
             for (var x = startRow; x <= endRow; x++)
             {
@@ -45,7 +45,24 @@ namespace Features.TileSystem.Scripts
             return neighboringCells;
         }
         
-        public static Tile FindClosestCell(Tile[,] tilemap, int2 startPosition, Func<Tile, bool> condition)
+        public static T[,] RotateKernelClockwise<T>(T[,] kernel)
+        {
+            int rows = kernel.GetLength(0);
+            int cols = kernel.GetLength(1);
+            T[,] rotatedKernel = new T[cols, rows];
+
+            for (int i = 0; i < rows; i++)
+            {
+                for (int j = 0; j < cols; j++)
+                {
+                    rotatedKernel[j, rows - 1 - i] = kernel[i, j];
+                }
+            }
+
+            return rotatedKernel;
+        }
+        
+        public static T FindClosestCell<T>(T[,] tilemap, int2 startPosition, Func<T, bool> condition)
         {
             int rows = tilemap.GetLength(0);
             int columns = tilemap.GetLength(1);
@@ -58,7 +75,7 @@ namespace Features.TileSystem.Scripts
                 if (radius >= maxRadius)
                 {
                     Debug.LogError("Couldn't find an empty item slot!");
-                    return null;
+                    return default;
                 }
                 
                 // Iterate over the top and bottom edges

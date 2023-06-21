@@ -50,9 +50,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b29fd2623665454ca942b330133eb3a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  keepItemOnDrop: 1
+  tileManager: {fileID: 11400000, guid: 250008992667b5e458c740568aa31544, type: 2}
   heldBaseItemAtAwake: {fileID: 11400000, guid: 1b4ad7d3054f0db499c931667a74671d,
     type: 2}
-  takeItemAtAwake: 0
+  takeItemAtAwake: 1
 --- !u!114 &2369192978290521798
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -94,11 +96,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   skeletonFocus: {fileID: 11400000, guid: c331b643c11d29344b88a3e861edf8f9, type: 2}
-  interactionInputFocus: {fileID: 11400000, guid: 2336b63a164002e4884c139ac9deda41,
-    type: 2}
   cinemachineVirtualCameraFocus: {fileID: 11400000, guid: fec216cec1f7775458570390ba57e2cc,
     type: 2}
   movementInputFocus: {fileID: 11400000, guid: eec3e3054ef80274ab87f9dee2a5d97a, type: 2}
+  interactionInputFocus: {fileID: 11400000, guid: 2336b63a164002e4884c139ac9deda41,
+    type: 2}
   magicInputFocus: {fileID: 11400000, guid: 34de74de615798744afafe8616be9db9, type: 2}
 --- !u!136 &8379057826858232632
 CapsuleCollider:

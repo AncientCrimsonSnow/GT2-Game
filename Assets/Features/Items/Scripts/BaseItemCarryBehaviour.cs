@@ -1,9 +1,12 @@
 ﻿using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Features.Items.Scripts
 {
     public abstract class BaseItemCarryBehaviour : MonoBehaviour
     {
+        [SerializeField] private bool keepItemOnDrop;
+        
         public BaseItem_SO CarriedBaseItem { get; protected set; }
         
         public bool IsCarrying() => CarriedBaseItem != null;
@@ -18,7 +21,15 @@ namespace Features.Items.Scripts
 
             OnDropItem();
             Debug.Log("Drop");
-            CarriedBaseItem = null;
+            
+            if (keepItemOnDrop)
+            {
+                Debug.LogWarning("Didn't drop the item, cause it's set in the inspector!");
+            }
+            else
+            {
+                CarriedBaseItem = null;
+            }
         }
 
         //TODO: handle visualisation of held item -> e.g. instantiate

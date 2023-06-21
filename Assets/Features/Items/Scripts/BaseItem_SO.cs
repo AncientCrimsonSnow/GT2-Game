@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Features.Items.Scripts
 {
@@ -7,6 +8,7 @@ namespace Features.Items.Scripts
     {
         public string itemName;
         public GameObject prefab;
+        [FormerlySerializedAs("tryBuildOnNeighbourDrop")] public bool isBuildingOrigin;
 
         public virtual bool TryCastMagic(GameObject caster)
         {
