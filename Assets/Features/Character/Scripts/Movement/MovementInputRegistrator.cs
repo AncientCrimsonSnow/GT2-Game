@@ -5,7 +5,7 @@ namespace Features.Character.Scripts.Movement
     public class MovementInputRegistrator : MonoBehaviour
     {
         [Header("Topic")]
-        [SerializeField] private MovementInputFocus movementInputFocus;
+        [SerializeField] private DirectionInputFocus directionInputFocus;
         [SerializeField] private BaseMovementInput movementInputBehaviour;
         [SerializeField] private bool setAsRestore;
 
@@ -17,10 +17,10 @@ namespace Features.Character.Scripts.Movement
         {
             if (!awake) return;
             
-            movementInputFocus.SetFocus(movementInputBehaviour);
+            directionInputFocus.SetFocus(movementInputBehaviour);
             if (setAsRestore)
             {
-                movementInputFocus.SetCurrentAsRestore();
+                directionInputFocus.SetCurrentAsRestore();
             }
         }
 
@@ -28,10 +28,10 @@ namespace Features.Character.Scripts.Movement
         {
             if (!start) return;
             
-            movementInputFocus.SetFocus(movementInputBehaviour);
+            directionInputFocus.SetFocus(movementInputBehaviour);
             if (setAsRestore)
             {
-                movementInputFocus.SetCurrentAsRestore();
+                directionInputFocus.SetCurrentAsRestore();
             }
         }
     }

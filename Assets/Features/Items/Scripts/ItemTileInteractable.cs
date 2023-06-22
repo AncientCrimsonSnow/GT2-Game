@@ -16,7 +16,7 @@ namespace Features.Items.Scripts
         
         public abstract bool TryInteract(GameObject interactor);
         
-        public abstract bool TryCastMagic(GameObject caster);
+        public abstract bool TryCast(GameObject caster);
 
         public bool IsMovable()
         {

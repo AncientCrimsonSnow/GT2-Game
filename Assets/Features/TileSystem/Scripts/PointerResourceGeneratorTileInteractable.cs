@@ -30,7 +30,7 @@ namespace Features.TileSystem.Scripts
             return true;
         }
 
-        public bool TryCastMagic(GameObject caster)
+        public bool TryCast(GameObject caster)
         {
             return false;
         }

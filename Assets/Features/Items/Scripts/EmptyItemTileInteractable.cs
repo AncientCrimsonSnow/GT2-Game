@@ -30,7 +30,7 @@ namespace Features.Items.Scripts
             return true;
         }
 
-        public override bool TryCastMagic(GameObject caster)
+        public override bool TryCast(GameObject caster)
         {
             return false;
         }

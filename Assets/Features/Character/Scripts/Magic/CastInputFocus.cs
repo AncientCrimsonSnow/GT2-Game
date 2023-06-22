@@ -5,20 +5,20 @@ using UnityEngine.InputSystem;
 namespace Features.Character.Scripts.Magic
 {
     [CreateAssetMenu(fileName = "MagicInputFocus", menuName = "Focus/Input/Magic")]
-    public class MagicInputFocus : RestorableFocus_SO<BaseMagicInput>
+    public class CastInputFocus : RestorableFocus_SO<ICastInput>
     {
-        public void OnMagicInput(InputAction.CallbackContext context)
+        public void OnCastInput(InputAction.CallbackContext context)
         {
             if (!context.started) return;
         
-            Focus.OnMagicInput(context);
+            Focus.OnCastInput(context);
         }
 
-        public void OnInterruptMagic(InputAction.CallbackContext context)
+        public void OnInterruptCast(InputAction.CallbackContext context)
         {
             if (!context.started) return;
         
-            Focus.OnInterruptMagic(context);
+            Focus.OnInterruptCast(context);
         }
     }
 }

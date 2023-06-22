@@ -46,10 +46,10 @@ namespace Features.Items.Scripts
             return true;
         }
 
-        public override bool TryCastMagic(GameObject caster)
+        public override bool TryCast(GameObject caster)
         {
             if (!Tile.ItemContainer.CanAddItemCount(Tile.ItemContainer.ContainedBaseItem, -1)) return false;
-            if (!Tile.ItemContainer.ContainedBaseItem.TryCastMagic(caster)) return false;
+            if (!Tile.ItemContainer.ContainedBaseItem.TryCast(caster)) return false;
             
             Tile.ItemContainer.AddItemCount(Tile.ItemContainer.ContainedBaseItem, -1);
             return true;

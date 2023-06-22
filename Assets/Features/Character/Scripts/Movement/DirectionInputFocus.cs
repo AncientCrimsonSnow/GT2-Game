@@ -5,11 +5,11 @@ using UnityEngine.InputSystem;
 namespace Features.Character.Scripts.Movement
 {
     [CreateAssetMenu(fileName = "MovementInputFocus", menuName = "Focus/Input/Movement")]
-    public class MovementInputFocus : RestorableFocus_SO<IDirectionInput>
+    public class DirectionInputFocus : RestorableFocus_SO<IDirectionInput>
     {
-        public void OnMovementInput(InputAction.CallbackContext context)
+        public void OnDirectionInput(InputAction.CallbackContext context)
         {
-            Focus.OnMovementInput(context);
+            Focus.OnDirectionInput(context);
         }
     }
 }

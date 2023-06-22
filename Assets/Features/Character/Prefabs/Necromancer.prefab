@@ -160,7 +160,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 203cdb60c4a4bd448ae3d12d888446e8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  movementInputFocus: {fileID: 11400000, guid: eec3e3054ef80274ab87f9dee2a5d97a, type: 2}
+  directionInputFocus: {fileID: 11400000, guid: eec3e3054ef80274ab87f9dee2a5d97a,
+    type: 2}
   movementInputBehaviour: {fileID: 3461735561078647500}
   setAsRestore: 1
   awake: 1
@@ -178,7 +179,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   magicInputFocus: {fileID: 11400000, guid: 34de74de615798744afafe8616be9db9, type: 2}
-  magicInputBehaviour: {fileID: 3461735561078647538}
+  castInputBehaviour: {fileID: 0}
   setAsRestore: 1
   awake: 1
   start: 0

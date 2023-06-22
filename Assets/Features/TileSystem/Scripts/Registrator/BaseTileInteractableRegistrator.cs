@@ -47,9 +47,9 @@ namespace Features.TileSystem.Scripts.Registrator
         /// Method for defining, if this interactable can be registered -> also relevant for buildingKernel
         /// </summary>
         /// <returns></returns>
-        protected virtual bool CanRegisterTileInteractable() => true;
+        public virtual bool CanRegisterTileInteractable() => true;
         
-        protected abstract void RegisterTileInteractable();
+        public abstract void RegisterTileInteractable();
 
         protected virtual void OnDestroy()
         {
@@ -67,8 +67,8 @@ namespace Features.TileSystem.Scripts.Registrator
         }
 
         //TODO: this needs to be a "can destroy tile interactable"
-        protected virtual bool CanUnregisterTileInteractable() => true;
+        public virtual bool CanUnregisterTileInteractable() => true;
     
-        protected abstract void UnregisterTileInteractable();
+        public abstract void UnregisterTileInteractable();
     }
 }

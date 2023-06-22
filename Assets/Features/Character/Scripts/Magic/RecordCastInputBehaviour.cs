@@ -10,7 +10,7 @@ using UnityEngine.InputSystem;
 
 namespace Features.Character.Scripts.Magic
 {
-    public class RecordMagicInputBehaviour : BaseMagicInput
+    public class RecordCastInputBehaviour : BaseCastInput
     {
         [SerializeField] private TileManager tileManager;
         [SerializeField] private BaseItem_SO droppedItemOnDestroy;
@@ -20,9 +20,9 @@ namespace Features.Character.Scripts.Magic
         [SerializeField] private CinemachineVirtualCameraFocus cinemachineVirtualCameraFocus;
     
         [Header("Input Focus")]
-        [SerializeField] private MovementInputFocus movementInputFocus;
+        [SerializeField] private DirectionInputFocus directionInputFocus;
         [SerializeField] private InteractionInputFocus interactionInputFocus;
-        [SerializeField] private MagicInputFocus magicInputFocus;
+        [SerializeField] private CastInputFocus castInputFocus;
 
         private Vector3Int _originPosition;
     
@@ -34,12 +34,12 @@ namespace Features.Character.Scripts.Magic
             InitializeRecording(gameObject);
         }
 
-        public override void OnMagicInput(InputAction.CallbackContext context)
+        public override void OnCastInput(InputAction.CallbackContext context)
         {
             SetLoop();
         }
 
-        public override void OnInterruptMagic(InputAction.CallbackContext context)
+        public override void OnInterruptCast(InputAction.CallbackContext context)
         {
             ReplayManager.Instance.StopReplayable(skeletonFocus.GetFocus());
         }
@@ -53,8 +53,8 @@ namespace Features.Character.Scripts.Magic
         {
             skeletonFocus.SetFocus(instantiatedPrefab);
             cinemachineVirtualCameraFocus.SetFollow(instantiatedPrefab.transform).ApplyFollow();
-            movementInputFocus.SetFocus(instantiatedPrefab.GetComponent<BaseMovementInput>());
-            magicInputFocus.SetFocus(instantiatedPrefab.GetComponent<BaseMagicInput>());
+            directionInputFocus.SetFocus(instantiatedPrefab.GetComponent<BaseMovementInput>());
+            castInputFocus.SetFocus(instantiatedPrefab.GetComponent<BaseCastInput>());
             interactionInputFocus.SetFocus(instantiatedPrefab.GetComponent<BaseInteractionInput>());
         }
         
@@ -77,9 +77,9 @@ namespace Features.Character.Scripts.Magic
 
         private void ResetFocus()
         {
-            movementInputFocus.Restore();
+            directionInputFocus.Restore();
             interactionInputFocus.Restore();
-            magicInputFocus.Restore();
+            castInputFocus.Restore();
             cinemachineVirtualCameraFocus.RestoreFollow();
             skeletonFocus.Restore();
         }

@@ -8,7 +8,7 @@ namespace Features.Items.Scripts
         public string itemName;
         public GameObject prefab;
 
-        public virtual bool TryCastMagic(GameObject caster)
+        public virtual bool TryCast(GameObject caster)
         {
             return false;
         }

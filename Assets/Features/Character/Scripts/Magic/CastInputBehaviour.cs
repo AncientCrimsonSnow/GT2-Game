@@ -6,7 +6,7 @@ using UnityEngine.InputSystem;
 
 namespace Features.Character.Scripts.Magic
 {
-    public class MagicInputBehaviour : BaseMagicInput
+    public class CastInputBehaviour : BaseCastInput
     {
         [SerializeField] private bool breakAutoTicksEntry;
         [SerializeField] private TileManager tileManager;
@@ -28,12 +28,12 @@ namespace Features.Character.Scripts.Magic
         }
         #endregion
 
-        public override void OnMagicInput(InputAction.CallbackContext context)
+        public override void OnCastInput(InputAction.CallbackContext context)
         {
-            tileManager.GetTileAt(TileHelper.TransformPositionToInt2(transform)).TryCastMagic(gameObject);
+            tileManager.GetTileAt(TileHelper.TransformPositionToInt2(transform)).TryCast(gameObject);
         }
     
-        public override void OnInterruptMagic(InputAction.CallbackContext context)
+        public override void OnInterruptCast(InputAction.CallbackContext context)
         {
             _breakAutoTick = !_breakAutoTick;
         }

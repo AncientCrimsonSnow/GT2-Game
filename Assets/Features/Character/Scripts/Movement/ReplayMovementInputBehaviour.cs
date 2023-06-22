@@ -25,7 +25,7 @@ namespace Features.Character.Scripts.Movement
             ReplayManager.Instance.RegisterOriginator(gameObject, this);
         }
 
-        public override void OnMovementInput(InputAction.CallbackContext context)
+        public override void OnDirectionInput(InputAction.CallbackContext context)
         {
             _storedInputVector = context.ReadValue<Vector2>();
         }

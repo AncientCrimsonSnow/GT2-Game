@@ -38,10 +38,10 @@ namespace Features.Items.Scripts
             return true;
         }
 
-        public override bool TryCastMagic(GameObject caster)
+        public override bool TryCast(GameObject caster)
         {
             if (!Tile.ItemContainer.CanDestroyItem(1)) return false;
-            if (!Tile.ItemContainer.ContainedBaseItem.TryCastMagic(caster)) return false;
+            if (!Tile.ItemContainer.ContainedBaseItem.TryCast(caster)) return false;
             
             Tile.ExchangeFirstTileInteractableOfType<ItemTileInteractable>(new EmptyItemTileInteractable(Tile));
             return true;

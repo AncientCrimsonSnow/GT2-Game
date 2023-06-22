@@ -5,8 +5,8 @@ namespace Features.Character.Scripts.Magic
     public class MagicInputRegistrator : MonoBehaviour
     {
         [Header("Topic")]
-        [SerializeField] private MagicInputFocus magicInputFocus;
-        [SerializeField] private BaseMagicInput magicInputBehaviour;
+        [SerializeField] private CastInputFocus castInputFocus;
+        [SerializeField] private BaseCastInput castInputBehaviour;
         [SerializeField] private bool setAsRestore;
 
         [Header("RegistrationTime")] 
@@ -17,10 +17,10 @@ namespace Features.Character.Scripts.Magic
         {
             if (!awake) return;
             
-            magicInputFocus.SetFocus(magicInputBehaviour);
+            castInputFocus.SetFocus(castInputBehaviour);
             if (setAsRestore)
             {
-                magicInputFocus.SetCurrentAsRestore();
+                castInputFocus.SetCurrentAsRestore();
             }
         }
 
@@ -28,10 +28,10 @@ namespace Features.Character.Scripts.Magic
         {
             if (!start) return;
             
-            magicInputFocus.SetFocus(magicInputBehaviour);
+            castInputFocus.SetFocus(castInputBehaviour);
             if (setAsRestore)
             {
-                magicInputFocus.SetCurrentAsRestore();
+                castInputFocus.SetCurrentAsRestore();
             }
         }
     }

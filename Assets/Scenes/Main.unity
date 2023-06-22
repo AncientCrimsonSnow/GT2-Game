@@ -262,8 +262,9 @@ MonoBehaviour:
   - m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 11400000, guid: eec3e3054ef80274ab87f9dee2a5d97a, type: 2}
-        m_TargetAssemblyTypeName: MovementInputFocus, Assembly-CSharp
-        m_MethodName: OnMovementInput
+        m_TargetAssemblyTypeName: Features.Character.Scripts.Movement.DirectionInputFocus,
+          Assembly-CSharp
+        m_MethodName: OnDirectionInput
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -294,8 +295,9 @@ MonoBehaviour:
   - m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 11400000, guid: 34de74de615798744afafe8616be9db9, type: 2}
-        m_TargetAssemblyTypeName: MagicInputFocus, Assembly-CSharp
-        m_MethodName: OnMagicInput
+        m_TargetAssemblyTypeName: Features.Character.Scripts.Magic.CastInputFocus,
+          Assembly-CSharp
+        m_MethodName: OnCastInput
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -310,8 +312,9 @@ MonoBehaviour:
   - m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 11400000, guid: 34de74de615798744afafe8616be9db9, type: 2}
-        m_TargetAssemblyTypeName: MagicInputFocus, Assembly-CSharp
-        m_MethodName: OnInterruptMagic
+        m_TargetAssemblyTypeName: Features.Character.Scripts.Magic.CastInputFocus,
+          Assembly-CSharp
+        m_MethodName: OnInterruptCast
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -948,7 +951,7 @@ PrefabInstance:
     - target: {fileID: 5593624783022258812, guid: 597e9c15ca9cb7f448480b5cabca9258,
         type: 3}
       propertyPath: m_RootOrder
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 5593624783022258812, guid: 597e9c15ca9cb7f448480b5cabca9258,
         type: 3}
@@ -1029,7 +1032,7 @@ PrefabInstance:
     - target: {fileID: 185975478420328776, guid: 868c5489221d6314c8157ae4fe1f9390,
         type: 3}
       propertyPath: m_RootOrder
-      value: 4
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 185975478420328776, guid: 868c5489221d6314c8157ae4fe1f9390,
         type: 3}
@@ -1164,6 +1167,17 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3461735561078647537, guid: 1fac9ce67083bd449ae73b9ca87be925,
+        type: 3}
+      propertyPath: castInputFocus
+      value: 
+      objectReference: {fileID: 11400000, guid: 34de74de615798744afafe8616be9db9,
+        type: 2}
+    - target: {fileID: 3461735561078647537, guid: 1fac9ce67083bd449ae73b9ca87be925,
+        type: 3}
+      propertyPath: castInputBehaviour
+      value: 
+      objectReference: {fileID: 3461735560436192557}
     - target: {fileID: 3461735561078647540, guid: 1fac9ce67083bd449ae73b9ca87be925,
         type: 3}
       propertyPath: m_Name
@@ -1226,6 +1240,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1fac9ce67083bd449ae73b9ca87be925, type: 3}
+--- !u!114 &3461735560436192557 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3461735561078647538, guid: 1fac9ce67083bd449ae73b9ca87be925,
+    type: 3}
+  m_PrefabInstance: {fileID: 3461735560436192556}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e25cce8112c516248af118bc6e9db9a7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &4005196534346277285
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1236,7 +1262,7 @@ PrefabInstance:
     - target: {fileID: 5593624783022258812, guid: 597e9c15ca9cb7f448480b5cabca9258,
         type: 3}
       propertyPath: m_RootOrder
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5593624783022258812, guid: 597e9c15ca9cb7f448480b5cabca9258,
         type: 3}
@@ -1316,7 +1342,7 @@ PrefabInstance:
     - target: {fileID: 4138201595417247618, guid: 2649e29c6251d8e4ab5c9e660eee29b6,
         type: 3}
       propertyPath: m_RootOrder
-      value: 3
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 4138201595417247618, guid: 2649e29c6251d8e4ab5c9e660eee29b6,
         type: 3}

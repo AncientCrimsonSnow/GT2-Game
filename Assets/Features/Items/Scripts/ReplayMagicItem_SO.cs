@@ -1,37 +1,45 @@
 using System.Collections.Generic;
+using System.Linq;
 using Features.Buildings.Scripts;
 using Features.Character.Scripts.Movement;
 using Features.TileSystem.Scripts;
+using Features.TileSystem.Scripts.Registrator;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 namespace Features.Items.Scripts
 {
     [CreateAssetMenu]
-    public class ReplayMagicItem_SO : BaseItem_SO, IDirectionInput
+    public class ReplayMagicItem_SO : BaseItem_SO, IDirectionInput, ICastInput, IInteractInput
     {
         [SerializeField] private TileManager tileManager;
         [SerializeField] private int kernelSize = 3;
 
-        [SerializeField] private MovementInputFocus movementInputFocus;
+        [SerializeField] private DirectionInputFocus directionInputFocus;
 
-        private int _currentIndex;
-        private List<GameObject> _validBuildings;
         
-        public void OnMovementInput(InputAction.CallbackContext context)
+        private BuildSequenceStateMachine _buildSequenceStateMachine;
+        
+        public void OnDirectionInput(InputAction.CallbackContext context)
         {
-            _validBuildings[_currentIndex].SetActive(false);
-            
-            _currentIndex++;
-
-            if (_currentIndex >= _validBuildings.Count)
-            {
-                _currentIndex = 0;
-            }
-            
-            _validBuildings[_currentIndex].SetActive(true);
+            _buildSequenceStateMachine.Perform(context);
         }
         
+        public void OnCastInput(InputAction.CallbackContext context)
+        {
+            _buildSequenceStateMachine.NextState();
+        }
+        
+        public void OnInteractionInput(InputAction.CallbackContext context)
+        {
+            _buildSequenceStateMachine.PreviousState();
+        }
+
+        public void OnInterruptCast(InputAction.CallbackContext context)
+        {
+            _buildSequenceStateMachine.Cancel();
+        }
+
         //TODO: use case: building
         //TODO: button e: next step | button q: go step back | button f: cancel building -> i need to set every single focus
         //TODO: step 1: select building with a/d | if there is only one building -> skip
@@ -42,14 +50,14 @@ namespace Features.Items.Scripts
         
         //TODO: how to destroy a building -> there must be an entry und exit script on a building, that can be addressed!
 
-        public override bool TryCastMagic(GameObject caster)
+        public override bool TryCast(GameObject caster)
         {
-            movementInputFocus.SetFocus(this);
+            directionInputFocus.SetFocus(this);
             var dropKernel = tileManager.GetTileKernelAt(TileHelper.TransformPositionToInt2(caster.transform), kernelSize);
             
             if (!ScriptableObjectByType.TryGetByType(out List<BuildingRecipe> buildingRecipes)) return false;
 
-            _validBuildings = new List<GameObject>();
+            var validBuildings = new List<GameObject>();
             foreach (var buildingRecipe in buildingRecipes)
             {
                 if (IsRecipeFit(CreateKernelItemCountPairs(dropKernel), buildingRecipe))
@@ -57,17 +65,16 @@ namespace Features.Items.Scripts
                     Debug.Log(buildingRecipe);
                     var instantiatedObject = Instantiate(buildingRecipe.building, caster.transform.position, Quaternion.identity);
                     instantiatedObject.SetActive(false);
-                    _validBuildings.Add(instantiatedObject);
+                    validBuildings.Add(instantiatedObject);
                     //TODO: onPlacementPerformed -> event for destroying all items on those slots
                     //TODO: onBuildingDestroyed -> event for what happens, if building got destroyed
                 }
             }
 
-            _currentIndex = 0;
-            _validBuildings[_currentIndex].SetActive(true);
-            
             //TODO: instantiated ghost is just there for validating, if the building can be placed. when a building got placed, it will be registered! Stacks must be registered as well, but they dont get instantiated!
 
+            _buildSequenceStateMachine = new BuildSequenceStateMachine(new BuildingSelectionSequenceState(validBuildings), () => {}, () => {});
+            
             return true;
         }
         

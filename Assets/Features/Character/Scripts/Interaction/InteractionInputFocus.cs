@@ -5,7 +5,7 @@ using UnityEngine.InputSystem;
 namespace Features.Character.Scripts.Interaction
 {
     [CreateAssetMenu(fileName = "InteractionInputFocus", menuName = "Focus/Input/Interaction")]
-    public class InteractionInputFocus : RestorableFocus_SO<BaseInteractionInput>
+    public class InteractionInputFocus : RestorableFocus_SO<IInteractInput>
     {
         public void OnInteractionInput(InputAction.CallbackContext context)
         {

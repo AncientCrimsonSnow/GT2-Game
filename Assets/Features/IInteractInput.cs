@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public interface IDirectionInput
+public interface IInteractInput
 {
-    void OnDirectionInput(InputAction.CallbackContext context);
+    void OnInteractionInput(InputAction.CallbackContext context);
 }

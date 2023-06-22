@@ -23,7 +23,7 @@ namespace Features.Character.Scripts.Movement
             //_characterAnimator = GetComponent<Animator>();
         }
     
-        public override void OnMovementInput(InputAction.CallbackContext context)
+        public override void OnDirectionInput(InputAction.CallbackContext context)
         {
             _storedInputVector = context.ReadValue<Vector2>();
         }

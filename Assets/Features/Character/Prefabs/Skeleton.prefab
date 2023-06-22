@@ -100,10 +100,11 @@ MonoBehaviour:
   skeletonFocus: {fileID: 11400000, guid: c331b643c11d29344b88a3e861edf8f9, type: 2}
   cinemachineVirtualCameraFocus: {fileID: 11400000, guid: fec216cec1f7775458570390ba57e2cc,
     type: 2}
-  movementInputFocus: {fileID: 11400000, guid: eec3e3054ef80274ab87f9dee2a5d97a, type: 2}
+  directionInputFocus: {fileID: 11400000, guid: eec3e3054ef80274ab87f9dee2a5d97a,
+    type: 2}
   interactionInputFocus: {fileID: 11400000, guid: 2336b63a164002e4884c139ac9deda41,
     type: 2}
-  magicInputFocus: {fileID: 11400000, guid: 34de74de615798744afafe8616be9db9, type: 2}
+  castInputFocus: {fileID: 11400000, guid: 34de74de615798744afafe8616be9db9, type: 2}
 --- !u!136 &8379057826858232632
 CapsuleCollider:
   m_ObjectHideFlags: 0

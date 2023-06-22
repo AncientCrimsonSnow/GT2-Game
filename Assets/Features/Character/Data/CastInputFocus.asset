@@ -9,6 +9,6 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2eef27679018057429280535331b06f5, type: 3}
-  m_Name: MovementInputFocus
+  m_Script: {fileID: 11500000, guid: 9ca20046fc8c4f3abb71f7574e962865, type: 3}
+  m_Name: CastInputFocus
   m_EditorClassIdentifier: 
