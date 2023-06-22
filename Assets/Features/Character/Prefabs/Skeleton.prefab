@@ -51,7 +51,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   keepItemOnDrop: 1
-  tileManager: {fileID: 11400000, guid: 250008992667b5e458c740568aa31544, type: 2}
   heldBaseItemAtAwake: {fileID: 11400000, guid: 1b4ad7d3054f0db499c931667a74671d,
     type: 2}
   takeItemAtAwake: 1
@@ -95,6 +94,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a848b49b1104a02428ac43f45f193983, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tileManager: {fileID: 11400000, guid: 250008992667b5e458c740568aa31544, type: 2}
+  droppedItemOnDestroy: {fileID: 11400000, guid: 2856e0fa757df554fa2e03cf94cc6e62,
+    type: 2}
   skeletonFocus: {fileID: 11400000, guid: c331b643c11d29344b88a3e861edf8f9, type: 2}
   cinemachineVirtualCameraFocus: {fileID: 11400000, guid: fec216cec1f7775458570390ba57e2cc,
     type: 2}

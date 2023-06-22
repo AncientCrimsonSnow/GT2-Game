@@ -7,6 +7,7 @@ namespace Features.Character.Scripts.Magic
         [Header("Topic")]
         [SerializeField] private MagicInputFocus magicInputFocus;
         [SerializeField] private BaseMagicInput magicInputBehaviour;
+        [SerializeField] private bool setAsRestore;
 
         [Header("RegistrationTime")] 
         [SerializeField] private bool awake;
@@ -14,17 +15,23 @@ namespace Features.Character.Scripts.Magic
 
         private void Awake()
         {
-            if (awake)
+            if (!awake) return;
+            
+            magicInputFocus.SetFocus(magicInputBehaviour);
+            if (setAsRestore)
             {
-                magicInputFocus.SetFocus(magicInputBehaviour);
+                magicInputFocus.SetCurrentAsRestore();
             }
         }
 
         private void Start()
         {
-            if (start)
+            if (!start) return;
+            
+            magicInputFocus.SetFocus(magicInputBehaviour);
+            if (setAsRestore)
             {
-                magicInputFocus.SetFocus(magicInputBehaviour);
+                magicInputFocus.SetCurrentAsRestore();
             }
         }
     }

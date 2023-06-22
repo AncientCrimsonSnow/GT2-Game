@@ -110,7 +110,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3461735561078647540}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -162,6 +162,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   movementInputFocus: {fileID: 11400000, guid: eec3e3054ef80274ab87f9dee2a5d97a, type: 2}
   movementInputBehaviour: {fileID: 3461735561078647500}
+  setAsRestore: 1
   awake: 1
   start: 0
 --- !u!114 &3461735561078647537
@@ -178,5 +179,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   magicInputFocus: {fileID: 11400000, guid: 34de74de615798744afafe8616be9db9, type: 2}
   magicInputBehaviour: {fileID: 3461735561078647538}
+  setAsRestore: 1
   awake: 1
   start: 0

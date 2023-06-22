@@ -48,7 +48,7 @@ namespace Features.TileSystem.Scripts.Registrator
         /// </summary>
         /// <returns></returns>
         protected virtual bool CanRegisterTileInteractable() => true;
-
+        
         protected abstract void RegisterTileInteractable();
 
         protected virtual void OnDestroy()

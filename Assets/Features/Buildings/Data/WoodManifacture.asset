@@ -13,16 +13,7 @@ MonoBehaviour:
   m_Name: WoodManifacture
   m_EditorClassIdentifier: 
   recipeData:
-    rows:
-    - row:
-      - {fileID: 0}
-      - {fileID: 11400000, guid: 1b4ad7d3054f0db499c931667a74671d, type: 2}
-      - {fileID: 11400000, guid: 1b4ad7d3054f0db499c931667a74671d, type: 2}
-    - row:
-      - {fileID: 0}
-      - {fileID: 11400000, guid: 1b4ad7d3054f0db499c931667a74671d, type: 2}
-      - {fileID: 11400000, guid: 1b4ad7d3054f0db499c931667a74671d, type: 2}
-    - row:
-      - {fileID: 0}
-      - {fileID: 0}
-      - {fileID: 0}
+  - requiredItem: {fileID: 11400000, guid: 2856e0fa757df554fa2e03cf94cc6e62, type: 2}
+    requiredCount: 1
+  - requiredItem: {fileID: 11400000, guid: 1b4ad7d3054f0db499c931667a74671d, type: 2}
+    requiredCount: 2
