@@ -11,23 +11,21 @@ namespace Features.TileSystem.Scripts.Registrator
     /// Current suitable concept for pooling: setting out-of-screenspace objects inactive. It got registered inside the TileManager.
     /// Thus, things will be able to interact with it, even though it is set inactive & out of screenspace (useful for the tick system).
     /// </summary>
-    public abstract class BaseTileInteractableRegistrator : MonoBehaviour
+    public abstract class BaseTileRegistrator : MonoBehaviour
     {
         [SerializeField] private TileManager tileManager;
-        
-        public Tile Tile { get; private set; }
+
+        public Tile Tile => tileManager.GetTileAt(TileHelper.TransformPositionToInt2(transform));
     
         private int2 _registeredPosition;
 
         private void Start()
         {
             ApplyRoundedPosition();
-            _registeredPosition = TileHelper.TransformPositionToInt2(transform);
-            Tile = tileManager.GetTileAt(_registeredPosition);
             
-            if (CanRegisterTileInteractable())
+            if (CanRegisterOnTile())
             {
-                RegisterTileInteractable();
+                RegisterOnTile();
             }
         }
     
@@ -47,9 +45,9 @@ namespace Features.TileSystem.Scripts.Registrator
         /// Method for defining, if this interactable can be registered -> also relevant for buildingKernel
         /// </summary>
         /// <returns></returns>
-        public virtual bool CanRegisterTileInteractable() => true;
+        public virtual bool CanRegisterOnTile() => true;
         
-        public abstract void RegisterTileInteractable();
+        public abstract void RegisterOnTile();
 
         protected virtual void OnDestroy()
         {
@@ -60,15 +58,15 @@ namespace Features.TileSystem.Scripts.Registrator
                 Debug.LogWarning("You changed the position of this tile during Runtime! It will still unregister itself from the registered Tile!");
             }
 
-            if (CanUnregisterTileInteractable())
+            if (CanUnregisterOnTile())
             {
-                UnregisterTileInteractable();
+                UnregisterOnTile();
             }
         }
 
         //TODO: this needs to be a "can destroy tile interactable"
-        public virtual bool CanUnregisterTileInteractable() => true;
+        public virtual bool CanUnregisterOnTile() => true;
     
-        public abstract void UnregisterTileInteractable();
+        public abstract void UnregisterOnTile();
     }
 }

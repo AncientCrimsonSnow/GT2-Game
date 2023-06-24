@@ -1,4 +1,5 @@
 using System;
+using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class BuildSequenceStateMachine
@@ -21,6 +22,7 @@ public class BuildSequenceStateMachine
         
         if (_currentState.TryGetPrevious(out var previousSequenceState))
         {
+            Debug.Log(previousSequenceState);
             _currentState = previousSequenceState;
         }
     }
@@ -31,6 +33,7 @@ public class BuildSequenceStateMachine
 
         if (_currentState.TryGetNext(out var nextSequenceState))
         {
+            Debug.Log(nextSequenceState);
             _currentState = nextSequenceState;
         }
         else

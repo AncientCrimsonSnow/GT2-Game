@@ -4,7 +4,7 @@ using UnityEngine.Serialization;
 
 namespace Features.TileSystem.Scripts.Registrator
 {
-    public class StackableBaseTileInteractableRegistrator : BaseTileInteractableRegistrator
+    public class StackableBaseTileRegistrator : BaseTileRegistrator
     {
         [SerializeField] private bool isMovable;
         [FormerlySerializedAs("itemType")] [SerializeField] private BaseItem_SO baseItemType;
@@ -14,14 +14,14 @@ namespace Features.TileSystem.Scripts.Registrator
 
         private bool _canBeUnregistered;
 
-        public override bool CanRegisterTileInteractable()
+        public override bool CanRegisterOnTile()
         {
             _canBeUnregistered = Tile.ContainsTileInteractableOfType<EmptyItemTileInteractable>() || 
                                  Tile.ContainsTileInteractableOfType<StackableItemTileInteractable>() && Tile.ItemContainer.ContainedBaseItem == baseItemType;
             return _canBeUnregistered;
         }
 
-        public override void RegisterTileInteractable()
+        public override void RegisterOnTile()
         {
             Tile.ItemContainer.AddRegistratorStack();
             
@@ -33,12 +33,12 @@ namespace Features.TileSystem.Scripts.Registrator
             Tile.ExchangeFirstTileInteractableOfType(tileComponent);
         }
 
-        public override bool CanUnregisterTileInteractable()
+        public override bool CanUnregisterOnTile()
         {
             return _canBeUnregistered;
         }
 
-        public override void UnregisterTileInteractable()
+        public override void UnregisterOnTile()
         {
             Tile.ItemContainer.RemoveRegistratorStack();
             

@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using Features.Buildings.Scripts;
+using Features.Character.Scripts.Interaction;
+using Features.Character.Scripts.Magic;
 using Features.Character.Scripts.Movement;
 using Features.TileSystem.Scripts;
 using Features.TileSystem.Scripts.Registrator;
@@ -16,12 +18,16 @@ namespace Features.Items.Scripts
         [SerializeField] private int kernelSize = 3;
 
         [SerializeField] private DirectionInputFocus directionInputFocus;
+        [SerializeField] private InteractionInputFocus interactionInputFocus;
+        [SerializeField] private CastInputFocus castInputFocus;
 
         
         private BuildSequenceStateMachine _buildSequenceStateMachine;
         
         public void OnDirectionInput(InputAction.CallbackContext context)
         {
+            if (!context.started) return;
+            
             _buildSequenceStateMachine.Perform(context);
         }
         
@@ -53,6 +59,8 @@ namespace Features.Items.Scripts
         public override bool TryCast(GameObject caster)
         {
             directionInputFocus.SetFocus(this);
+            interactionInputFocus.SetFocus(this);
+            castInputFocus.SetFocus(this);
             var dropKernel = tileManager.GetTileKernelAt(TileHelper.TransformPositionToInt2(caster.transform), kernelSize);
             
             if (!ScriptableObjectByType.TryGetByType(out List<BuildingRecipe> buildingRecipes)) return false;
@@ -70,10 +78,10 @@ namespace Features.Items.Scripts
                     //TODO: onBuildingDestroyed -> event for what happens, if building got destroyed
                 }
             }
+            validBuildings[0].SetActive(true);
+            caster.SetActive(false);
 
-            //TODO: instantiated ghost is just there for validating, if the building can be placed. when a building got placed, it will be registered! Stacks must be registered as well, but they dont get instantiated!
-
-            _buildSequenceStateMachine = new BuildSequenceStateMachine(new BuildingSelectionSequenceState(validBuildings), () => {}, () => {});
+            _buildSequenceStateMachine = new BuildSequenceStateMachine(new BuildingSelectionSequenceState(tileManager, validBuildings, dropKernel), () => {}, () => {});
             
             return true;
         }

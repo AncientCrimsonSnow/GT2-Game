@@ -4,24 +4,24 @@ using UnityEngine.Serialization;
 
 namespace Features.TileSystem.Scripts.Registrator
 {
-    public class PointerBaseTileInteractableRegistrator : BaseTileInteractableRegistrator
+    public class PointerBaseTileRegistrator : BaseTileRegistrator
     {
         [SerializeField] private bool isMovable;
         [FormerlySerializedAs("itemLoot")] [SerializeField] private BaseItem_SO baseItemLoot;
 
-        [SerializeField] private BaseTileInteractableRegistrator pointerRegistrator;
+        [SerializeField] private BaseTileRegistrator pointerRegistrator;
         [SerializeField] private int craftAmount;
 
         private ITileInteractable _tileInteractable;
 
-        public override void RegisterTileInteractable()
+        public override void RegisterOnTile()
         {
             var tileComponent = new PointerResourceGeneratorTileInteractable(Tile, isMovable, pointerRegistrator.Tile, baseItemLoot, craftAmount);
             Tile.RegisterTileInteractable(tileComponent);
             _tileInteractable = tileComponent;
         }
 
-        public override void UnregisterTileInteractable()
+        public override void UnregisterOnTile()
         {
             Tile.UnregisterTileInteractable(_tileInteractable);
         }
