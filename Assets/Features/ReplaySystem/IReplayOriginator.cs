@@ -1,7 +1,7 @@
 using System;
-using System.Collections.Generic;
+using Features.ReplaySystem.Record;
 
-namespace NewReplaySystem
+namespace Features.ReplaySystem
 {
     public interface IReplayOriginator
     {

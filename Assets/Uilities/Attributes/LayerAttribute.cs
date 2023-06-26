@@ -1,5 +1,8 @@
 using UnityEngine;
 
-public class LayerAttribute : PropertyAttribute
+namespace Uilities.Attributes
 {
+    public class LayerAttribute : PropertyAttribute
+    {
+    }
 }

@@ -1,9 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Features.ReplaySystem.Record;
 using UnityEngine;
 
-namespace NewReplaySystem
+namespace Features.ReplaySystem
 {
     public class ReplayController
     {
@@ -14,7 +15,6 @@ namespace NewReplaySystem
         private readonly List<IReplayOriginator> _replayOriginators;
         private readonly List<IInputSnapshot> _ticks;
         
-        private int _registrationTick;
         private int _currentIndex;
         private readonly Action _onCompleteReplay;
         private bool _isLoop;
@@ -50,12 +50,16 @@ namespace NewReplaySystem
         public void StartReplay(bool isLoop)
         {
             IsRecording = false;
-            _isLoop = isLoop;
+
+            if (!isLoop)
+            {
+                StopReplay();
+            }
         }
 
         public void Tick()
         {
-            if (_stopNextTick || _ticks.Count == 0)
+            if (_ticks.Count == 0)
             {
                 StopReplay();
                 return;
@@ -65,14 +69,8 @@ namespace NewReplaySystem
             _currentIndex++;
 
             if (_currentIndex < _ticks.Count) return;
-            if (_isLoop)
-            {
-                _currentIndex = 0;
-            }
-            else
-            {
-                _stopNextTick = true;
-            }
+            
+            _currentIndex = 0;
         }
 
         public void StopReplay()

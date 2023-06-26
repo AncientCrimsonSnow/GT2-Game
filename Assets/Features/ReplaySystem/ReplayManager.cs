@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-namespace NewReplaySystem
+namespace Features.ReplaySystem
 {
     public class ReplayManager : MonoBehaviour
     {
@@ -154,6 +154,11 @@ namespace NewReplaySystem
             }
             
             Debug.LogWarning("The ReplayManager doesn't contain the Replayable and thus weren't removed!");
+        }
+
+        public bool IsRecording()
+        {
+            return _replayControllerList.Any(replayController => replayController.IsRecording);
         }
     }
 }
