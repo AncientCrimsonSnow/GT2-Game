@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace Features.TileSystem.Scripts.Registrator
@@ -16,7 +17,10 @@ namespace Features.TileSystem.Scripts.Registrator
         [SerializeField] private bool registerOnStart;
 
         public Tile Tile => tileManager.GetTileAt(TileHelper.TransformPositionToInt2(transform));
-    
+        public bool HasRegistratorGroup => TileRegistratorGroup != null;
+        private TileRegistratorGroup TileRegistratorGroup { get; set; }
+        
+        private Action _onDestroyAction;
         private Vector3 _registeredPosition;
 
         private void Start()
@@ -29,6 +33,18 @@ namespace Features.TileSystem.Scripts.Registrator
             {
                 RegisterOnTile();
             }
+        }
+
+        public void AssignToRegistratorGroup(TileRegistratorGroup tileRegistratorGroup, Action onDestroyAction)
+        {
+            TileRegistratorGroup = tileRegistratorGroup;
+            _onDestroyAction = onDestroyAction;
+        }
+
+        public void RemoveFromRegistratorGroup()
+        {
+            TileRegistratorGroup = null;
+            _onDestroyAction = null;
         }
     
         private void ApplyRoundedPosition()
@@ -68,6 +84,8 @@ namespace Features.TileSystem.Scripts.Registrator
             }
             
             UnregisterOnTile();
+
+            if (_onDestroyAction != null) _onDestroyAction.Invoke();
         }
 
         //TODO: this needs to be a "can destroy tile interactable"

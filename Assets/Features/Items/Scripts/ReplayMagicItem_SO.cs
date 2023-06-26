@@ -118,7 +118,6 @@ namespace Features.Items.Scripts
 
             var onCancelSequence = new Action(() =>
             {
-                Debug.Log("cancel sequence");
                 RestoreBuildingFocus(caster);
                 DestroyAllBuildings(validBuildings);
             });
