@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5643029186231218541}
   - component: {fileID: 4204358137054845283}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: SkeletonGhost
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -46,6 +46,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tileManager: {fileID: 11400000, guid: 250008992667b5e458c740568aa31544, type: 2}
+  registerOnStart: 0
   skeletonToInstantiate: {fileID: 3783118011973604103, guid: 3a76c15e73c6d0e409f62d605fb6103d,
     type: 3}
 --- !u!1 &6619994375027371676
@@ -59,7 +60,7 @@ GameObject:
   - component: {fileID: 2701804559670556066}
   - component: {fileID: 850467924971177017}
   - component: {fileID: 3462174112703226373}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: Mesh
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -97,6 +97,8 @@ MonoBehaviour:
   tileManager: {fileID: 11400000, guid: 250008992667b5e458c740568aa31544, type: 2}
   droppedItemOnDestroy: {fileID: 11400000, guid: 2856e0fa757df554fa2e03cf94cc6e62,
     type: 2}
+  originVisualisationPrefab: {fileID: 9102529346641877077, guid: df2d8a3e2b22e424abd9332ca5a77ff6,
+    type: 3}
   skeletonFocus: {fileID: 11400000, guid: c331b643c11d29344b88a3e861edf8f9, type: 2}
   cinemachineVirtualCameraFocus: {fileID: 11400000, guid: fec216cec1f7775458570390ba57e2cc,
     type: 2}

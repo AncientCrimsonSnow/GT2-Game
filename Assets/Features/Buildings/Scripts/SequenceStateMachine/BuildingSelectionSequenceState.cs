@@ -21,10 +21,10 @@ public class BuildingSelectionSequenceState : IBuildSequenceState
         _currentIndex = selectedIndex;
     } 
     
-    public bool TryGetNext(out IBuildSequenceState nextState)
+    public bool TryCompleteSequence(out IBuildSequenceState nextState)
     {
         nextState = new BuildingPlacementSequenceState(_tileManager, _validBuildings, _currentIndex, _buildArea);
-        return true;
+        return false;
     }
 
     public bool TryGetPrevious(out IBuildSequenceState nextState)
@@ -37,7 +37,6 @@ public class BuildingSelectionSequenceState : IBuildSequenceState
     {
         var inputVector = context.ReadValue<Vector2>();
 
-        Debug.Log(inputVector.x);
         switch (inputVector.x)
         {
             case < 0:
@@ -52,6 +51,11 @@ public class BuildingSelectionSequenceState : IBuildSequenceState
         {
             //Debug.Log("CanBuild");
         }
+    }
+
+    public GameObject GetSelectedObject()
+    {
+        return _validBuildings[_currentIndex];
     }
 
     private void SetNewIndex(int addition)

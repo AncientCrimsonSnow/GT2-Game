@@ -1,4 +1,3 @@
-using Unity.Mathematics;
 using UnityEngine;
 
 namespace Features.TileSystem.Scripts.Registrator
@@ -14,15 +13,18 @@ namespace Features.TileSystem.Scripts.Registrator
     public abstract class BaseTileRegistrator : MonoBehaviour
     {
         [SerializeField] private TileManager tileManager;
+        [SerializeField] private bool registerOnStart;
 
         public Tile Tile => tileManager.GetTileAt(TileHelper.TransformPositionToInt2(transform));
     
-        private int2 _registeredPosition;
+        private Vector3 _registeredPosition;
 
         private void Start()
         {
             ApplyRoundedPosition();
-            
+
+            if (!registerOnStart) return;
+
             if (CanRegisterOnTile())
             {
                 RegisterOnTile();
@@ -31,13 +33,12 @@ namespace Features.TileSystem.Scripts.Registrator
     
         private void ApplyRoundedPosition()
         {
-            var position = transform.position;
-            if (position.x % 1 != 0 || position.z % 1 != 0)
+            if (_registeredPosition.x % 1 != 0 || _registeredPosition.z % 1 != 0)
             {
                 Debug.LogWarning("Position of this Tile got mathematically rounded, because it isn't on a whole number!");
             
-                position = new Vector3(Mathf.RoundToInt(position.x), position.y, Mathf.RoundToInt(position.z));
-                transform.position = position;
+                _registeredPosition = new Vector3(Mathf.RoundToInt(_registeredPosition.x), _registeredPosition.y, Mathf.RoundToInt(_registeredPosition.z));
+                transform.position = _registeredPosition;
             }
         }
 
@@ -46,27 +47,32 @@ namespace Features.TileSystem.Scripts.Registrator
         /// </summary>
         /// <returns></returns>
         public virtual bool CanRegisterOnTile() => true;
-        
-        public abstract void RegisterOnTile();
+
+        public void RegisterOnTile()
+        {
+            _registeredPosition = transform.position;
+            InternalRegisterOnTile();
+        }
+
+        protected abstract void InternalRegisterOnTile();
 
         protected virtual void OnDestroy()
         {
             var position = transform.position;
-
-            if (!_registeredPosition.Equals(new int2((int)position.x, (int)position.z)))
+            
+            if (!CanUnregisterOnTile()) return;
+            
+            if (!_registeredPosition.Equals(position))
             {
-                Debug.LogWarning("You changed the position of this tile during Runtime! It will still unregister itself from the registered Tile!");
+                Debug.LogWarning($"You changed the position of {this} during Runtime! It will still unregister itself from the registered Tile!");
             }
-
-            if (CanUnregisterOnTile())
-            {
-                UnregisterOnTile();
-            }
+            
+            UnregisterOnTile();
         }
 
         //TODO: this needs to be a "can destroy tile interactable"
-        public virtual bool CanUnregisterOnTile() => true;
-    
-        public abstract void UnregisterOnTile();
+        protected virtual bool CanUnregisterOnTile() => true;
+
+        protected abstract void UnregisterOnTile();
     }
 }

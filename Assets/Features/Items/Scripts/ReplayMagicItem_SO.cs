@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Features.Buildings.Scripts;
@@ -33,12 +34,12 @@ namespace Features.Items.Scripts
         
         public void OnCastInput(InputAction.CallbackContext context)
         {
-            _buildSequenceStateMachine.NextState();
+            _buildSequenceStateMachine.PreviousState();
         }
         
         public void OnInteractionInput(InputAction.CallbackContext context)
         {
-            _buildSequenceStateMachine.PreviousState();
+            _buildSequenceStateMachine.NextState();
         }
 
         public void OnInterruptCast(InputAction.CallbackContext context)
@@ -46,46 +47,103 @@ namespace Features.Items.Scripts
             _buildSequenceStateMachine.Cancel();
         }
 
-        //TODO: use case: building
-        //TODO: button e: next step | button q: go step back | button f: cancel building -> i need to set every single focus
-        //TODO: step 1: select building with a/d | if there is only one building -> skip
-        //TODO: step 2: position building inside kernel, if building smaller than kernel - use WASD | if building is 1x1 -> skip
-        //TODO: step 3: rotate building inside kernel with a/d | if building is 1x1 -> skip
-        //TODO: step 4: place building, if valid -> final check at the end -> after each change, visualisation will be updated, but user can go to next step
-        //TODO: use state machine? create interface for every single input!
-        
         //TODO: how to destroy a building -> there must be an entry und exit script on a building, that can be addressed!
+        //TODO: onPlacementComplete -> apply on position, only if valid
 
         public override bool TryCast(GameObject caster)
         {
+            //initialize values and check validity
+            var casterPosition = TileHelper.TransformPositionToInt2(caster.transform);
+            var tile = tileManager.GetTileAt(casterPosition);
+            var dropKernel = tileManager.GetTileKernelAt(casterPosition, kernelSize);
+            
+            if (!ScriptableObjectByType.TryGetByType(out List<BuildingRecipe> buildingRecipes)) return false;
+            var validBuildings = ParseValidBuildings(caster, dropKernel, buildingRecipes);
+            if (validBuildings.Count == 0) return false;
+            
+            //execute
+            validBuildings[0].SetActive(true);
+            SetBuildingFocus(caster);
+            InitializeBuildSequenceStateMachine(caster, dropKernel, tile, validBuildings);
+            return true;
+        }
+
+        private List<GameObject> ParseValidBuildings(GameObject caster, Tile[,] dropKernel, List<BuildingRecipe> buildingRecipes)
+        {
+            var validBuildings = new List<GameObject>();
+            foreach (var instantiatedObject in from buildingRecipe in buildingRecipes
+                     where IsRecipeFit(CreateKernelItemCountPairs(dropKernel), buildingRecipe) &&
+                           kernelSize >= buildingRecipe.requiredBuildingKernelSize
+                     select Instantiate(buildingRecipe.building, caster.transform.position, Quaternion.identity))
+            {
+                instantiatedObject.SetActive(false);
+                validBuildings.Add(instantiatedObject);
+            }
+
+            return validBuildings;
+        }
+        
+        private void SetBuildingFocus(GameObject caster)
+        {
+            caster.SetActive(false);
             directionInputFocus.SetFocus(this);
             interactionInputFocus.SetFocus(this);
             castInputFocus.SetFocus(this);
-            var dropKernel = tileManager.GetTileKernelAt(TileHelper.TransformPositionToInt2(caster.transform), kernelSize);
-            
-            if (!ScriptableObjectByType.TryGetByType(out List<BuildingRecipe> buildingRecipes)) return false;
-
-            var validBuildings = new List<GameObject>();
-            foreach (var buildingRecipe in buildingRecipes)
-            {
-                if (IsRecipeFit(CreateKernelItemCountPairs(dropKernel), buildingRecipe))
-                {
-                    Debug.Log(buildingRecipe);
-                    var instantiatedObject = Instantiate(buildingRecipe.building, caster.transform.position, Quaternion.identity);
-                    instantiatedObject.SetActive(false);
-                    validBuildings.Add(instantiatedObject);
-                    //TODO: onPlacementPerformed -> event for destroying all items on those slots
-                    //TODO: onBuildingDestroyed -> event for what happens, if building got destroyed
-                }
-            }
-            validBuildings[0].SetActive(true);
-            caster.SetActive(false);
-
-            _buildSequenceStateMachine = new BuildSequenceStateMachine(new BuildingSelectionSequenceState(tileManager, validBuildings, dropKernel), () => {}, () => {});
-            
-            return true;
         }
-        
+
+        private void RestoreBuildingFocus(GameObject caster)
+        {
+            caster.SetActive(true);
+            directionInputFocus.Restore();
+            interactionInputFocus.Restore();
+            castInputFocus.Restore();
+        }
+
+        private void InitializeBuildSequenceStateMachine(GameObject caster, Tile[,] dropKernel, Tile tile, List<GameObject> validBuildings)
+        {
+            var onSequenceComplete = new Action<GameObject>(selectedBuilding =>
+            {
+                tile.ExchangeFirstTileInteractableOfType<ItemTileInteractable>(new EmptyItemTileInteractable(tile));
+                
+                RestoreBuildingFocus(caster);
+
+                validBuildings.Remove(selectedBuilding);
+                DestroyAllBuildings(validBuildings);
+                
+                foreach (var baseTileRegistrator in selectedBuilding.GetComponentsInChildren<BaseTileRegistrator>())
+                {
+                    baseTileRegistrator.RegisterOnTile();
+                }
+            });
+
+            var onCancelSequence = new Action(() =>
+            {
+                Debug.Log("cancel sequence");
+                RestoreBuildingFocus(caster);
+                DestroyAllBuildings(validBuildings);
+            });
+            
+            IBuildSequenceState entrySequenceState;
+            if (validBuildings.Count == 1)
+            {
+                entrySequenceState = new BuildingPlacementSequenceState(tileManager, validBuildings, 0, dropKernel);
+            }
+            else
+            {
+                entrySequenceState = new BuildingSelectionSequenceState(tileManager, validBuildings, dropKernel);
+                
+            }
+            _buildSequenceStateMachine = new BuildSequenceStateMachine(entrySequenceState, onSequenceComplete, onCancelSequence);
+        }
+
+        private void DestroyAllBuildings(List<GameObject> validBuildings)
+        {
+            for (var i = validBuildings.Count - 1; i >= 0; i--)
+            {
+                Destroy(validBuildings[i]);
+            }
+        }
+
         private Dictionary<BaseItem_SO, int> CreateKernelItemCountPairs(Tile[,] tileKernel)
         {
             var itemCountPairs = new Dictionary<BaseItem_SO, int>();

@@ -14,6 +14,7 @@ namespace Features.Character.Scripts.Magic
     {
         [SerializeField] private TileManager tileManager;
         [SerializeField] private BaseItem_SO droppedItemOnDestroy;
+        [SerializeField] private GameObject originVisualisationPrefab;
         
         [Header("Character Focus")]
         [SerializeField] private SkeletonFocus skeletonFocus;
@@ -25,17 +26,20 @@ namespace Features.Character.Scripts.Magic
         [SerializeField] private CastInputFocus castInputFocus;
 
         private Vector3Int _originPosition;
-    
+        private GameObject _instantiatedOriginVisualizationPrefab;
+        
         private void Awake()
         {
             _originPosition = TileHelper.TransformPositionToVector3Int(transform);
-            
+
+            _instantiatedOriginVisualizationPrefab = Instantiate(originVisualisationPrefab, transform.position, Quaternion.identity);
             InitializeFocus(gameObject);
             InitializeRecording(gameObject);
         }
 
         public override void OnCastInput(InputAction.CallbackContext context)
         {
+            Destroy(_instantiatedOriginVisualizationPrefab);
             SetLoop();
         }
 
@@ -67,6 +71,11 @@ namespace Features.Character.Scripts.Magic
                 if (skeletonFocus.ContainsFocus())
                 {
                     ResetFocus();
+                }
+
+                if (_instantiatedOriginVisualizationPrefab != null)
+                {
+                    Destroy(_instantiatedOriginVisualizationPrefab);
                 }
 
                 DropItem(instantiatedPrefab.transform);
@@ -106,6 +115,7 @@ namespace Features.Character.Scripts.Magic
         {
             var isLoop = _originPosition == TileHelper.TransformPositionToVector3Int(transform);
             ReplayManager.Instance.StartReplay(skeletonFocus.GetFocus(), isLoop);
+            ResetFocus();
         }
     }
 }

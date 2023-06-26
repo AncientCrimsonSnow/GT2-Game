@@ -41,10 +41,8 @@ namespace Features.Items.Scripts
         public override bool TryCast(GameObject caster)
         {
             if (!Tile.ItemContainer.CanDestroyItem(1)) return false;
-            if (!Tile.ItemContainer.ContainedBaseItem.TryCast(caster)) return false;
             
-            Tile.ExchangeFirstTileInteractableOfType<ItemTileInteractable>(new EmptyItemTileInteractable(Tile));
-            return true;
+            return Tile.ItemContainer.ContainedBaseItem.TryCast(caster);
         }
     }
 }

@@ -21,13 +21,13 @@ public class BuildingRotationSequenceState : IBuildSequenceState
         _buildArea = buildArea;
     }
 
-    public bool TryGetNext(out IBuildSequenceState nextState)
+    public bool TryCompleteSequence(out IBuildSequenceState nextState)
     {
         nextState = default;
-        if (!BuildingPlacementIsValid(_validBuildings[_selectedIndex])) return false;
+        if (BuildingPlacementIsValid(_validBuildings[_selectedIndex])) return true;
         
         nextState = this;
-        return true;
+        return false;
     }
 
     public bool TryGetPrevious(out IBuildSequenceState nextState)
@@ -38,8 +38,6 @@ public class BuildingRotationSequenceState : IBuildSequenceState
 
     public void OnPerform(InputAction.CallbackContext context)
     {
-        //TODO: rotation orientates itself towards world position zero
-        
         var inputVector = context.ReadValue<Vector2>();
 
         var interactables = _validBuildings[_selectedIndex].GetComponentsInChildren<BaseTileRegistrator>();
@@ -47,15 +45,15 @@ public class BuildingRotationSequenceState : IBuildSequenceState
         var position = new int2();
         position = interactables.Aggregate(position, (current, interactable) => current + _tileManager.GetTileAt(TileHelper.TransformPositionToInt2(interactable.transform))
             .WorldPosition);
-        position /= interactables.Length;
+        var newPosition = new Vector3(position.x / (float)interactables.Length, 0, position.y / (float)interactables.Length);
 
         if (inputVector == Vector2.left)
         {
-            Rotate(-90, new Vector3(position.x, 0, position.y));
+            Rotate(-90, newPosition);
         }
         else if (inputVector == Vector2.right)
         {
-            Rotate(90, new Vector3(position.x, 0, position.y));
+            Rotate(90, newPosition);
         }
         
         if (BuildingPlacementIsValid(_validBuildings[_selectedIndex]))
@@ -63,7 +61,12 @@ public class BuildingRotationSequenceState : IBuildSequenceState
             Debug.Log("CanBuild");
         }
     }
-    
+
+    public GameObject GetSelectedObject()
+    {
+        return _validBuildings[_selectedIndex];
+    }
+
     private void Rotate(float angle, Vector3 rotateAround)
     {
         _validBuildings[_selectedIndex].transform.RotateAround(rotateAround, Vector3.up, angle);

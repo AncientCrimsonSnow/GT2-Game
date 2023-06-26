@@ -4,12 +4,12 @@ using UnityEngine.InputSystem;
 
 public class BuildSequenceStateMachine
 {
-    private readonly Action _onSequenceComplete;
+    private readonly Action<GameObject> _onSequenceComplete;
     private readonly Action _onCancelSequence;
     private IBuildSequenceState _currentState;
     private bool _sequenceComplete;
 
-    public BuildSequenceStateMachine(IBuildSequenceState entrySequenceState, Action onSequenceComplete, Action onCancelSequence)
+    public BuildSequenceStateMachine(IBuildSequenceState entrySequenceState, Action<GameObject> onSequenceComplete, Action onCancelSequence)
     {
         _currentState = entrySequenceState;
         _onSequenceComplete = onSequenceComplete;
@@ -25,21 +25,26 @@ public class BuildSequenceStateMachine
             Debug.Log(previousSequenceState);
             _currentState = previousSequenceState;
         }
+        else
+        {
+            Cancel();
+        }
     }
 
     public void NextState()
     {
         if (_sequenceComplete) return;
 
-        if (_currentState.TryGetNext(out var nextSequenceState))
+        if (_currentState.TryCompleteSequence(out var nextSequenceState))
         {
-            Debug.Log(nextSequenceState);
-            _currentState = nextSequenceState;
+            _onSequenceComplete?.Invoke(_currentState.GetSelectedObject());
+            _sequenceComplete = true;
+            _currentState = null;
         }
         else
         {
-            _onSequenceComplete?.Invoke();
-            _sequenceComplete = true;
+            Debug.Log(nextSequenceState);
+            _currentState = nextSequenceState;
         }
     }
 
@@ -49,6 +54,7 @@ public class BuildSequenceStateMachine
         
         _onCancelSequence?.Invoke();
         _sequenceComplete = true;
+        _currentState = null;
     }
 
     public void Perform(InputAction.CallbackContext context)

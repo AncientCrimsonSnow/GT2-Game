@@ -14,14 +14,14 @@ namespace Features.TileSystem.Scripts.Registrator
 
         private ITileInteractable _tileInteractable;
 
-        public override void RegisterOnTile()
+        protected override void InternalRegisterOnTile()
         {
             var tileComponent = new PointerResourceGeneratorTileInteractable(Tile, isMovable, pointerRegistrator.Tile, baseItemLoot, craftAmount);
             Tile.RegisterTileInteractable(tileComponent);
             _tileInteractable = tileComponent;
         }
 
-        public override void UnregisterOnTile()
+        protected override void UnregisterOnTile()
         {
             Tile.UnregisterTileInteractable(_tileInteractable);
         }

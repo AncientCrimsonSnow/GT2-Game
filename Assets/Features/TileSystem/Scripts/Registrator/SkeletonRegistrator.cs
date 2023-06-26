@@ -5,26 +5,11 @@ public class SkeletonRegistrator : BaseTileRegistrator
 {
     [SerializeField] private GameObject skeletonToInstantiate;
 
-    private GameObject _instantiatedSkeleton;
-    
-    public override void RegisterOnTile()
+    protected override void InternalRegisterOnTile()
     {
-        /*
-        var internalTransform = transform;
-        _instantiatedSkeleton = Instantiate(skeletonToInstantiate, internalTransform.position, Quaternion.identity,
-            internalTransform);*/
+        Instantiate(skeletonToInstantiate, transform.position, Quaternion.identity);
+        Destroy(gameObject);
     }
 
-    public override void UnregisterOnTile()
-    {
-        /*
-        if (_instantiatedSkeleton != null)
-        {
-            Destroy(_instantiatedSkeleton);
-        }
-        else
-        {
-            Debug.Log("Skeleton already got destroyed");
-        }*/
-    }
+    protected override void UnregisterOnTile() { }
 }

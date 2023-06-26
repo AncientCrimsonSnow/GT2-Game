@@ -20,4 +20,4 @@ MonoBehaviour:
     type: 2}
   interactionInputFocus: {fileID: 11400000, guid: 2336b63a164002e4884c139ac9deda41,
     type: 2}
-  castInputFocus: {fileID: 11400000, guid: eec3e3054ef80274ab87f9dee2a5d97a, type: 2}
+  castInputFocus: {fileID: 11400000, guid: 34de74de615798744afafe8616be9db9, type: 2}

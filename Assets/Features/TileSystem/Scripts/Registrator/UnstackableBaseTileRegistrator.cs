@@ -18,19 +18,19 @@ namespace Features.TileSystem.Scripts.Registrator
             return _canBeUnregistered;
         }
 
-        public override void RegisterOnTile()
+        protected override void InternalRegisterOnTile()
         {
             ItemTileInteractable tileComponent = useThisGameObject ? new UnstackableItemTileInteractable(Tile, isMovable, baseItemType, gameObject) 
                 : new UnstackableItemTileInteractable(Tile, isMovable, baseItemType);
             Tile.ExchangeFirstTileInteractableOfType(tileComponent);
         }
 
-        public override bool CanUnregisterOnTile()
+        protected override bool CanUnregisterOnTile()
         {
             return Tile.ItemContainer.CanDestroyItem(1) && _canBeUnregistered;
         }
 
-        public override void UnregisterOnTile()
+        protected override void UnregisterOnTile()
         {
             Tile.ExchangeFirstTileInteractableOfType<ItemTileInteractable>(new EmptyItemTileInteractable(Tile));
         }

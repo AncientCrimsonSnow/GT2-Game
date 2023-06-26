@@ -21,7 +21,7 @@ namespace Features.TileSystem.Scripts.Registrator
             return _canBeUnregistered;
         }
 
-        public override void RegisterOnTile()
+        protected override void InternalRegisterOnTile()
         {
             Tile.ItemContainer.AddRegistratorStack();
             
@@ -33,12 +33,12 @@ namespace Features.TileSystem.Scripts.Registrator
             Tile.ExchangeFirstTileInteractableOfType(tileComponent);
         }
 
-        public override bool CanUnregisterOnTile()
+        protected override bool CanUnregisterOnTile()
         {
             return _canBeUnregistered;
         }
 
-        public override void UnregisterOnTile()
+        protected override void UnregisterOnTile()
         {
             Tile.ItemContainer.RemoveRegistratorStack();
             

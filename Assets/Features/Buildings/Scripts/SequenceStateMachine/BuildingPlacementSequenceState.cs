@@ -21,10 +21,10 @@ public class BuildingPlacementSequenceState : IBuildSequenceState
         _buildArea = buildArea;
     }
     
-    public bool TryGetNext(out IBuildSequenceState nextState)
+    public bool TryCompleteSequence(out IBuildSequenceState nextState)
     {
         nextState = new BuildingRotationSequenceState(_tileManager, _validBuildings, _selectedIndex, _buildArea);
-        return true;
+        return false;
     }
 
     public bool TryGetPrevious(out IBuildSequenceState nextState)
@@ -35,8 +35,6 @@ public class BuildingPlacementSequenceState : IBuildSequenceState
 
     public void OnPerform(InputAction.CallbackContext context)
     {
-        //TODO: not quite right yet
-        
         var inputVector = context.ReadValue<Vector2>();
         var movementInt2 = new int2((int)inputVector.x, (int)inputVector.y);
 
@@ -54,16 +52,21 @@ public class BuildingPlacementSequenceState : IBuildSequenceState
         }
     }
 
-    private bool CanBeMoved(Tile[,] buildingKernel, List<int2> buildArea, int2 movement)
+    public GameObject GetSelectedObject()
     {
-        var lowerBoundaryInclusive = buildingKernel[0, 0].ArrayPosition;
-        var higherXBoundaryExclusive = buildingKernel[buildingKernel.GetLength(0) - 1, 0].ArrayPosition.x;
-        var higherYBoundaryExclusive = buildingKernel[0, buildingKernel.GetLength(1) - 1].ArrayPosition.x;
+        return _validBuildings[_selectedIndex];
+    }
 
-        return buildArea
+    private bool CanBeMoved(Tile[,] buildArea, List<int2> buildingKernel, int2 movement)
+    {
+        var lowerBoundary = buildArea[0, 0].ArrayPosition;
+        var higherXBoundary = buildArea[buildArea.GetLength(0) - 1, 0].ArrayPosition.x;
+        var higherYBoundary = buildArea[0, buildArea.GetLength(1) - 1].ArrayPosition.y;
+
+        return buildingKernel
             .Select(tileArrayPosition => tileArrayPosition + movement)
-            .All(newPos => newPos.x >= lowerBoundaryInclusive.x && newPos.x < higherXBoundaryExclusive && 
-                           newPos.y >= lowerBoundaryInclusive.y && newPos.y < higherYBoundaryExclusive);
+            .All(newPos => newPos.x >= lowerBoundary.x && newPos.x <= higherXBoundary && 
+                           newPos.y >= lowerBoundary.y && newPos.y <= higherYBoundary);
     }
     
     private bool BuildingPlacementIsValid(GameObject building)

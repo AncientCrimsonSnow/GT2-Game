@@ -17,3 +17,4 @@ MonoBehaviour:
     requiredCount: 1
   building: {fileID: 3783118011973604103, guid: 3cea23999a4d6d541a82b44148273e41,
     type: 3}
+  requiredBuildingKernelSize: 1

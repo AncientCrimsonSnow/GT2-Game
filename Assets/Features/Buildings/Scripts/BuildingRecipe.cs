@@ -10,6 +10,7 @@ namespace Features.Buildings.Scripts
     {
         public List<RecipeData> recipeData;
         public GameObject building;
+        public int requiredBuildingKernelSize;
     }
     
     [Serializable] 
