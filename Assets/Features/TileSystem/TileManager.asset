@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: TileManager
   m_EditorClassIdentifier: 
   mapSize:
-    x: 20
-    y: 20
+    x: 102
+    y: 102
   mapOrigin:
-    x: -10
-    y: -10
+    x: -51
+    y: -51

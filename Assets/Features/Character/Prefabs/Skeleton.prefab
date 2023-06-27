@@ -82,10 +82,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b29fd2623665454ca942b330133eb3a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  keepItemOnDrop: 1
+  keepItemOnDrop: 0
   heldBaseItemAtAwake: {fileID: 11400000, guid: 1b4ad7d3054f0db499c931667a74671d,
     type: 2}
-  takeItemAtAwake: 1
+  takeItemAtAwake: 0
 --- !u!114 &2432906570973151577
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -34,6 +34,13 @@ public class BuildingPlacementSequenceState : IBuildSequenceState
             kernelTile.ItemContainer.SetActive(false);
             foundRecipeData.requiredCount--;
         }
+
+        var buildVisualization = _validBuildings[_selectedIndex].InstantiatedBuilding.GetComponentInChildren<BuildVisualization>();
+        if (buildVisualization != null)
+        {
+            buildVisualization.EnableMovement();
+            buildVisualization.SetAllColor(BuildingPlacementIsValid(_validBuildings[_selectedIndex].InstantiatedBuilding));
+        }
     }
     
     public bool TryCompleteSequence(out IBuildSequenceState nextState)
@@ -67,9 +74,11 @@ public class BuildingPlacementSequenceState : IBuildSequenceState
         if (!CanBeMoved(_buildArea, buildingPositions, movementInt2)) return;
         
         _validBuildings[_selectedIndex].InstantiatedBuilding.transform.position += new Vector3(inputVector.x, 0, inputVector.y);
-        if (BuildingPlacementIsValid(_validBuildings[_selectedIndex].InstantiatedBuilding))
+        
+        var buildVisualization = _validBuildings[_selectedIndex].InstantiatedBuilding.GetComponentInChildren<BuildVisualization>();
+        if (buildVisualization != null)
         {
-            Debug.Log("CanBuild");
+            buildVisualization.SetAllColor(BuildingPlacementIsValid(_validBuildings[_selectedIndex].InstantiatedBuilding));
         }
     }
 

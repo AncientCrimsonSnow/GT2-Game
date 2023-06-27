@@ -22,7 +22,6 @@ namespace Features.Items.Scripts
         [SerializeField] private InteractionInputFocus interactionInputFocus;
         [SerializeField] private CastInputFocus castInputFocus;
 
-        
         private BuildSequenceStateMachine _buildSequenceStateMachine;
         
         public void OnDirectionInput(InputAction.CallbackContext context)
@@ -34,12 +33,12 @@ namespace Features.Items.Scripts
         
         public void OnCastInput(InputAction.CallbackContext context)
         {
-            _buildSequenceStateMachine.PreviousState();
+            _buildSequenceStateMachine.NextState();
         }
         
         public void OnInteractionInput(InputAction.CallbackContext context)
         {
-            _buildSequenceStateMachine.NextState();
+            _buildSequenceStateMachine.PreviousState();
         }
 
         public void OnInterruptCast(InputAction.CallbackContext context)

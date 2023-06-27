@@ -1,5 +1,12 @@
 {
   "dependencies": {
+    "com.madsbangh.easybuttons": {
+      "version": "https://github.com/madsbangh/EasyButtons.git#upm",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "4854b65a98b89882dd5c3ee480aa09b7f94cff5d"
+    },
     "com.unity.burst": {
       "version": "1.8.2",
       "depth": 1,

@@ -20,6 +20,13 @@ public class BuildingSelectionSequenceState : IBuildSequenceState
         _validBuildings = validBuildings;
         _buildArea = buildArea;
         _currentIndex = selectedIndex;
+
+        var buildVisualization = _validBuildings[_currentIndex].InstantiatedBuilding.GetComponentInChildren<BuildVisualization>();
+        if (buildVisualization != null)
+        {
+            buildVisualization.EnableSelection();
+            buildVisualization.SetAllColor(BuildingPlacementIsValid(_validBuildings[_currentIndex].InstantiatedBuilding));
+        }
     } 
     
     public bool TryCompleteSequence(out IBuildSequenceState nextState)
@@ -47,11 +54,6 @@ public class BuildingSelectionSequenceState : IBuildSequenceState
                 SetNewIndex(1);
                 break;
         }
-
-        if (BuildingPlacementIsValid(_validBuildings[_currentIndex].InstantiatedBuilding))
-        {
-            //Debug.Log("CanBuild");
-        }
     }
 
     public BuildData GetSelectedObject()
@@ -76,6 +78,13 @@ public class BuildingSelectionSequenceState : IBuildSequenceState
         }
             
         _validBuildings[_currentIndex].InstantiatedBuilding.SetActive(true);
+        
+        var buildVisualization = _validBuildings[_currentIndex].InstantiatedBuilding.GetComponentInChildren<BuildVisualization>();
+        if (buildVisualization != null)
+        {
+            buildVisualization.EnableSelection();
+            buildVisualization.SetAllColor(BuildingPlacementIsValid(_validBuildings[_currentIndex].InstantiatedBuilding));
+        }
     }
     
     private bool BuildingPlacementIsValid(GameObject building)

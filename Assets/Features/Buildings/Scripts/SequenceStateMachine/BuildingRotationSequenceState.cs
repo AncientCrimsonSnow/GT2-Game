@@ -20,6 +20,13 @@ public class BuildingRotationSequenceState : IBuildSequenceState
         _validBuildings = validBuildings;
         _selectedIndex = selectedIndex;
         _buildArea = buildArea;
+        
+        var buildVisualization = _validBuildings[_selectedIndex].InstantiatedBuilding.GetComponentInChildren<BuildVisualization>();
+        if (buildVisualization != null)
+        {
+            buildVisualization.EnableRotation();
+            buildVisualization.SetAllColor(BuildingPlacementIsValid(_validBuildings[_selectedIndex].InstantiatedBuilding));
+        }
     }
 
     public bool TryCompleteSequence(out IBuildSequenceState nextState)
@@ -57,9 +64,10 @@ public class BuildingRotationSequenceState : IBuildSequenceState
             Rotate(90, newPosition);
         }
         
-        if (BuildingPlacementIsValid(_validBuildings[_selectedIndex].InstantiatedBuilding))
+        var buildVisualization = _validBuildings[_selectedIndex].InstantiatedBuilding.GetComponentInChildren<BuildVisualization>();
+        if (buildVisualization != null)
         {
-            Debug.Log("CanBuild");
+            buildVisualization.SetAllColor(BuildingPlacementIsValid(_validBuildings[_selectedIndex].InstantiatedBuilding));
         }
     }
 
