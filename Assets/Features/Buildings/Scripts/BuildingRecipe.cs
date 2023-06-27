@@ -14,7 +14,7 @@ namespace Features.Buildings.Scripts
     }
     
     [Serializable] 
-    public class RecipeData
+    public struct RecipeData
     {
         public BaseItem_SO requiredItem;
         public int requiredCount;

@@ -1,3 +1,4 @@
+using Features.Items.Scripts;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -9,5 +10,5 @@ public interface IBuildSequenceState
 
     public void OnPerform(InputAction.CallbackContext context);
 
-    public GameObject GetSelectedObject();
+    public BuildData GetSelectedObject();
 }

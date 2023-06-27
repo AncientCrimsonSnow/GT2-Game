@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using Features.Items.Scripts;
 using Features.TileSystem.Scripts;
 using Features.TileSystem.Scripts.Registrator;
 using Unity.Mathematics;
@@ -9,16 +10,30 @@ using UnityEngine.InputSystem;
 public class BuildingPlacementSequenceState : IBuildSequenceState
 {
     private readonly TileManager _tileManager;
-    private readonly List<GameObject> _validBuildings;
+    private readonly List<BuildData> _validBuildings;
     private readonly int _selectedIndex;
     private readonly Tile[,] _buildArea;
 
-    public BuildingPlacementSequenceState(TileManager tileManager, List<GameObject> validBuildings, int selectedIndex, Tile[,] buildArea)
+    public BuildingPlacementSequenceState(TileManager tileManager, List<BuildData> validBuildings, int selectedIndex, Tile[,] buildArea)
     {
         _tileManager = tileManager;
         _validBuildings = validBuildings;
         _selectedIndex = selectedIndex;
         _buildArea = buildArea;
+        
+        foreach (var kernelTile in buildArea)
+        {
+            if (!kernelTile.ItemContainer.ContainsItem() || !kernelTile.ContainsTileInteractableOfType<UnstackableItemTileInteractable>()) continue;
+                    
+            var foundRecipeData = validBuildings[selectedIndex].RecipeData.Find(x =>
+                x.requiredItem == kernelTile.ItemContainer.ContainedBaseItem);
+
+            if (foundRecipeData is not { requiredCount: > 0 }) continue;
+            
+            validBuildings[selectedIndex].ObjectsToDestroy.Add(kernelTile);
+            kernelTile.ItemContainer.SetActive(false);
+            foundRecipeData.requiredCount--;
+        }
     }
     
     public bool TryCompleteSequence(out IBuildSequenceState nextState)
@@ -29,6 +44,12 @@ public class BuildingPlacementSequenceState : IBuildSequenceState
 
     public bool TryGetPrevious(out IBuildSequenceState nextState)
     {
+        foreach (var tile in _validBuildings[_selectedIndex].ObjectsToDestroy)
+        {
+            tile.ItemContainer.SetActive(true);
+        }
+        _validBuildings[_selectedIndex].ObjectsToDestroy.Clear();
+        
         nextState = new BuildingSelectionSequenceState(_tileManager, _validBuildings, _buildArea);
         return true;
     }
@@ -38,21 +59,21 @@ public class BuildingPlacementSequenceState : IBuildSequenceState
         var inputVector = context.ReadValue<Vector2>();
         var movementInt2 = new int2((int)inputVector.x, (int)inputVector.y);
 
-        var interactables = _validBuildings[_selectedIndex].GetComponentsInChildren<BaseTileRegistrator>();
+        var interactables = _validBuildings[_selectedIndex].InstantiatedBuilding.GetComponentsInChildren<BaseTileRegistrator>();
         var buildingPositions = interactables
             .Select(interactable => _tileManager.GetTileAt(TileHelper.TransformPositionToInt2(interactable.transform)).ArrayPosition)
             .ToList();
 
         if (!CanBeMoved(_buildArea, buildingPositions, movementInt2)) return;
         
-        _validBuildings[_selectedIndex].transform.position += new Vector3(inputVector.x, 0, inputVector.y);
-        if (BuildingPlacementIsValid(_validBuildings[_selectedIndex]))
+        _validBuildings[_selectedIndex].InstantiatedBuilding.transform.position += new Vector3(inputVector.x, 0, inputVector.y);
+        if (BuildingPlacementIsValid(_validBuildings[_selectedIndex].InstantiatedBuilding))
         {
             Debug.Log("CanBuild");
         }
     }
 
-    public GameObject GetSelectedObject()
+    public BuildData GetSelectedObject()
     {
         return _validBuildings[_selectedIndex];
     }

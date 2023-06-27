@@ -40,8 +40,6 @@ namespace Features.Items.Scripts
 
         public override bool TryCast(GameObject caster)
         {
-            if (!Tile.ItemContainer.CanDestroyItem(1)) return false;
-            
             return Tile.ItemContainer.ContainedBaseItem.TryCast(caster);
         }
     }

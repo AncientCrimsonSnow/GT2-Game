@@ -18,6 +18,11 @@ namespace Features.Items.Scripts
         {
             _tile = tile;
         }
+
+        public void SetActive(bool isActive)
+        {
+            _instantiatedGameObject.SetActive(isActive);
+        }
         
         public bool ContainsItem()
         {

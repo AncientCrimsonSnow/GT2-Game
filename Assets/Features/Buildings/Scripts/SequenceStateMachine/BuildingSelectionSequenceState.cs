@@ -1,6 +1,7 @@
 ﻿
 using System.Collections.Generic;
 using System.Linq;
+using Features.Items.Scripts;
 using Features.TileSystem.Scripts;
 using Features.TileSystem.Scripts.Registrator;
 using UnityEngine;
@@ -9,11 +10,11 @@ using UnityEngine.InputSystem;
 public class BuildingSelectionSequenceState : IBuildSequenceState
 {
     private readonly TileManager _tileManager;
-    private readonly List<GameObject> _validBuildings;
+    private readonly List<BuildData> _validBuildings;
     private readonly Tile[,] _buildArea;
     private int _currentIndex;
 
-    public BuildingSelectionSequenceState(TileManager tileManager, List<GameObject> validBuildings, Tile[,] buildArea, int selectedIndex = 0)
+    public BuildingSelectionSequenceState(TileManager tileManager, List<BuildData> validBuildings, Tile[,] buildArea, int selectedIndex = 0)
     {
         _tileManager = tileManager;
         _validBuildings = validBuildings;
@@ -47,20 +48,20 @@ public class BuildingSelectionSequenceState : IBuildSequenceState
                 break;
         }
 
-        if (BuildingPlacementIsValid(_validBuildings[_currentIndex]))
+        if (BuildingPlacementIsValid(_validBuildings[_currentIndex].InstantiatedBuilding))
         {
             //Debug.Log("CanBuild");
         }
     }
 
-    public GameObject GetSelectedObject()
+    public BuildData GetSelectedObject()
     {
         return _validBuildings[_currentIndex];
     }
 
     private void SetNewIndex(int addition)
     {
-        _validBuildings[_currentIndex].SetActive(false);
+        _validBuildings[_currentIndex].InstantiatedBuilding.SetActive(false);
             
         _currentIndex += addition;
 
@@ -74,7 +75,7 @@ public class BuildingSelectionSequenceState : IBuildSequenceState
             _currentIndex = _validBuildings.Count - 1;
         }
             
-        _validBuildings[_currentIndex].SetActive(true);
+        _validBuildings[_currentIndex].InstantiatedBuilding.SetActive(true);
     }
     
     private bool BuildingPlacementIsValid(GameObject building)

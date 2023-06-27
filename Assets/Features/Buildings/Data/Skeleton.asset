@@ -15,6 +15,6 @@ MonoBehaviour:
   recipeData:
   - requiredItem: {fileID: 11400000, guid: 2856e0fa757df554fa2e03cf94cc6e62, type: 2}
     requiredCount: 1
-  building: {fileID: 3783118011973604103, guid: 3cea23999a4d6d541a82b44148273e41,
+  building: {fileID: 4059865800037047371, guid: 3cea23999a4d6d541a82b44148273e41,
     type: 3}
   requiredBuildingKernelSize: 1

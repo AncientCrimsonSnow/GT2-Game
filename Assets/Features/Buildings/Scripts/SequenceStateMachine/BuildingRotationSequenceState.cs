@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using Features.Items.Scripts;
 using Features.TileSystem.Scripts;
 using Features.TileSystem.Scripts.Registrator;
 using Unity.Mathematics;
@@ -9,11 +10,11 @@ using UnityEngine.InputSystem;
 public class BuildingRotationSequenceState : IBuildSequenceState
 {
     private readonly TileManager _tileManager;
-    private readonly List<GameObject> _validBuildings;
+    private readonly List<BuildData> _validBuildings;
     private readonly int _selectedIndex;
     private readonly Tile[,] _buildArea;
 
-    public BuildingRotationSequenceState(TileManager tileManager, List<GameObject> validBuildings, int selectedIndex, Tile[,] buildArea)
+    public BuildingRotationSequenceState(TileManager tileManager, List<BuildData> validBuildings, int selectedIndex, Tile[,] buildArea)
     {
         _tileManager = tileManager;
         _validBuildings = validBuildings;
@@ -24,7 +25,7 @@ public class BuildingRotationSequenceState : IBuildSequenceState
     public bool TryCompleteSequence(out IBuildSequenceState nextState)
     {
         nextState = default;
-        if (BuildingPlacementIsValid(_validBuildings[_selectedIndex])) return true;
+        if (BuildingPlacementIsValid(_validBuildings[_selectedIndex].InstantiatedBuilding)) return true;
         
         nextState = this;
         return false;
@@ -40,7 +41,7 @@ public class BuildingRotationSequenceState : IBuildSequenceState
     {
         var inputVector = context.ReadValue<Vector2>();
 
-        var interactables = _validBuildings[_selectedIndex].GetComponentsInChildren<BaseTileRegistrator>();
+        var interactables = _validBuildings[_selectedIndex].InstantiatedBuilding.GetComponentsInChildren<BaseTileRegistrator>();
 
         var position = new int2();
         position = interactables.Aggregate(position, (current, interactable) => current + _tileManager.GetTileAt(TileHelper.TransformPositionToInt2(interactable.transform))
@@ -56,20 +57,20 @@ public class BuildingRotationSequenceState : IBuildSequenceState
             Rotate(90, newPosition);
         }
         
-        if (BuildingPlacementIsValid(_validBuildings[_selectedIndex]))
+        if (BuildingPlacementIsValid(_validBuildings[_selectedIndex].InstantiatedBuilding))
         {
             Debug.Log("CanBuild");
         }
     }
 
-    public GameObject GetSelectedObject()
+    public BuildData GetSelectedObject()
     {
         return _validBuildings[_selectedIndex];
     }
 
     private void Rotate(float angle, Vector3 rotateAround)
     {
-        _validBuildings[_selectedIndex].transform.RotateAround(rotateAround, Vector3.up, angle);
+        _validBuildings[_selectedIndex].InstantiatedBuilding.transform.RotateAround(rotateAround, Vector3.up, angle);
     }
     
     private bool BuildingPlacementIsValid(GameObject building)

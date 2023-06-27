@@ -14,7 +14,6 @@ namespace Features.Character.Scripts.Magic
         private BaseMovementInput _entryMovementInput;
         private bool _breakAutoTick;
 
-        #region figure this out
         private void Awake()
         {
             _breakAutoTick = breakAutoTicksEntry;
@@ -26,7 +25,6 @@ namespace Features.Character.Scripts.Magic
         
             ReplayManager.Instance.Tick();
         }
-        #endregion
 
         public override void OnCastInput(InputAction.CallbackContext context)
         {

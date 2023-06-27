@@ -54,7 +54,6 @@ namespace Features.Items.Scripts
         {
             //initialize values and check validity
             var casterPosition = TileHelper.TransformPositionToInt2(caster.transform);
-            var tile = tileManager.GetTileAt(casterPosition);
             var dropKernel = tileManager.GetTileKernelAt(casterPosition, kernelSize);
             
             if (!ScriptableObjectByType.TryGetByType(out List<BuildingRecipe> buildingRecipes)) return false;
@@ -62,55 +61,61 @@ namespace Features.Items.Scripts
             if (validBuildings.Count == 0) return false;
             
             //execute
-            validBuildings[0].SetActive(true);
-            SetBuildingFocus(caster);
-            InitializeBuildSequenceStateMachine(caster, dropKernel, tile, validBuildings);
+            validBuildings[0].InstantiatedBuilding.SetActive(true);
+            SetBuildingFocus();
+            InitializeBuildSequenceStateMachine(dropKernel, validBuildings);
             return true;
         }
 
-        private List<GameObject> ParseValidBuildings(GameObject caster, Tile[,] dropKernel, List<BuildingRecipe> buildingRecipes)
+        private List<BuildData> ParseValidBuildings(GameObject caster, Tile[,] dropKernel, List<BuildingRecipe> buildingRecipes)
         {
-            var validBuildings = new List<GameObject>();
-            foreach (var instantiatedObject in from buildingRecipe in buildingRecipes
-                     where IsRecipeFit(CreateKernelItemCountPairs(dropKernel), buildingRecipe) &&
-                           kernelSize >= buildingRecipe.requiredBuildingKernelSize
-                     select Instantiate(buildingRecipe.building, caster.transform.position, Quaternion.identity))
+            var validBuildings = new List<BuildData>();
+            
+            foreach (var buildingRecipe in buildingRecipes)
             {
-                instantiatedObject.SetActive(false);
-                validBuildings.Add(instantiatedObject);
+                if (IsRecipeFit(CreateKernelItemCountPairs(dropKernel), buildingRecipe) &&
+                    kernelSize >= buildingRecipe.requiredBuildingKernelSize)
+                {
+                    var instantiatedObject = Instantiate(buildingRecipe.building, caster.transform.position,
+                        Quaternion.identity);
+                    
+                    instantiatedObject.SetActive(false);
+                    validBuildings.Add(new BuildData(instantiatedObject, buildingRecipe.recipeData.ToList()));
+                }
             }
 
             return validBuildings;
         }
         
-        private void SetBuildingFocus(GameObject caster)
+        private void SetBuildingFocus()
         {
-            caster.SetActive(false);
             directionInputFocus.SetFocus(this);
             interactionInputFocus.SetFocus(this);
             castInputFocus.SetFocus(this);
         }
 
-        private void RestoreBuildingFocus(GameObject caster)
+        private void RestoreBuildingFocus()
         {
-            caster.SetActive(true);
             directionInputFocus.Restore();
             interactionInputFocus.Restore();
             castInputFocus.Restore();
         }
 
-        private void InitializeBuildSequenceStateMachine(GameObject caster, Tile[,] dropKernel, Tile tile, List<GameObject> validBuildings)
+        private void InitializeBuildSequenceStateMachine(Tile[,] dropKernel, List<BuildData> validBuildings)
         {
-            var onSequenceComplete = new Action<GameObject>(selectedBuilding =>
+            var onSequenceComplete = new Action<BuildData>(selectedBuilding =>
             {
-                tile.ExchangeFirstTileInteractableOfType<ItemTileInteractable>(new EmptyItemTileInteractable(tile));
-                
-                RestoreBuildingFocus(caster);
+                foreach (var tile in selectedBuilding.ObjectsToDestroy)
+                {
+                    tile.ExchangeFirstTileInteractableOfType<ItemTileInteractable>(new EmptyItemTileInteractable(tile));
+                }
 
-                validBuildings.Remove(selectedBuilding);
+                RestoreBuildingFocus();
+                
+                validBuildings.Remove(validBuildings.Find(x => x.InstantiatedBuilding == selectedBuilding.InstantiatedBuilding));
                 DestroyAllBuildings(validBuildings);
                 
-                foreach (var baseTileRegistrator in selectedBuilding.GetComponentsInChildren<BaseTileRegistrator>())
+                foreach (var baseTileRegistrator in selectedBuilding.InstantiatedBuilding.GetComponentsInChildren<BaseTileRegistrator>())
                 {
                     baseTileRegistrator.RegisterOnTile();
                 }
@@ -118,7 +123,7 @@ namespace Features.Items.Scripts
 
             var onCancelSequence = new Action(() =>
             {
-                RestoreBuildingFocus(caster);
+                RestoreBuildingFocus();
                 DestroyAllBuildings(validBuildings);
             });
             
@@ -135,11 +140,11 @@ namespace Features.Items.Scripts
             _buildSequenceStateMachine = new BuildSequenceStateMachine(entrySequenceState, onSequenceComplete, onCancelSequence);
         }
 
-        private void DestroyAllBuildings(List<GameObject> validBuildings)
+        private void DestroyAllBuildings(List<BuildData> validBuildings)
         {
             for (var i = validBuildings.Count - 1; i >= 0; i--)
             {
-                Destroy(validBuildings[i]);
+                Destroy(validBuildings[i].InstantiatedBuilding);
             }
         }
 
@@ -176,6 +181,20 @@ namespace Features.Items.Scripts
             }
             
             return true;
+        }
+    }
+
+    public class BuildData
+    {
+        public readonly GameObject InstantiatedBuilding;
+        public readonly List<RecipeData> RecipeData;
+        public readonly List<Tile> ObjectsToDestroy;
+
+        public BuildData(GameObject instantiatedBuilding, List<RecipeData> recipeData)
+        {
+            ObjectsToDestroy = new List<Tile>();
+            InstantiatedBuilding = instantiatedBuilding;
+            RecipeData = recipeData;
         }
     }
 }
