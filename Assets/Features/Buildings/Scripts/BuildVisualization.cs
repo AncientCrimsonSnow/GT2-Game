@@ -23,7 +23,7 @@ public class BuildVisualization : MonoBehaviour
         rotation.color = color;
     }
 
-    private void DisableAll()
+    public void DisableAll()
     {
         selection.gameObject.SetActive(false);
         movement.gameObject.SetActive(false);

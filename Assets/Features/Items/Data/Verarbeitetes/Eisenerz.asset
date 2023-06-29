@@ -13,4 +13,5 @@ MonoBehaviour:
   m_Name: Eisenerz
   m_EditorClassIdentifier: 
   itemName: Eisenerz
-  prefab: {fileID: 8353975661546354772, guid: 2f4ccf94ab2b2294d9ef5e5293cc4757, type: 3}
+  prefab: {fileID: 8353975661546354772, guid: fb0efe7f8ea1b684194ee5e1e892ef00, type: 3}
+  itemValue: 1

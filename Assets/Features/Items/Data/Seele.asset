@@ -14,3 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemName: Seele
   prefab: {fileID: 8353975661546354772, guid: a1eaaf5aa24657442861695f1cec452c, type: 3}
+  itemValue: 10

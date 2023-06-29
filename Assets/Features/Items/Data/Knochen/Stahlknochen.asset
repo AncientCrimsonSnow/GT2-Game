@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemName: Stahlknochen
   prefab: {fileID: 8353975661546354772, guid: 2f4ccf94ab2b2294d9ef5e5293cc4757, type: 3}
+  itemValue: 20
   tileManager: {fileID: 11400000, guid: 250008992667b5e458c740568aa31544, type: 2}
   kernelSize: 4
   directionInputFocus: {fileID: 11400000, guid: eec3e3054ef80274ab87f9dee2a5d97a,

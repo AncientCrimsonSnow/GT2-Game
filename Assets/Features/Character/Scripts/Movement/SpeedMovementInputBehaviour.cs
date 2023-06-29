@@ -45,6 +45,9 @@ namespace Features.Character.Scripts.Movement
             var distance = Vector3.Distance(position, position + inputMovement);
             var movementTime = distance / movementSpeed;
             transform.DOMove(position + inputMovement, movementTime).SetEase(easeType);
+
+            transform.rotation =
+                Quaternion.LookRotation(new Vector3(_storedInputVector.x, transform.position.y, _storedInputVector.y));
         }
     
         private void SetMovementAnimation()

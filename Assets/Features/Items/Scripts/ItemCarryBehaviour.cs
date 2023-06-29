@@ -17,6 +17,10 @@ namespace Features.Items.Scripts
             {
                 CarriedBaseItem = heldBaseItemAtAwake;
             }
+            else
+            {
+                CarriedBaseItem = null;
+            }
         }
 
         protected override void OnDropItem()

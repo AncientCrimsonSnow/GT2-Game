@@ -1,10 +1,13 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
+using UnityEditor;
 using UnityEngine;
 
 namespace Features.Buildings.Scripts
 {
-    public class ScriptableObjectByType : ScriptableObject, ISerializationCallbackReceiver
+    public class ScriptableObjectByType : ScriptableObject
     {
         private static readonly Dictionary<Type, List<ScriptableObjectByType>> Entries =
             new Dictionary<Type, List<ScriptableObjectByType>>();
@@ -18,28 +21,23 @@ namespace Features.Buildings.Scripts
             output = scriptableObjectByTypes.ConvertAll(x => x as T);
             return true;
         }
-        
-        protected virtual void OnEnable()
+
+        private void Awake()
         {
             RegisterObject(this);
         }
 
-        protected virtual void OnDestroy()
+        private void OnEnable()
+        {
+            RegisterObject(this);
+        }
+
+        private void OnDestroy()
         {
             UnregisterObject(this);
         }
 
-        public virtual void OnAfterDeserialize()
-        {
-            RegisterObject(this);
-        }
-
-        public virtual void OnBeforeSerialize()
-        {
-            RegisterObject(this);
-        }
-
-        private static void RegisterObject(ScriptableObjectByType obj)
+        public static void RegisterObject(ScriptableObjectByType obj)
         {
             if (Entries.TryGetValue(obj.GetType(), out var existingList))
             {
@@ -54,7 +52,7 @@ namespace Features.Buildings.Scripts
             }
         }
 
-        private static void UnregisterObject(ScriptableObjectByType obj)
+        public static void UnregisterObject(ScriptableObjectByType obj)
         {
             if (!Entries.TryGetValue(obj.GetType(), out var existingList)) return;
         

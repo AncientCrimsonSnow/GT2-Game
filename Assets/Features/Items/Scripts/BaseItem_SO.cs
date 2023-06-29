@@ -7,6 +7,7 @@ namespace Features.Items.Scripts
     {
         public string itemName;
         public GameObject prefab;
+        public int itemValue;
 
         public virtual bool TryCast(GameObject caster)
         {

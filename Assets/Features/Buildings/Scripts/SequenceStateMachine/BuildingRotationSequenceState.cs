@@ -32,7 +32,16 @@ public class BuildingRotationSequenceState : IBuildSequenceState
     public bool TryCompleteSequence(out IBuildSequenceState nextState)
     {
         nextState = default;
-        if (BuildingPlacementIsValid(_validBuildings[_selectedIndex].InstantiatedBuilding)) return true;
+        if (BuildingPlacementIsValid(_validBuildings[_selectedIndex].InstantiatedBuilding))
+        {
+            var buildVisualization = _validBuildings[_selectedIndex].InstantiatedBuilding.GetComponentInChildren<BuildVisualization>();
+            if (buildVisualization != null)
+            {
+                buildVisualization.DisableAll();
+            }
+            
+            return true;
+        }
         
         nextState = this;
         return false;
