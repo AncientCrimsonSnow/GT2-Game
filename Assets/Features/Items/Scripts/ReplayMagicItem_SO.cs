@@ -1,199 +1,111 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using Features.Buildings.Scripts;
+using Features.Camera;
+using Features.Character.Scripts;
 using Features.Character.Scripts.Interaction;
 using Features.Character.Scripts.Magic;
 using Features.Character.Scripts.Movement;
+using Features.ReplaySystem;
 using Features.TileSystem.Scripts;
-using Features.TileSystem.Scripts.Registrator;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 namespace Features.Items.Scripts
 {
     [CreateAssetMenu]
-    public class ReplayMagicItem_SO : BaseItem_SO, IDirectionInput, ICastInput, IInteractInput
+    public class ReplayMagicItem_SO : BaseItem_SO
     {
         [SerializeField] private TileManager tileManager;
-        [SerializeField] private int kernelSize = 3;
-
+        [SerializeField] private GameObject magicInstantiationPrefab;
+        
+        [Header("Character Focus")]
+        [SerializeField] private SkeletonFocus skeletonFocus;
+        [SerializeField] private CinemachineVirtualCameraFocus cinemachineVirtualCameraFocus;
+        
+        [Header("Input Focus")]
         [SerializeField] private DirectionInputFocus directionInputFocus;
         [SerializeField] private InteractionInputFocus interactionInputFocus;
         [SerializeField] private CastInputFocus castInputFocus;
 
-        private BuildSequenceStateMachine _buildSequenceStateMachine;
+        private static readonly int IsCasting = Animator.StringToHash("isCasting");
         
-        public void OnDirectionInput(InputAction.CallbackContext context)
-        {
-            if (!context.started) return;
-            
-            _buildSequenceStateMachine.Perform(context);
-        }
-        
-        public void OnCastInput(InputAction.CallbackContext context)
-        {
-            _buildSequenceStateMachine.NextState();
-        }
-        
-        public void OnInteractionInput(InputAction.CallbackContext context)
-        {
-            _buildSequenceStateMachine.PreviousState();
-        }
-
-        public void OnInterruptCast(InputAction.CallbackContext context)
-        {
-            _buildSequenceStateMachine.Cancel();
-        }
-
-        //TODO: how to destroy a building -> there must be an entry und exit script on a building, that can be addressed!
-        //TODO: onPlacementComplete -> apply on position, only if valid
-
         public override bool TryCast(GameObject caster)
         {
-            //initialize values and check validity
-            var casterPosition = TileHelper.TransformPositionToInt2(caster.transform);
-            var dropKernel = tileManager.GetTileKernelAt(casterPosition, kernelSize);
+            if (skeletonFocus.ContainsFocus()) return false;
+
+            var tile = tileManager.GetTileAt(TileHelper.TransformPositionToInt2(caster.transform));
+            if (!tile.ContainsTileInteractableOfType<UnstackableItemTileInteractable>())
+            {
+                return false;
+            }
             
-            if (!ScriptableObjectByType.TryGetByType(out List<BuildingRecipe> buildingRecipes)) return false;
-            var validBuildings = ParseValidBuildings(caster, dropKernel, buildingRecipes);
-            if (validBuildings.Count == 0) return false;
-            
-            //execute
-            validBuildings[0].InstantiatedBuilding.SetActive(true);
-            SetBuildingFocus();
-            InitializeBuildSequenceStateMachine(dropKernel, validBuildings);
+            tile.ExchangeFirstTileInteractableOfType<ItemTileInteractable>(new EmptyItemTileInteractable(tile));
+
+            var vector3Int = TileHelper.TransformPositionToVector3Int(caster.transform);
+            var instantiatedPrefab = Instantiate(magicInstantiationPrefab, vector3Int, Quaternion.identity);
+            InitializeFocus(caster, instantiatedPrefab);
+            InitializeRecording(caster, instantiatedPrefab);
+
             return true;
         }
-
-        private List<BuildData> ParseValidBuildings(GameObject caster, Tile[,] dropKernel, List<BuildingRecipe> buildingRecipes)
+        
+        private void InitializeRecording(GameObject caster, GameObject instantiatedPrefab)
         {
-            var validBuildings = new List<BuildData>();
-            
-            foreach (var buildingRecipe in buildingRecipes)
+            var onReplayCompleteAction = new Action(() =>
             {
-                if (IsRecipeFit(CreateKernelItemCountPairs(dropKernel), buildingRecipe) &&
-                    kernelSize >= buildingRecipe.requiredBuildingKernelSize)
+                //destroy, if a record gets interrupted
+                if (skeletonFocus.ContainsFocus())
                 {
-                    var instantiatedObject = Instantiate(buildingRecipe.building, caster.transform.position,
-                        Quaternion.identity);
-                    
-                    instantiatedObject.SetActive(false);
-                    validBuildings.Add(new BuildData(instantiatedObject, buildingRecipe.recipeData.ToList()));
+                    ResetFocus(caster);
                 }
-            }
 
-            return validBuildings;
+                DropItem(instantiatedPrefab.transform);
+                ReplayManager.Instance.UnregisterReplayable(instantiatedPrefab);
+                Destroy(instantiatedPrefab);
+            });
+            
+            //the newestInstantiatedSkeleton must be buffered, because it will be null during replay
+            ReplayManager.Instance.InitializeRecording(skeletonFocus.GetFocus(), () => ResetFocus(caster), onReplayCompleteAction);
         }
         
-        private void SetBuildingFocus()
+        private void InitializeFocus(GameObject caster, GameObject instantiatedPrefab)
         {
-            directionInputFocus.SetFocus(this);
-            interactionInputFocus.SetFocus(this);
-            castInputFocus.SetFocus(this);
+            caster.GetComponentInChildren<Animator>().SetBool(IsCasting, true);
+            
+            directionInputFocus.SetCurrentAsRestore();
+            castInputFocus.SetCurrentAsRestore();
+            skeletonFocus.SetFocus(instantiatedPrefab);
+            cinemachineVirtualCameraFocus.SetFollow(instantiatedPrefab.transform).ApplyFollow();
+            directionInputFocus.SetFocus(instantiatedPrefab.GetComponent<BaseMovementInput>());
+            castInputFocus.SetFocus(instantiatedPrefab.GetComponent<BaseCastInput>());
+            interactionInputFocus.SetFocus(instantiatedPrefab.GetComponent<BaseInteractionInput>());
         }
 
-        private void RestoreBuildingFocus()
+        private void ResetFocus(GameObject caster)
         {
+            caster.GetComponentInChildren<Animator>().SetBool(IsCasting, false);
+            
             directionInputFocus.Restore();
             interactionInputFocus.Restore();
             castInputFocus.Restore();
+            cinemachineVirtualCameraFocus.RestoreFollow();
+            skeletonFocus.Restore();
         }
-
-        private void InitializeBuildSequenceStateMachine(Tile[,] dropKernel, List<BuildData> validBuildings)
+        
+        private void DropItem(Transform transform)
         {
-            var onSequenceComplete = new Action<BuildData>(selectedBuilding =>
-            {
-                foreach (var tile in selectedBuilding.ObjectsToDestroy)
-                {
-                    tile.ExchangeFirstTileInteractableOfType<ItemTileInteractable>(new EmptyItemTileInteractable(tile));
-                }
+            var worldPositionInt2 = TileHelper.TransformPositionToInt2(transform);
+            var foundTile = tileManager.SearchNearestTileByCondition(worldPositionInt2,
+                tile => tile.ContainsTileInteractableOfType<EmptyItemTileInteractable>() ||
+                        (tile.TryGetFirstTileInteractableOfType(out StackableItemTileInteractable _) &&
+                         tile.ItemContainer.ContainedBaseItem == this && tile.ItemContainer.CanAddItemCount(this, 1)));
 
-                RestoreBuildingFocus();
-                
-                validBuildings.Remove(validBuildings.Find(x => x.InstantiatedBuilding == selectedBuilding.InstantiatedBuilding));
-                DestroyAllBuildings(validBuildings);
-                
-                foreach (var baseTileRegistrator in selectedBuilding.InstantiatedBuilding.GetComponentsInChildren<BaseTileRegistrator>())
-                {
-                    baseTileRegistrator.RegisterOnTile();
-                }
-            });
-
-            var onCancelSequence = new Action(() =>
+            if (foundTile.ContainsTileInteractableOfType<EmptyItemTileInteractable>())
             {
-                RestoreBuildingFocus();
-                DestroyAllBuildings(validBuildings);
-            });
-            
-            IBuildSequenceState entrySequenceState;
-            if (validBuildings.Count == 1)
-            {
-                entrySequenceState = new BuildingPlacementSequenceState(tileManager, validBuildings, 0, dropKernel);
+                foundTile.ExchangeFirstTileInteractableOfType<ItemTileInteractable>(new UnstackableItemTileInteractable(foundTile, true, this));
             }
             else
             {
-                entrySequenceState = new BuildingSelectionSequenceState(tileManager, validBuildings, dropKernel);
-                
+                foundTile.ItemContainer.AddItemCount(this, 1);
             }
-            _buildSequenceStateMachine = new BuildSequenceStateMachine(entrySequenceState, onSequenceComplete, onCancelSequence);
-        }
-
-        private void DestroyAllBuildings(List<BuildData> validBuildings)
-        {
-            for (var i = validBuildings.Count - 1; i >= 0; i--)
-            {
-                Destroy(validBuildings[i].InstantiatedBuilding);
-            }
-        }
-
-        private Dictionary<BaseItem_SO, int> CreateKernelItemCountPairs(Tile[,] tileKernel)
-        {
-            var itemCountPairs = new Dictionary<BaseItem_SO, int>();
-
-            foreach (var tile in tileKernel)
-            {
-                if (!tile.ContainsTileInteractableOfType<UnstackableItemTileInteractable>()) continue;
-                
-                if (!itemCountPairs.ContainsKey(tile.ItemContainer.ContainedBaseItem))
-                {
-                    itemCountPairs.Add(tile.ItemContainer.ContainedBaseItem, 1);
-                }
-                else
-                {
-                    itemCountPairs[tile.ItemContainer.ContainedBaseItem]++;
-                }
-            }
-            
-            return itemCountPairs;
-        }
-        
-        private bool IsRecipeFit(Dictionary<BaseItem_SO, int> itemCountPairs, BuildingRecipe buildingRecipe)
-        {
-            foreach (var recipeData in buildingRecipe.recipeData)
-            {
-                if (!itemCountPairs.TryGetValue(recipeData.requiredItem, out int count) ||
-                    recipeData.requiredCount > count)
-                {
-                    return false;
-                }
-            }
-            
-            return true;
-        }
-    }
-
-    public class BuildData
-    {
-        public readonly GameObject InstantiatedBuilding;
-        public readonly List<RecipeData> RecipeData;
-        public readonly List<Tile> ObjectsToDestroy;
-
-        public BuildData(GameObject instantiatedBuilding, List<RecipeData> recipeData)
-        {
-            ObjectsToDestroy = new List<Tile>();
-            InstantiatedBuilding = instantiatedBuilding;
-            RecipeData = recipeData;
         }
     }
 }

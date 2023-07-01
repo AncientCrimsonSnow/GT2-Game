@@ -12,19 +12,21 @@ namespace Features.ReplaySystem
         public bool IsRecording { get; private set; }
         
         private readonly ReplayManager _replayManager;
+        private readonly Action _onRecordCompleteAction;
         private readonly List<IReplayOriginator> _replayOriginators;
         private readonly List<IInputSnapshot> _ticks;
         
         private int _currentIndex;
-        private readonly Action _onCompleteReplay;
+        private readonly Action _onReplayCompleteAction;
         private bool _isLoop;
         private bool _stopNextTick;
         
-        public ReplayController(ReplayManager replayManager, GameObject originatorGroup, Action onCompleteReplay)
+        public ReplayController(ReplayManager replayManager, GameObject originatorGroup, Action onRecordCompleteAction, Action onReplayCompleteAction)
         {
             OriginatorGameObject = originatorGroup;
             _replayManager = replayManager;
-            _onCompleteReplay = onCompleteReplay;
+            _onRecordCompleteAction = onRecordCompleteAction;
+            _onReplayCompleteAction = onReplayCompleteAction;
             _replayOriginators = new List<IReplayOriginator>();
             _ticks = new List<IInputSnapshot>();
             IsRecording = true;
@@ -50,6 +52,8 @@ namespace Features.ReplaySystem
         public void StartReplay(bool isLoop)
         {
             IsRecording = false;
+            
+            _onRecordCompleteAction?.Invoke();
 
             if (!isLoop)
             {
@@ -75,7 +79,7 @@ namespace Features.ReplaySystem
 
         public void StopReplay()
         {
-            _onCompleteReplay.Invoke();
+            _onReplayCompleteAction.Invoke();
         }
         
         private void PushNewTick(IInputSnapshot inputSnapshot)

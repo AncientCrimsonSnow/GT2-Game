@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8e047196de3cf084ba3569c256ff8aeb, type: 3}
+  m_Name: Replay_Knochen
+  m_EditorClassIdentifier: 
+  itemName: 
+  prefab: {fileID: 4059865800037047371, guid: 3cea23999a4d6d541a82b44148273e41, type: 3}
+  itemValue: 10
+  tileManager: {fileID: 11400000, guid: 250008992667b5e458c740568aa31544, type: 2}
+  magicInstantiationPrefab: {fileID: 3864702134253200536, guid: d9c48bd6f55a4f542b7fd7e23052957a,
+    type: 3}
+  skeletonFocus: {fileID: 11400000, guid: c331b643c11d29344b88a3e861edf8f9, type: 2}
+  cinemachineVirtualCameraFocus: {fileID: 11400000, guid: fec216cec1f7775458570390ba57e2cc,
+    type: 2}
+  directionInputFocus: {fileID: 11400000, guid: eec3e3054ef80274ab87f9dee2a5d97a,
+    type: 2}
+  interactionInputFocus: {fileID: 11400000, guid: 2336b63a164002e4884c139ac9deda41,
+    type: 2}
+  castInputFocus: {fileID: 11400000, guid: 34de74de615798744afafe8616be9db9, type: 2}

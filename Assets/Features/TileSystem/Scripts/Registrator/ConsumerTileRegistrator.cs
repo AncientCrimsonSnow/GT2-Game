@@ -16,7 +16,7 @@ public class ConsumerTileRegistrator : BaseTileRegistrator, IReplayOriginator
     protected override void InternalRegisterOnTile()
     {
         _replayManager = ReplayManager.Instance;
-        _replayManager.InitializeRecording(gameObject, () => { });
+        _replayManager.InitializeRecording(gameObject, () => { }, () => { });
         _replayManager.RegisterOriginator(gameObject, this);
         PushNewTick.Invoke(new ConsumerSnapshot(Tile));
         _replayManager.StartReplay(gameObject, true);

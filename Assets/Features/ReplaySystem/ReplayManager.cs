@@ -69,7 +69,7 @@ namespace Features.ReplaySystem
             AdvancedTicks++;
         }
 
-        public void InitializeRecording(GameObject originatorGameObject, Action onCompleteAction)
+        public void InitializeRecording(GameObject originatorGameObject, Action onRecordCompleteAction, Action onReplayCompleteAction)
         {
             if (_replayControllerList.Any(replayController => replayController.IsRecording))
             {
@@ -83,7 +83,7 @@ namespace Features.ReplaySystem
                 return;
             }
             
-            var replayController = new ReplayController(this, originatorGameObject, onCompleteAction.Invoke);
+            var replayController = new ReplayController(this, originatorGameObject, onRecordCompleteAction, onReplayCompleteAction);
             _replayControllerList.Add(replayController);
         }
         

@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using EasyButtons;
 using JetBrains.Annotations;
 using UnityEngine;

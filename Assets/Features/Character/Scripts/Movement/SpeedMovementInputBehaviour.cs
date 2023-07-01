@@ -7,22 +7,18 @@ namespace Features.Character.Scripts.Movement
 {
     public class SpeedMovementInputBehaviour : BaseMovementInput
     {
+        [SerializeField] private Animator animator;
         [SerializeField] private Ease easeType;
         [SerializeField] private float movementSpeed;
-        [SerializeField] private Animator animator;
     
+        private static readonly int IsMoving = Animator.StringToHash("isMoving");
+        
         private Vector2 _storedInputVector;
-    
-        //TODO: duplicate
-        private static readonly int MoveX = Animator.StringToHash("MoveX");
-        private static readonly int MoveZ = Animator.StringToHash("MoveZ");
-        private static readonly int LastMoveX = Animator.StringToHash("LastMoveX");
-        private static readonly int LastMoveZ = Animator.StringToHash("LastMoveZ");
 
-
-        private void Awake()
+        public override void OnDirectionInputFocusChanges()
         {
-            animator = GetComponent<Animator>();
+            Debug.Log("o/");
+            _storedInputVector = Vector2.zero;
         }
 
         public override void OnDirectionInput(InputAction.CallbackContext context)
@@ -32,10 +28,16 @@ namespace Features.Character.Scripts.Movement
 
         private void Update()
         {
-            if (DOTween.IsTweening(transform) || _storedInputVector == Vector2.zero) return;
+            if (DOTween.IsTweening(transform)) return;
 
+            if (_storedInputVector == Vector2.zero)
+            {
+                DisableMovementAnimation();
+                return;
+            }
+            
+            EnableMovementAnimation();
             TweenMove();
-            //SetMovementAnimation();
         }
     
         private void TweenMove()
@@ -49,17 +51,15 @@ namespace Features.Character.Scripts.Movement
             transform.rotation =
                 Quaternion.LookRotation(new Vector3(_storedInputVector.x, transform.position.y, _storedInputVector.y));
         }
-    
-        private void SetMovementAnimation()
+        
+        private void EnableMovementAnimation()
         {
-            //Set animation to movement
-            animator.SetFloat(MoveX, _storedInputVector.x);
-            animator.SetFloat(MoveZ, _storedInputVector.y);
+            animator.SetBool(IsMoving, true);
+        }
 
-            //Set the correct idle animation
-            if (_storedInputVector is { x: 0, y: 0 }) return;
-            animator.SetFloat(LastMoveX, _storedInputVector.x);
-            animator.SetFloat(LastMoveZ, _storedInputVector.y);
+        private void DisableMovementAnimation()
+        {
+            animator.SetBool(IsMoving, false);
         }
     }
 }
