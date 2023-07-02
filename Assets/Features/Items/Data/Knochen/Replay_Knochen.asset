@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Replay_Knochen
   m_EditorClassIdentifier: 
   itemName: 
-  prefab: {fileID: 4059865800037047371, guid: 3cea23999a4d6d541a82b44148273e41, type: 3}
+  prefab: {fileID: 4138201595417247617, guid: 7baafd9a370e2d84cbc97841e7ae9680, type: 3}
   itemValue: 10
   tileManager: {fileID: 11400000, guid: 250008992667b5e458c740568aa31544, type: 2}
   magicInstantiationPrefab: {fileID: 3864702134253200536, guid: d9c48bd6f55a4f542b7fd7e23052957a,

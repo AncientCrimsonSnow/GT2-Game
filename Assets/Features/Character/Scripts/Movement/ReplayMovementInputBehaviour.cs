@@ -17,6 +17,7 @@ namespace Features.Character.Scripts.Movement
         [SerializeField] private TileManager tileManager;
         [SerializeField, Layer] private int editorLayer;
         [SerializeField] private Ease easeType;
+        [SerializeField] private Animator animator;
     
         private Vector2 _storedInputVector;
 
@@ -44,11 +45,11 @@ namespace Features.Character.Scripts.Movement
 
             if (targetTile.IsMovable())
             {
-                PushNewTick.Invoke(new MovementInputSnapshot(transform, tileManager, _storedInputVector, easeType));
+                PushNewTick.Invoke(new MovementInputSnapshot(transform, animator, tileManager, _storedInputVector, easeType));
             }
             else
             {
-                PushNewTick.Invoke(new EmptySnapshot());
+                PushNewTick.Invoke(new RotationInputSnapshot(transform, _storedInputVector));
             }
         }
 

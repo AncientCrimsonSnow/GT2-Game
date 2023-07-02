@@ -17,7 +17,6 @@ namespace Features.Character.Scripts.Movement
 
         public override void OnDirectionInputFocusChanges()
         {
-            Debug.Log("o/");
             _storedInputVector = Vector2.zero;
         }
 

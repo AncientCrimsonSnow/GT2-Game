@@ -14,15 +14,13 @@ namespace Features.Character.Scripts.Movement
         private readonly Animator _animator;
         private readonly Vector2 _storedInputVector;
         private readonly Ease _easeType;
-    
-        private static readonly int MoveX = Animator.StringToHash("MoveX");
-        private static readonly int MoveZ = Animator.StringToHash("MoveZ");
-        private static readonly int LastMoveX = Animator.StringToHash("LastMoveX");
-        private static readonly int LastMoveZ = Animator.StringToHash("LastMoveZ");
+        
+        private static readonly int IsMoving = Animator.StringToHash("isMoving");
 
-        public MovementInputSnapshot(Transform transform, TileManager tileManager, Vector2 storedInputVector, Ease easeType)
+        public MovementInputSnapshot(Transform transform, Animator animator, TileManager tileManager, Vector2 storedInputVector, Ease easeType)
         {
             _transform = transform;
+            _animator = animator;
             _tileManager = tileManager;
             _storedInputVector = storedInputVector;
             _easeType = easeType;
@@ -32,15 +30,16 @@ namespace Features.Character.Scripts.Movement
         {
             var inputInt2 = new int2(Mathf.RoundToInt(_storedInputVector.x), Mathf.RoundToInt(_storedInputVector.y));
             var targetTile = _tileManager.GetTileAt(TileHelper.TransformPositionToInt2(_transform) + inputInt2);
-
+            
             if (targetTile.IsMovable())
             {
                 TweenMove(tickDurationInSeconds);
-                //SetMovementAnimation();
+                
+                _transform.rotation =
+                    Quaternion.LookRotation(new Vector3(_storedInputVector.x, _transform.position.y, _storedInputVector.y));
             }
             else
             {
-                //TODO: solve differently (to much singleton dependencies all over the place)
                 ReplayManager.Instance.StopReplayable(_transform.gameObject);
             }
         }
@@ -49,19 +48,10 @@ namespace Features.Character.Scripts.Movement
         {
             var inputMovement = new Vector3(_storedInputVector.x, 0, _storedInputVector.y);
             var position = TileHelper.TransformPositionToVector3Int(_transform);
-            _transform.DOMove(position + inputMovement, tickDurationInSeconds).SetEase(_easeType);
-        }
-    
-        private void SetMovementAnimation()
-        {
-            //Set animation to movement
-            _animator.SetFloat(MoveX, _storedInputVector.x);
-            _animator.SetFloat(MoveZ, _storedInputVector.y);
-
-            //Set the correct idle animation
-            if (_storedInputVector is { x: 0, y: 0 }) return;
-            _animator.SetFloat(LastMoveX, _storedInputVector.x);
-            _animator.SetFloat(LastMoveZ, _storedInputVector.y);
+            _transform.DOMove(position + inputMovement, tickDurationInSeconds)
+                .SetEase(_easeType)
+                .OnStart(() => _animator.SetBool(IsMoving, true))
+                .OnComplete(() => _animator.SetBool(IsMoving, false));
         }
     }
 }

@@ -12,12 +12,6 @@ namespace Features.Character.Scripts.Magic
     {
         [Header("Character Focus")]
         [SerializeField] private SkeletonFocus skeletonFocus;
-        [SerializeField] private CinemachineVirtualCameraFocus cinemachineVirtualCameraFocus;
-    
-        [Header("Input Focus")]
-        [SerializeField] private DirectionInputFocus movementInputFocus;
-        [SerializeField] private InteractionInputFocus interactionInputFocus;
-        [SerializeField] private CastInputFocus magicInputFocus;
 
         private Vector3Int _originPosition;
     
