@@ -1,14 +1,16 @@
 using Features.Items.Scripts;
-using UnityEngine;
 using UnityEngine.InputSystem;
 
-public interface IBuildSequenceState
+namespace Features.Buildings.Scripts.SequenceStateMachine
 {
-    public bool TryCompleteSequence(out IBuildSequenceState nextState);
+    public interface IBuildSequenceState
+    {
+        public bool TryCompleteSequence(out IBuildSequenceState nextState);
 
-    public bool TryGetPrevious(out IBuildSequenceState nextState);
+        public bool TryGetPrevious(out IBuildSequenceState nextState);
 
-    public void OnPerform(InputAction.CallbackContext context);
+        public void OnPerform(InputAction.CallbackContext context);
 
-    public BuildData GetSelectedObject();
+        public BuildData GetSelectedObject();
+    }
 }

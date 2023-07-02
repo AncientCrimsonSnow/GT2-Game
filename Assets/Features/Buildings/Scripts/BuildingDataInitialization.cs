@@ -1,16 +1,18 @@
 using System.Collections.Generic;
-using Features.Buildings.Scripts;
 using UnityEngine;
 
-public class BuildingDataInitialization : MonoBehaviour
+namespace Features.Buildings.Scripts
 {
-    [SerializeField] private List<ScriptableObjectByType> scriptableObjectByType;
-
-    private void Awake()
+    public class BuildingDataInitialization : MonoBehaviour
     {
-        foreach (var objectByType in scriptableObjectByType)
+        [SerializeField] private List<ScriptableObjectByType> scriptableObjectByType;
+
+        private void Awake()
         {
-            ScriptableObjectByType.RegisterObject(objectByType);
+            foreach (var objectByType in scriptableObjectByType)
+            {
+                ScriptableObjectByType.RegisterObject(objectByType);
+            }
         }
     }
 }

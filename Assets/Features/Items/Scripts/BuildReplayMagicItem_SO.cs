@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Features.Buildings.Scripts;
+using Features.Buildings.Scripts.SequenceStateMachine;
 using Features.Character.Scripts.Interaction;
 using Features.Character.Scripts.Magic;
 using Features.Character.Scripts.Movement;

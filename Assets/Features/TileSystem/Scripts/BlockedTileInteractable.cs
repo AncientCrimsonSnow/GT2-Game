@@ -1,22 +1,22 @@
-using System.Collections;
-using System.Collections.Generic;
-using Features.TileSystem.Scripts;
 using UnityEngine;
 
-public class BlockedTileInteractable : ITileInteractable
+namespace Features.TileSystem.Scripts
 {
-    public bool TryInteract(GameObject interactor)
+    public class BlockedTileInteractable : ITileInteractable
     {
-        return false;
-    }
+        public bool TryInteract(GameObject interactor)
+        {
+            return false;
+        }
 
-    public bool TryCast(GameObject caster)
-    {
-        return false;
-    }
+        public bool TryCast(GameObject caster)
+        {
+            return false;
+        }
 
-    public bool IsMovable()
-    {
-        return false;
+        public bool IsMovable()
+        {
+            return false;
+        }
     }
 }

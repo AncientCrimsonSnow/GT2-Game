@@ -1,15 +1,17 @@
-using Features.TileSystem.Scripts.Registrator;
 using UnityEngine;
 
-public class SkeletonRegistrator : BaseTileRegistrator
+namespace Features.TileSystem.Scripts.Registrator
 {
-    [SerializeField] private GameObject skeletonToInstantiate;
-
-    protected override void InternalRegisterOnTile()
+    public class SkeletonRegistrator : BaseTileRegistrator
     {
-        Instantiate(skeletonToInstantiate, transform.position, Quaternion.identity);
-        Destroy(gameObject);
-    }
+        [SerializeField] private GameObject skeletonToInstantiate;
 
-    protected override void UnregisterOnTile() { }
+        protected override void InternalRegisterOnTile()
+        {
+            Instantiate(skeletonToInstantiate, transform.position, Quaternion.identity);
+            Destroy(gameObject);
+        }
+
+        protected override void UnregisterOnTile() { }
+    }
 }

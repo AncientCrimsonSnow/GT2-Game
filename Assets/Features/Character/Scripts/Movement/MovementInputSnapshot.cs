@@ -11,16 +11,12 @@ namespace Features.Character.Scripts.Movement
     {
         private readonly Transform _transform;
         private readonly TileManager _tileManager;
-        private readonly Animator _animator;
         private readonly Vector2 _storedInputVector;
         private readonly Ease _easeType;
-        
-        private static readonly int IsMoving = Animator.StringToHash("isMoving");
 
-        public MovementInputSnapshot(Transform transform, Animator animator, TileManager tileManager, Vector2 storedInputVector, Ease easeType)
+        public MovementInputSnapshot(Transform transform, TileManager tileManager, Vector2 storedInputVector, Ease easeType)
         {
             _transform = transform;
-            _animator = animator;
             _tileManager = tileManager;
             _storedInputVector = storedInputVector;
             _easeType = easeType;
@@ -48,10 +44,7 @@ namespace Features.Character.Scripts.Movement
         {
             var inputMovement = new Vector3(_storedInputVector.x, 0, _storedInputVector.y);
             var position = TileHelper.TransformPositionToVector3Int(_transform);
-            _transform.DOMove(position + inputMovement, tickDurationInSeconds)
-                .SetEase(_easeType)
-                .OnStart(() => _animator.SetBool(IsMoving, true))
-                .OnComplete(() => _animator.SetBool(IsMoving, false));
+            _transform.DOMove(position + inputMovement, tickDurationInSeconds).SetEase(_easeType);
         }
     }
 }

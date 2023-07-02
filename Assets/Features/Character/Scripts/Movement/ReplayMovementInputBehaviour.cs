@@ -45,7 +45,7 @@ namespace Features.Character.Scripts.Movement
 
             if (targetTile.IsMovable())
             {
-                PushNewTick.Invoke(new MovementInputSnapshot(transform, animator, tileManager, _storedInputVector, easeType));
+                PushNewTick.Invoke(new MovementInputSnapshot(transform, tileManager, _storedInputVector, easeType));
             }
             else
             {

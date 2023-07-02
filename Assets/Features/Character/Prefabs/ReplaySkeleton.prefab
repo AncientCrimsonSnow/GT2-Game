@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5724755661199476466}
   - component: {fileID: 6660453748582372275}
+  - component: {fileID: 4005563181385370186}
   - component: {fileID: 2432906570973151577}
   - component: {fileID: 3137264507857338284}
   - component: {fileID: 3664282068094039969}
@@ -54,6 +55,19 @@ MonoBehaviour:
   heldBaseItemAtAwake: {fileID: 11400000, guid: 1b4ad7d3054f0db499c931667a74671d,
     type: 2}
   takeItemAtAwake: 0
+--- !u!114 &4005563181385370186
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3864702134253200536}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 786af49eb5186434888b83cb8eeb1850, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animator: {fileID: 2406174279606194161}
 --- !u!114 &2432906570973151577
 MonoBehaviour:
   m_ObjectHideFlags: 0

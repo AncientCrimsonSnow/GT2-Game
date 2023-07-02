@@ -1,31 +1,33 @@
-using Features.TileSystem.Scripts.Registrator;
 using UnityEngine;
 
-public class TileRegistratorGroup : MonoBehaviour
+namespace Features.TileSystem.Scripts.Registrator
 {
-    private BaseTileRegistrator[] BaseTileRegistrators { get; set; }
+    public class TileRegistratorGroup : MonoBehaviour
+    {
+        private BaseTileRegistrator[] BaseTileRegistrators { get; set; }
     
-    // Start is called before the first frame update
-    private void Awake()
-    {
-        BaseTileRegistrators = GetComponentsInChildren<BaseTileRegistrator>();
-        foreach (var baseTileRegistrator in BaseTileRegistrators)
+        // Start is called before the first frame update
+        private void Awake()
         {
-            if (baseTileRegistrator.HasRegistratorGroup)
+            BaseTileRegistrators = GetComponentsInChildren<BaseTileRegistrator>();
+            foreach (var baseTileRegistrator in BaseTileRegistrators)
             {
-                Debug.LogWarning($"There is already a RegistrationGroup registered on: {baseTileRegistrator}");
-                continue;
-            }
+                if (baseTileRegistrator.HasRegistratorGroup)
+                {
+                    Debug.LogWarning($"There is already a RegistrationGroup registered on: {baseTileRegistrator}");
+                    continue;
+                }
             
-            baseTileRegistrator.AssignToRegistratorGroup(this, () => Destroy(gameObject));
+                baseTileRegistrator.AssignToRegistratorGroup(this, () => Destroy(gameObject));
+            }
         }
-    }
 
-    private void OnDestroy()
-    {
-        foreach (var baseTileRegistrator in BaseTileRegistrators)
+        private void OnDestroy()
         {
-            baseTileRegistrator.RemoveFromRegistratorGroup();
+            foreach (var baseTileRegistrator in BaseTileRegistrators)
+            {
+                baseTileRegistrator.RemoveFromRegistratorGroup();
+            }
         }
     }
 }
