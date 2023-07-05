@@ -47,7 +47,7 @@ MonoBehaviour:
   tileManager: {fileID: 11400000, guid: 250008992667b5e458c740568aa31544, type: 2}
   registerOnStart: 1
   isMovable: 1
-  baseItemLoot: {fileID: 11400000, guid: 31b70881d2a457b47bcaa8dcbe0862ac, type: 2}
+  baseItemLoot: {fileID: 11400000, guid: 7fcc0f00cab13364c90df74905d29309, type: 2}
   pointerRegistrator: {fileID: 2893863232707919896}
   craftAmount: 1
 --- !u!1 &2893863232707919897
@@ -97,7 +97,7 @@ MonoBehaviour:
   tileManager: {fileID: 11400000, guid: 250008992667b5e458c740568aa31544, type: 2}
   registerOnStart: 1
   isMovable: 0
-  baseItemType: {fileID: 11400000, guid: 31b70881d2a457b47bcaa8dcbe0862ac, type: 2}
+  baseItemType: {fileID: 11400000, guid: 7fcc0f00cab13364c90df74905d29309, type: 2}
   useThisGameObject: 1
   containedItemAmountOnSpawn: 1000
   maxContainedItemCount: 1000
@@ -148,7 +148,7 @@ MonoBehaviour:
   tileManager: {fileID: 11400000, guid: 250008992667b5e458c740568aa31544, type: 2}
   registerOnStart: 1
   isMovable: 1
-  baseItemLoot: {fileID: 11400000, guid: 31b70881d2a457b47bcaa8dcbe0862ac, type: 2}
+  baseItemLoot: {fileID: 11400000, guid: 7fcc0f00cab13364c90df74905d29309, type: 2}
   pointerRegistrator: {fileID: 2893863232707919896}
   craftAmount: 1
 --- !u!1 &2893863233733660167
@@ -198,7 +198,7 @@ MonoBehaviour:
   tileManager: {fileID: 11400000, guid: 250008992667b5e458c740568aa31544, type: 2}
   registerOnStart: 1
   isMovable: 1
-  baseItemLoot: {fileID: 11400000, guid: 31b70881d2a457b47bcaa8dcbe0862ac, type: 2}
+  baseItemLoot: {fileID: 11400000, guid: 7fcc0f00cab13364c90df74905d29309, type: 2}
   pointerRegistrator: {fileID: 2893863232707919896}
   craftAmount: 1
 --- !u!1 &2893863234047116024
@@ -248,7 +248,7 @@ MonoBehaviour:
   tileManager: {fileID: 11400000, guid: 250008992667b5e458c740568aa31544, type: 2}
   registerOnStart: 1
   isMovable: 1
-  baseItemLoot: {fileID: 11400000, guid: 31b70881d2a457b47bcaa8dcbe0862ac, type: 2}
+  baseItemLoot: {fileID: 11400000, guid: 7fcc0f00cab13364c90df74905d29309, type: 2}
   pointerRegistrator: {fileID: 2893863232707919896}
   craftAmount: 1
 --- !u!1 &4481293106266797138

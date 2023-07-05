@@ -16,7 +16,7 @@ namespace Features.TileSystem.Scripts.Registrator
         protected override void InternalRegisterOnTile()
         {
             _replayManager = ReplayManager.Instance;
-            _replayManager.InitializeRecording(gameObject, () => { }, () => { });
+            _replayManager.InitializeRecording(gameObject, () => { }, () => { }, () => { });
             _replayManager.RegisterOriginator(gameObject, this);
             PushNewTick.Invoke(new ConsumerSnapshot(Tile));
             _replayManager.StartReplay(gameObject, true);
@@ -24,7 +24,10 @@ namespace Features.TileSystem.Scripts.Registrator
 
         protected override void UnregisterOnTile()
         {
-            _replayManager.StopReplayable(gameObject);
+            if (_replayManager != null)
+            {
+                _replayManager.StopReplayable(gameObject);
+            }
         }
     }
 

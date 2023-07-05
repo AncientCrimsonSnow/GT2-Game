@@ -7,7 +7,6 @@ namespace Features.Character.Scripts.Movement
         [Header("Topic")]
         [SerializeField] private DirectionInputFocus directionInputFocus;
         [SerializeField] private BaseMovementInput movementInputBehaviour;
-        [SerializeField] private bool setAsRestore;
 
         [Header("RegistrationTime")] 
         [SerializeField] private bool awake;
@@ -17,22 +16,14 @@ namespace Features.Character.Scripts.Movement
         {
             if (!awake) return;
             
-            directionInputFocus.SetFocus(movementInputBehaviour);
-            if (setAsRestore)
-            {
-                directionInputFocus.SetCurrentAsRestore();
-            }
+            directionInputFocus.PushFocus(movementInputBehaviour);
         }
 
         private void Start()
         {
             if (!start) return;
             
-            directionInputFocus.SetFocus(movementInputBehaviour);
-            if (setAsRestore)
-            {
-                directionInputFocus.SetCurrentAsRestore();
-            }
+            directionInputFocus.PushFocus(movementInputBehaviour);
         }
     }
 }

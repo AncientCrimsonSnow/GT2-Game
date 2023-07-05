@@ -5,7 +5,7 @@ using UnityEngine.InputSystem;
 namespace Features.Character.Scripts.Magic
 {
     [CreateAssetMenu(fileName = "MagicInputFocus", menuName = "Focus/Input/Magic")]
-    public class CastInputFocus : RestorableFocus_SO<ICastInput>
+    public class CastInputFocus : StackFocus_SO<ICastInput>
     {
         public void OnCastInput(InputAction.CallbackContext context)
         {

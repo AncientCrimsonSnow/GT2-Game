@@ -49,7 +49,7 @@ namespace Features.Items.Scripts
         
         private void InitializeRecording(GameObject caster, GameObject instantiatedPrefab)
         {
-            var onReplayCompleteAction = new Action(() =>
+            var onDestroyAction = new Action(() =>
             {
                 //destroy, if a record gets interrupted
                 if (skeletonFocus.ContainsFocus())
@@ -57,35 +57,38 @@ namespace Features.Items.Scripts
                     ResetFocus(caster);
                 }
 
-                DropItem(instantiatedPrefab.transform);
                 ReplayManager.Instance.UnregisterReplayable(instantiatedPrefab);
                 Destroy(instantiatedPrefab);
             });
             
+            var onReplayCompleteAction = new Action(() =>
+            {
+                onDestroyAction.Invoke();
+                DropItem(instantiatedPrefab.transform);
+            });
+            
             //the newestInstantiatedSkeleton must be buffered, because it will be null during replay
-            ReplayManager.Instance.InitializeRecording(skeletonFocus.GetFocus(), () => ResetFocus(caster), onReplayCompleteAction);
+            ReplayManager.Instance.InitializeRecording(skeletonFocus.GetFocus(), () => ResetFocus(caster), onReplayCompleteAction, onDestroyAction);
         }
         
         private void InitializeFocus(GameObject caster, GameObject instantiatedPrefab)
         {
             caster.GetComponentInChildren<Animator>().SetBool(IsCasting, true);
             
-            directionInputFocus.SetCurrentAsRestore();
-            castInputFocus.SetCurrentAsRestore();
             skeletonFocus.SetFocus(instantiatedPrefab);
             cinemachineVirtualCameraFocus.SetFollow(instantiatedPrefab.transform).ApplyFollow();
-            directionInputFocus.SetFocus(instantiatedPrefab.GetComponent<BaseMovementInput>());
-            castInputFocus.SetFocus(instantiatedPrefab.GetComponent<BaseCastInput>());
-            interactionInputFocus.SetFocus(instantiatedPrefab.GetComponent<BaseInteractionInput>());
+            directionInputFocus.PushFocus(instantiatedPrefab.GetComponent<BaseMovementInput>());
+            castInputFocus.PushFocus(instantiatedPrefab.GetComponent<BaseCastInput>());
+            interactionInputFocus.PushFocus(instantiatedPrefab.GetComponent<BaseInteractionInput>());
         }
 
         private void ResetFocus(GameObject caster)
         {
             caster.GetComponentInChildren<Animator>().SetBool(IsCasting, false);
             
-            directionInputFocus.Restore();
-            interactionInputFocus.Restore();
-            castInputFocus.Restore();
+            directionInputFocus.PopFocus();
+            interactionInputFocus.PopFocus();
+            castInputFocus.PopFocus();
             cinemachineVirtualCameraFocus.RestoreFollow();
             skeletonFocus.Restore();
         }

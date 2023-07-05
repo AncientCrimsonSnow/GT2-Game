@@ -12,13 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3cf83e1d4b0362a4d9a19d52e9b03416, type: 3}
   m_Name: Consumer
   m_EditorClassIdentifier: 
-  recipeData:
-  - requiredItem: {fileID: 11400000, guid: 2856e0fa757df554fa2e03cf94cc6e62, type: 2}
-    requiredCount: 1
-  - requiredItem: {fileID: 11400000, guid: 31b70881d2a457b47bcaa8dcbe0862ac, type: 2}
-    requiredCount: 1
-  - requiredItem: {fileID: 11400000, guid: 1b4ad7d3054f0db499c931667a74671d, type: 2}
-    requiredCount: 1
+  recipeData: []
   building: {fileID: 9197231802072009185, guid: cf4207d6d40334846a30a02f8ff90473,
     type: 3}
   requiredBuildingKernelSize: 3

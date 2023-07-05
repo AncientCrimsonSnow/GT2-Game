@@ -1,6 +1,5 @@
-using Features.Camera;
-using Features.Character.Scripts.Interaction;
-using Features.Character.Scripts.Movement;
+using System;
+using Features.Items.Scripts;
 using Features.ReplaySystem;
 using Features.TileSystem.Scripts;
 using UnityEngine;
@@ -10,6 +9,8 @@ namespace Features.Character.Scripts.Magic
 {
     public class RecordCastInputBehaviour : BaseCastInput
     {
+        [SerializeField] private TileManager tileManager;
+        
         [Header("Character Focus")]
         [SerializeField] private SkeletonFocus skeletonFocus;
 
@@ -22,7 +23,16 @@ namespace Features.Character.Scripts.Magic
 
         public override void OnCastInput(InputAction.CallbackContext context)
         {
-            SetLoop();
+            var tile = tileManager.GetTileAt(TileHelper.TransformPositionToInt2(transform));
+
+            if (tile.ContainsTileInteractableOfType<UnstackableItemTileInteractable>())
+            {
+                tile.TryCast(gameObject);
+            }
+            else
+            {
+                SetLoop();
+            }
         }
 
         public override void OnInterruptCast(InputAction.CallbackContext context)

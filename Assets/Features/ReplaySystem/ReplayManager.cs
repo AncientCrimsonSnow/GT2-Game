@@ -69,7 +69,7 @@ namespace Features.ReplaySystem
             AdvancedTicks++;
         }
 
-        public void InitializeRecording(GameObject originatorGameObject, Action onRecordCompleteAction, Action onReplayCompleteAction)
+        public void InitializeRecording(GameObject originatorGameObject, Action onRecordCompleteAction, Action onReplayCompleteAction, Action onDestroyReplayableAction)
         {
             if (_replayControllerList.Any(replayController => replayController.IsRecording))
             {
@@ -83,7 +83,7 @@ namespace Features.ReplaySystem
                 return;
             }
             
-            var replayController = new ReplayController(this, originatorGameObject, onRecordCompleteAction, onReplayCompleteAction);
+            var replayController = new ReplayController(this, originatorGameObject, onRecordCompleteAction, onReplayCompleteAction, onDestroyReplayableAction);
             _replayControllerList.Add(replayController);
         }
         
@@ -130,12 +130,20 @@ namespace Features.ReplaySystem
             CurrentReplayController.StartReplay(isLoop);
         }
 
-        public void StopReplayable(GameObject originatorGameObject)
+        public void StopReplayable(GameObject originatorGameObject, bool destroy = false)
         {
             foreach (var replayController in _replayControllerList
                 .Where(replayController => replayController.OriginatorGameObject == originatorGameObject))
             {
-                replayController.StopReplay();
+                if (destroy)
+                {
+                    replayController.OnDestroyAction();
+                }
+                else
+                {
+                    replayController.StopReplay();
+                }
+                
                 return;
             }
 

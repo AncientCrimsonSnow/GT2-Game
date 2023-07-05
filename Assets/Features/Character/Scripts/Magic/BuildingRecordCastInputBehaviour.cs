@@ -57,14 +57,14 @@ namespace Features.Character.Scripts.Magic
         {
             skeletonFocus.SetFocus(instantiatedPrefab);
             cinemachineVirtualCameraFocus.SetFollow(instantiatedPrefab.transform).ApplyFollow();
-            directionInputFocus.SetFocus(instantiatedPrefab.GetComponent<BaseMovementInput>());
-            castInputFocus.SetFocus(instantiatedPrefab.GetComponent<BaseCastInput>());
-            interactionInputFocus.SetFocus(instantiatedPrefab.GetComponent<BaseInteractionInput>());
+            directionInputFocus.PushFocus(instantiatedPrefab.GetComponent<BaseMovementInput>());
+            castInputFocus.PushFocus(instantiatedPrefab.GetComponent<BaseCastInput>());
+            interactionInputFocus.PushFocus(instantiatedPrefab.GetComponent<BaseInteractionInput>());
         }
         
         private void InitializeRecording(GameObject instantiatedPrefab)
         {
-            var onReplayCompleteAction = new Action(() =>
+            var onDestroyAction = new Action(() =>
             {
                 //destroy, if a record gets interrupted
                 if (skeletonFocus.ContainsFocus())
@@ -76,20 +76,25 @@ namespace Features.Character.Scripts.Magic
                 {
                     Destroy(_instantiatedOriginVisualizationPrefab);
                 }
-
-                DropItem(instantiatedPrefab.transform);
+                
                 ReplayManager.Instance.UnregisterReplayable(instantiatedPrefab);
                 Destroy(instantiatedPrefab);
             });
             
+            var onReplayCompleteAction = new Action(() =>
+            {
+                onDestroyAction.Invoke();
+                DropItem(instantiatedPrefab.transform);
+            });
+            
             //the newestInstantiatedSkeleton must be buffered, because it will be null during replay
-            ReplayManager.Instance.InitializeRecording(skeletonFocus.GetFocus(), ResetFocus, onReplayCompleteAction);
+            ReplayManager.Instance.InitializeRecording(skeletonFocus.GetFocus(), ResetFocus, onReplayCompleteAction, onDestroyAction);
         }
 
         private void ResetFocus()
         {
-            directionInputFocus.Restore();
-            interactionInputFocus.Restore();
+            directionInputFocus.PopFocus();
+            interactionInputFocus.PopFocus();
             castInputFocus.Restore();
             cinemachineVirtualCameraFocus.RestoreFollow();
             skeletonFocus.Restore();

@@ -110,6 +110,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4bb1e9d3403301640b69bda3c605bbaa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tileManager: {fileID: 11400000, guid: 250008992667b5e458c740568aa31544, type: 2}
   skeletonFocus: {fileID: 11400000, guid: c331b643c11d29344b88a3e861edf8f9, type: 2}
 --- !u!136 &8460609380560002215
 CapsuleCollider:

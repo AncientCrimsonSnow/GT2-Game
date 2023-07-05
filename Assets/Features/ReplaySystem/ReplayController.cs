@@ -18,18 +18,25 @@ namespace Features.ReplaySystem
         
         private int _currentIndex;
         private readonly Action _onReplayCompleteAction;
+        private readonly Action _onDestroyReplayableAction;
         private bool _isLoop;
         private bool _stopNextTick;
         
-        public ReplayController(ReplayManager replayManager, GameObject originatorGroup, Action onRecordCompleteAction, Action onReplayCompleteAction)
+        public ReplayController(ReplayManager replayManager, GameObject originatorGroup, Action onRecordCompleteAction, Action onReplayCompleteAction, Action onDestroyReplayableAction)
         {
             OriginatorGameObject = originatorGroup;
             _replayManager = replayManager;
             _onRecordCompleteAction = onRecordCompleteAction;
             _onReplayCompleteAction = onReplayCompleteAction;
+            _onDestroyReplayableAction = onDestroyReplayableAction;
             _replayOriginators = new List<IReplayOriginator>();
             _ticks = new List<IInputSnapshot>();
             IsRecording = true;
+        }
+
+        public void OnDestroyAction()
+        {
+            _onDestroyReplayableAction?.Invoke();
         }
         
         public void RegisterOriginator(IReplayOriginator replayOriginator)

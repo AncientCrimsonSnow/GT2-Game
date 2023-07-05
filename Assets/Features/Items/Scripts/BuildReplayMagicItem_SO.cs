@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using Features.Buildings.Scripts;
 using Features.Buildings.Scripts.SequenceStateMachine;
+using Features.Character.Scripts;
 using Features.Character.Scripts.Interaction;
 using Features.Character.Scripts.Magic;
 using Features.Character.Scripts.Movement;
+using Features.ReplaySystem;
 using Features.TileSystem.Scripts;
 using Features.TileSystem.Scripts.Registrator;
 using UnityEngine;
@@ -19,6 +21,7 @@ namespace Features.Items.Scripts
         [SerializeField] private TileManager tileManager;
         [SerializeField] private int kernelSize = 3;
 
+        [SerializeField] private SkeletonFocus skeletonFocus;
         [SerializeField] private DirectionInputFocus directionInputFocus;
         [SerializeField] private InteractionInputFocus interactionInputFocus;
         [SerializeField] private CastInputFocus castInputFocus;
@@ -49,11 +52,10 @@ namespace Features.Items.Scripts
             _buildSequenceStateMachine.Cancel();
         }
 
-        //TODO: how to destroy a building -> there must be an entry und exit script on a building, that can be addressed!
-        //TODO: onPlacementComplete -> apply on position, only if valid
-
         public override bool TryCast(GameObject caster)
         {
+            if (skeletonFocus.GetFocus() != caster) return false;
+            
             //initialize values and check validity
             var casterPosition = TileHelper.TransformPositionToInt2(caster.transform);
             var dropKernel = tileManager.GetTileKernelAt(casterPosition, kernelSize);
@@ -91,16 +93,16 @@ namespace Features.Items.Scripts
         
         private void SetBuildingFocus()
         {
-            directionInputFocus.SetFocus(this);
-            interactionInputFocus.SetFocus(this);
-            castInputFocus.SetFocus(this);
+            directionInputFocus.PushFocus(this);
+            interactionInputFocus.PushFocus(this);
+            castInputFocus.PushFocus(this);
         }
 
         private void RestoreBuildingFocus()
         {
-            directionInputFocus.Restore();
-            interactionInputFocus.Restore();
-            castInputFocus.Restore();
+            directionInputFocus.PopFocus();
+            interactionInputFocus.PopFocus();
+            castInputFocus.PopFocus();
         }
 
         private void InitializeBuildSequenceStateMachine(Tile[,] dropKernel, List<BuildData> validBuildings)
@@ -121,6 +123,8 @@ namespace Features.Items.Scripts
                 {
                     baseTileRegistrator.RegisterOnTile();
                 }
+                
+                ReplayManager.Instance.StopReplayable(skeletonFocus.GetFocus(), true);
             });
 
             var onCancelSequence = new Action(() =>

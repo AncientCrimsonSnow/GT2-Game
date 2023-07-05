@@ -16,7 +16,7 @@ namespace Features.Character.Scripts.Interaction
         {
             if (awake)
             {
-                interactionInputFocus.SetFocus(interactionInputBehaviour);
+                interactionInputFocus.PushFocus(interactionInputBehaviour);
             }
         }
 
@@ -24,7 +24,7 @@ namespace Features.Character.Scripts.Interaction
         {
             if (start)
             {
-                interactionInputFocus.SetFocus(interactionInputBehaviour);
+                interactionInputFocus.PushFocus(interactionInputBehaviour);
             }
         }
     }
