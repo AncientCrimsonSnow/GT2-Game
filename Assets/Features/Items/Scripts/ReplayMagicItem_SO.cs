@@ -103,7 +103,8 @@ namespace Features.Items.Scripts
 
             if (foundTile.ContainsTileInteractableOfType<EmptyItemTileInteractable>())
             {
-                foundTile.ExchangeFirstTileInteractableOfType<ItemTileInteractable>(new UnstackableItemTileInteractable(foundTile, true, this));
+                foundTile.ExchangeFirstTileInteractableOfType<ItemTileInteractable>(new EmptyItemTileInteractable(foundTile));
+                TileHelper.InstantiateOnTile(foundTile, prefab, Quaternion.identity);
             }
             else
             {

@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Features.TileSystem.Scripts.Registrator
 {
@@ -7,27 +8,27 @@ namespace Features.TileSystem.Scripts.Registrator
     /// This script automatically registers itself to the TileManager dependant on the position at Start.
     /// When changing it's position later, it will still be inside the same position inside the TileManager!
     /// Tiles must currently be static on a position!
-    ///
-    /// Current suitable concept for pooling: setting out-of-screenspace objects inactive. It got registered inside the TileManager.
-    /// Thus, things will be able to interact with it, even though it is set inactive & out of screenspace (useful for the tick system).
     /// </summary>
     public abstract class BaseTileRegistrator : MonoBehaviour
     {
         [SerializeField] private TileManager tileManager;
-        [SerializeField] private bool registerOnStart;
+        [FormerlySerializedAs("registerOnStart")] [SerializeField] private bool registerOnAwake;
 
         public Tile Tile => tileManager.GetTileAt(TileHelper.TransformPositionToInt2(transform));
         public bool HasRegistratorGroup => TileRegistratorGroup != null;
         private TileRegistratorGroup TileRegistratorGroup { get; set; }
         
         private Action _onDestroyAction;
+        private Action _onDisableAction;
         private Vector3 _registeredPosition;
+        private bool _isCurrentlyRegistered;
+        private bool _hasInitialRegistration;
 
-        private void Start()
+        private void Awake()
         {
             ApplyRoundedPosition();
 
-            if (!registerOnStart) return;
+            if (!registerOnAwake) return;
 
             if (CanRegisterOnTile())
             {
@@ -35,18 +36,78 @@ namespace Features.TileSystem.Scripts.Registrator
             }
         }
 
-        public void AssignToRegistratorGroup(TileRegistratorGroup tileRegistratorGroup, Action onDestroyAction)
+        private void OnEnable()
+        {
+            if (!_hasInitialRegistration) return;
+            
+            Register();
+        }
+
+        private void OnDisable()
+        {
+            Unregister();
+            
+            _onDisableAction?.Invoke();
+        }
+
+        protected virtual void OnDestroy()
+        {
+            Unregister();
+
+            _onDestroyAction?.Invoke();
+        }
+        
+        public virtual bool CanRegisterOnTile()
+        {
+            return Tile.IsMovable() && !_isCurrentlyRegistered;
+        }
+        
+        public void RegisterOnTile()
+        {
+            _isCurrentlyRegistered = true;
+            _hasInitialRegistration = true;
+            _registeredPosition = transform.position;
+            InternalRegisterOnTile();
+        }
+        
+        public void AssignToRegistratorGroup(TileRegistratorGroup tileRegistratorGroup, Action onDisableAction, Action onDestroyAction)
         {
             TileRegistratorGroup = tileRegistratorGroup;
+            _onDisableAction = onDisableAction;
             _onDestroyAction = onDestroyAction;
         }
 
         public void RemoveFromRegistratorGroup()
         {
             TileRegistratorGroup = null;
+            _onDisableAction = null;
             _onDestroyAction = null;
         }
-    
+
+        private void Register()
+        {
+            if (!CanRegisterOnTile()) return;
+
+            RegisterOnTile();
+        }
+
+        private void Unregister()
+        {
+            if (!_isCurrentlyRegistered) return;
+            _isCurrentlyRegistered = false;
+            
+            if (!_registeredPosition.Equals(transform.position))
+            {
+                Debug.LogWarning($"You changed the position of {this} during Runtime! It will still unregister itself from the registered Tile!");
+            }
+            
+            UnregisterOnTile();
+        }
+
+        protected abstract void InternalRegisterOnTile();
+
+        protected abstract void UnregisterOnTile();
+        
         private void ApplyRoundedPosition()
         {
             if (_registeredPosition.x % 1 != 0 || _registeredPosition.z % 1 != 0)
@@ -57,40 +118,5 @@ namespace Features.TileSystem.Scripts.Registrator
                 transform.position = _registeredPosition;
             }
         }
-
-        /// <summary>
-        /// Method for defining, if this interactable can be registered -> also relevant for buildingKernel
-        /// </summary>
-        /// <returns></returns>
-        public virtual bool CanRegisterOnTile() => true;
-
-        public void RegisterOnTile()
-        {
-            _registeredPosition = transform.position;
-            InternalRegisterOnTile();
-        }
-
-        protected abstract void InternalRegisterOnTile();
-
-        protected virtual void OnDestroy()
-        {
-            var position = transform.position;
-            
-            if (!CanUnregisterOnTile()) return;
-            
-            if (!_registeredPosition.Equals(position))
-            {
-                Debug.LogWarning($"You changed the position of {this} during Runtime! It will still unregister itself from the registered Tile!");
-            }
-            
-            UnregisterOnTile();
-
-            if (_onDestroyAction != null) _onDestroyAction.Invoke();
-        }
-
-        //TODO: this needs to be a "can destroy tile interactable"
-        protected virtual bool CanUnregisterOnTile() => true;
-
-        protected abstract void UnregisterOnTile();
     }
 }

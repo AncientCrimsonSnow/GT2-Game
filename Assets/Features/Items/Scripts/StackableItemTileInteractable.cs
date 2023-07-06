@@ -8,16 +8,9 @@ namespace Features.Items.Scripts
         private int _itemCount;
 
         public StackableItemTileInteractable(Tile tile, bool isMovable, BaseItem_SO baseItemType, 
-            int maxContainedItemCount, int containedItemAmountOnSpawn, GameObject useThisGameObject = null) : base(tile, isMovable)
+            int maxContainedItemCount, int containedItemAmountOnSpawn, GameObject useThisGameObject) : base(tile, isMovable)
         {
-            if (useThisGameObject)
-            {
-                Tile.ItemContainer.InitializeItem(baseItemType, useThisGameObject, maxContainedItemCount, containedItemAmountOnSpawn);
-            }
-            else
-            {
-                Tile.ItemContainer.InitializeItem(baseItemType, maxContainedItemCount, containedItemAmountOnSpawn);
-            }
+            Tile.ItemContainer.InitializeItem(baseItemType, useThisGameObject, maxContainedItemCount, containedItemAmountOnSpawn);
         }
 
         public override bool TryInteract(GameObject interactor)

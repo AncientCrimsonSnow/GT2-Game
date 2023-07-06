@@ -1,9 +1,16 @@
+using Features.Items.Scripts;
+
 namespace Features.TileSystem.Scripts.Registrator
 {
     public class BlockedTileRegistrator : BaseTileRegistrator
     {
         private ITileInteractable _tileInteractable;
-    
+
+        public override bool CanRegisterOnTile()
+        {
+            return base.CanRegisterOnTile() && Tile.ContainsTileInteractableOfType<EmptyItemTileInteractable>();
+        }
+
         protected override void InternalRegisterOnTile()
         {
             var tileComponent = new BlockedTileInteractable();

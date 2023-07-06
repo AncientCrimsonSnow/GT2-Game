@@ -110,7 +110,8 @@ namespace Features.Character.Scripts.Magic
 
             if (foundTile.ContainsTileInteractableOfType<EmptyItemTileInteractable>())
             {
-                foundTile.ExchangeFirstTileInteractableOfType<ItemTileInteractable>(new UnstackableItemTileInteractable(foundTile, true, droppedItemOnDestroy));
+                foundTile.ExchangeFirstTileInteractableOfType<ItemTileInteractable>(new EmptyItemTileInteractable(foundTile));
+                TileHelper.InstantiateOnTile(foundTile, droppedItemOnDestroy.prefab, Quaternion.identity);
             }
             else
             {

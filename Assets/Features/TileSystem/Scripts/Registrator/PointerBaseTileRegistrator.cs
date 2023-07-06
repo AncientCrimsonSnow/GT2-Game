@@ -13,6 +13,11 @@ namespace Features.TileSystem.Scripts.Registrator
         [SerializeField] private int craftAmount;
 
         private ITileInteractable _tileInteractable;
+        
+        public override bool CanRegisterOnTile()
+        {
+            return base.CanRegisterOnTile() && pointerRegistrator.CanRegisterOnTile();
+        }
 
         protected override void InternalRegisterOnTile()
         {

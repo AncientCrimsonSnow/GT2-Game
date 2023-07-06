@@ -45,7 +45,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tileManager: {fileID: 11400000, guid: 250008992667b5e458c740568aa31544, type: 2}
-  registerOnStart: 1
+  registerOnAwake: 1
   isMovable: 1
   baseItemLoot: {fileID: 11400000, guid: 0e77a3d96d2a3fa408584dc0e5b490fa, type: 2}
   pointerRegistrator: {fileID: 2893863232707919896}
@@ -95,10 +95,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tileManager: {fileID: 11400000, guid: 250008992667b5e458c740568aa31544, type: 2}
-  registerOnStart: 1
+  registerOnAwake: 1
   isMovable: 0
-  baseItemType: {fileID: 11400000, guid: 1b4ad7d3054f0db499c931667a74671d, type: 2}
-  useThisGameObject: 1
+  baseItemType: {fileID: 11400000, guid: 0e77a3d96d2a3fa408584dc0e5b490fa, type: 2}
   containedItemAmountOnSpawn: 1000
   maxContainedItemCount: 1000
 --- !u!1 &2893863232818256799
@@ -181,7 +180,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tileManager: {fileID: 11400000, guid: 250008992667b5e458c740568aa31544, type: 2}
-  registerOnStart: 1
+  registerOnAwake: 1
   isMovable: 1
   baseItemLoot: {fileID: 11400000, guid: 0e77a3d96d2a3fa408584dc0e5b490fa, type: 2}
   pointerRegistrator: {fileID: 2893863232707919896}
@@ -231,7 +230,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tileManager: {fileID: 11400000, guid: 250008992667b5e458c740568aa31544, type: 2}
-  registerOnStart: 1
+  registerOnAwake: 1
   isMovable: 1
   baseItemLoot: {fileID: 11400000, guid: 0e77a3d96d2a3fa408584dc0e5b490fa, type: 2}
   pointerRegistrator: {fileID: 2893863232707919896}
@@ -281,7 +280,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tileManager: {fileID: 11400000, guid: 250008992667b5e458c740568aa31544, type: 2}
-  registerOnStart: 1
+  registerOnAwake: 1
   isMovable: 1
   baseItemLoot: {fileID: 11400000, guid: 0e77a3d96d2a3fa408584dc0e5b490fa, type: 2}
   pointerRegistrator: {fileID: 2893863232707919896}

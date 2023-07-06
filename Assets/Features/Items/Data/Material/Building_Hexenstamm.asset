@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc9f6605ea009344392065d827bda65d, type: 3}
   m_Name: Building_Hexenstamm
   m_EditorClassIdentifier: 
-  itemName: 
+  itemName: Hexenstamm
   prefab: {fileID: 8353975661546354772, guid: 2f4ccf94ab2b2294d9ef5e5293cc4757, type: 3}
   itemValue: 10
   tileManager: {fileID: 11400000, guid: 250008992667b5e458c740568aa31544, type: 2}

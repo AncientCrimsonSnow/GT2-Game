@@ -5,16 +5,9 @@ namespace Features.Items.Scripts
 {
     public class UnstackableItemTileInteractable : ItemTileInteractable
     {
-        public UnstackableItemTileInteractable(Tile tile, bool isMovable, BaseItem_SO baseItemType, GameObject useThisGameObject = null) : base(tile, isMovable)
+        public UnstackableItemTileInteractable(Tile tile, bool isMovable, BaseItem_SO baseItemType, GameObject useThisGameObject) : base(tile, isMovable)
         {
-            if (useThisGameObject)
-            {
-                Tile.ItemContainer.InitializeItem(baseItemType, useThisGameObject);
-            }
-            else
-            {
-                Tile.ItemContainer.InitializeItem(baseItemType);
-            }
+            Tile.ItemContainer.InitializeItem(baseItemType, useThisGameObject);
         }
 
         public override bool TryInteract(GameObject interactor)

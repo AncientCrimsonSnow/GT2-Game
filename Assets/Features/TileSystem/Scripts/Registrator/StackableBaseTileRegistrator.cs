@@ -8,7 +8,6 @@ namespace Features.TileSystem.Scripts.Registrator
     {
         [SerializeField] private bool isMovable;
         [FormerlySerializedAs("itemType")] [SerializeField] private BaseItem_SO baseItemType;
-        [SerializeField] private bool useThisGameObject;
         [SerializeField] private int containedItemAmountOnSpawn;
         [SerializeField] private int maxContainedItemCount;
 
@@ -16,9 +15,8 @@ namespace Features.TileSystem.Scripts.Registrator
 
         public override bool CanRegisterOnTile()
         {
-            _canBeUnregistered = Tile.ContainsTileInteractableOfType<EmptyItemTileInteractable>() || 
-                                 Tile.ContainsTileInteractableOfType<StackableItemTileInteractable>() && Tile.ItemContainer.ContainedBaseItem == baseItemType;
-            return _canBeUnregistered;
+            return base.CanRegisterOnTile() && (Tile.ContainsTileInteractableOfType<EmptyItemTileInteractable>() || 
+                                                (Tile.ContainsTileInteractableOfType<StackableItemTileInteractable>() && Tile.ItemContainer.ContainedBaseItem == baseItemType));
         }
 
         protected override void InternalRegisterOnTile()
@@ -27,15 +25,8 @@ namespace Features.TileSystem.Scripts.Registrator
             
             if (!Tile.ContainsTileInteractableOfType<EmptyItemTileInteractable>()) return;
 
-            ItemTileInteractable tileComponent = useThisGameObject ?
-                new StackableItemTileInteractable(Tile, isMovable, baseItemType, maxContainedItemCount, containedItemAmountOnSpawn, gameObject) 
-                : new StackableItemTileInteractable(Tile, isMovable, baseItemType, maxContainedItemCount, containedItemAmountOnSpawn);
+            ItemTileInteractable tileComponent = new StackableItemTileInteractable(Tile, isMovable, baseItemType, maxContainedItemCount, containedItemAmountOnSpawn, gameObject);
             Tile.ExchangeFirstTileInteractableOfType(tileComponent);
-        }
-
-        protected override bool CanUnregisterOnTile()
-        {
-            return _canBeUnregistered;
         }
 
         protected override void UnregisterOnTile()

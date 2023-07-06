@@ -25,7 +25,8 @@ namespace Features.Items.Scripts
             }
 
             var heldItem = heldItemBehaviour.CarriedBaseItem;
-            Tile.ExchangeFirstTileInteractableOfType<ItemTileInteractable>(new UnstackableItemTileInteractable(Tile, IsMovable(), heldItem));
+            Tile.ExchangeFirstTileInteractableOfType<ItemTileInteractable>(new EmptyItemTileInteractable(Tile));
+            TileHelper.InstantiateOnTile(Tile, heldItem.prefab, Quaternion.identity);
             heldItemBehaviour.DropItem();
             return true;
         }

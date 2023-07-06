@@ -48,7 +48,8 @@ namespace Features.TileSystem.Scripts
 
         private void InitializeSelfTileItem()
         {
-            _tile.ExchangeFirstTileInteractableOfType<ItemTileInteractable>(new UnstackableItemTileInteractable(_tile, IsMovable(), _baseItemLoot));
+            _tile.ExchangeFirstTileInteractableOfType<ItemTileInteractable>(new EmptyItemTileInteractable(_tile));
+            TileHelper.InstantiateOnTile(_tile, _baseItemLoot.prefab, Quaternion.identity);
             Debug.Log("Dropped item by crafting.");
         }
     }

@@ -18,12 +18,13 @@ namespace Features.TileSystem.Scripts.Registrator
                     continue;
                 }
             
-                baseTileRegistrator.AssignToRegistratorGroup(this, () => Destroy(gameObject));
+                baseTileRegistrator.AssignToRegistratorGroup(this, () => gameObject.SetActive(false), () => Destroy(gameObject));
             }
         }
 
         private void OnDestroy()
         {
+            Debug.Log(name);
             foreach (var baseTileRegistrator in BaseTileRegistrators)
             {
                 baseTileRegistrator.RemoveFromRegistratorGroup();

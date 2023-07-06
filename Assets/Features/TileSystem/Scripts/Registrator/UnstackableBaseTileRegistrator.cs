@@ -8,26 +8,16 @@ namespace Features.TileSystem.Scripts.Registrator
     {
         [SerializeField] private bool isMovable;
         [FormerlySerializedAs("itemType")] [SerializeField] private BaseItem_SO baseItemType;
-        [SerializeField] private bool useThisGameObject;
-        
-        private bool _canBeUnregistered;
     
         public override bool CanRegisterOnTile()
         {
-            _canBeUnregistered = Tile.ContainsTileInteractableOfType<EmptyItemTileInteractable>();
-            return _canBeUnregistered;
+            return base.CanRegisterOnTile() && Tile.ContainsTileInteractableOfType<EmptyItemTileInteractable>();
         }
 
         protected override void InternalRegisterOnTile()
         {
-            ItemTileInteractable tileComponent = useThisGameObject ? new UnstackableItemTileInteractable(Tile, isMovable, baseItemType, gameObject) 
-                : new UnstackableItemTileInteractable(Tile, isMovable, baseItemType);
+            ItemTileInteractable tileComponent = new UnstackableItemTileInteractable(Tile, isMovable, baseItemType, gameObject);
             Tile.ExchangeFirstTileInteractableOfType(tileComponent);
-        }
-
-        protected override bool CanUnregisterOnTile()
-        {
-            return Tile.ItemContainer.CanDestroyItem(1) && _canBeUnregistered;
         }
 
         protected override void UnregisterOnTile()

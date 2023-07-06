@@ -23,6 +23,11 @@ namespace Features.Items.Scripts
         {
             _instantiatedGameObject.SetActive(isActive);
         }
+
+        public bool IsActive()
+        {
+            return _instantiatedGameObject.activeSelf;
+        }
         
         public bool ContainsItem()
         {
@@ -37,16 +42,6 @@ namespace Features.Items.Scripts
             _maxContainedItemCount = maxContainedItemCount;
             ContainedBaseItem = newBaseItem;
             _instantiatedGameObject = instantiatedObject;
-        }
-
-        public void InitializeItem(BaseItem_SO newBaseItem, int maxItemCount = 1, int itemCount = 1)
-        {
-            if (ContainsItem()) return;
-
-            _itemCount = itemCount;
-            _maxContainedItemCount = maxItemCount;
-            ContainedBaseItem = newBaseItem;
-            _instantiatedGameObject = TileHelper.InstantiateOnTile(_tile, newBaseItem.prefab, Quaternion.identity);
         }
         
         public bool CanDestroyItem(int maxItemDestructionCount)

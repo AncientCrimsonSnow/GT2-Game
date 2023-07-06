@@ -24,10 +24,7 @@ namespace Features.TileSystem.Scripts.Registrator
 
         protected override void UnregisterOnTile()
         {
-            if (_replayManager != null)
-            {
-                _replayManager.StopReplayable(gameObject);
-            }
+            _replayManager.StopReplayable(gameObject);
         }
     }
 
