@@ -45,10 +45,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tileManager: {fileID: 11400000, guid: 250008992667b5e458c740568aa31544, type: 2}
-  registerOnStart: 1
+  registerOnAwake: 1
   isMovable: 1
   baseItemLoot: {fileID: 11400000, guid: 7fcc0f00cab13364c90df74905d29309, type: 2}
-  pointerRegistrator: {fileID: 2893863232707919896}
+  pointerRegistrators:
+  - {fileID: 2893863232707919896}
   craftAmount: 1
 --- !u!1 &2893863232707919897
 GameObject:
@@ -95,10 +96,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tileManager: {fileID: 11400000, guid: 250008992667b5e458c740568aa31544, type: 2}
-  registerOnStart: 1
+  registerOnAwake: 1
   isMovable: 0
   baseItemType: {fileID: 11400000, guid: 7fcc0f00cab13364c90df74905d29309, type: 2}
-  useThisGameObject: 1
   containedItemAmountOnSpawn: 1000
   maxContainedItemCount: 1000
 --- !u!1 &2893863233003780597
@@ -146,10 +146,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tileManager: {fileID: 11400000, guid: 250008992667b5e458c740568aa31544, type: 2}
-  registerOnStart: 1
+  registerOnAwake: 1
   isMovable: 1
   baseItemLoot: {fileID: 11400000, guid: 7fcc0f00cab13364c90df74905d29309, type: 2}
-  pointerRegistrator: {fileID: 2893863232707919896}
+  pointerRegistrators:
+  - {fileID: 2893863232707919896}
   craftAmount: 1
 --- !u!1 &2893863233733660167
 GameObject:
@@ -196,10 +197,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tileManager: {fileID: 11400000, guid: 250008992667b5e458c740568aa31544, type: 2}
-  registerOnStart: 1
+  registerOnAwake: 1
   isMovable: 1
   baseItemLoot: {fileID: 11400000, guid: 7fcc0f00cab13364c90df74905d29309, type: 2}
-  pointerRegistrator: {fileID: 2893863232707919896}
+  pointerRegistrators:
+  - {fileID: 2893863232707919896}
   craftAmount: 1
 --- !u!1 &2893863234047116024
 GameObject:
@@ -246,10 +248,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tileManager: {fileID: 11400000, guid: 250008992667b5e458c740568aa31544, type: 2}
-  registerOnStart: 1
+  registerOnAwake: 1
   isMovable: 1
   baseItemLoot: {fileID: 11400000, guid: 7fcc0f00cab13364c90df74905d29309, type: 2}
-  pointerRegistrator: {fileID: 2893863232707919896}
+  pointerRegistrators:
+  - {fileID: 2893863232707919896}
   craftAmount: 1
 --- !u!1 &4481293106266797138
 GameObject:

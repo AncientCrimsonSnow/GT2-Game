@@ -64,7 +64,7 @@ namespace Features.Items.Scripts
             var onReplayCompleteAction = new Action(() =>
             {
                 onDestroyAction.Invoke();
-                DropItem(instantiatedPrefab.transform);
+                TileHelper.DropItemNearestEmptyTile(tileManager, instantiatedPrefab.transform, this);
             });
             
             //the newestInstantiatedSkeleton must be buffered, because it will be null during replay
@@ -91,25 +91,6 @@ namespace Features.Items.Scripts
             castInputFocus.PopFocus();
             cinemachineVirtualCameraFocus.RestoreFollow();
             skeletonFocus.Restore();
-        }
-        
-        private void DropItem(Transform transform)
-        {
-            var worldPositionInt2 = TileHelper.TransformPositionToInt2(transform);
-            var foundTile = tileManager.SearchNearestTileByCondition(worldPositionInt2,
-                tile => tile.ContainsTileInteractableOfType<EmptyItemTileInteractable>() ||
-                        (tile.TryGetFirstTileInteractableOfType(out StackableItemTileInteractable _) &&
-                         tile.ItemContainer.ContainedBaseItem == this && tile.ItemContainer.CanAddItemCount(this, 1)));
-
-            if (foundTile.ContainsTileInteractableOfType<EmptyItemTileInteractable>())
-            {
-                foundTile.ExchangeFirstTileInteractableOfType<ItemTileInteractable>(new EmptyItemTileInteractable(foundTile));
-                TileHelper.InstantiateOnTile(foundTile, prefab, Quaternion.identity);
-            }
-            else
-            {
-                foundTile.ItemContainer.AddItemCount(this, 1);
-            }
         }
     }
 }

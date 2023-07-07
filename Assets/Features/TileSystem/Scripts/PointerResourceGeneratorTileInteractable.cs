@@ -1,4 +1,7 @@
-﻿using Features.Items.Scripts;
+﻿using System.Collections.Generic;
+using System.Linq;
+using Features.Items.Scripts;
+using Features.TileSystem.Scripts.Registrator;
 using UnityEngine;
 
 namespace Features.TileSystem.Scripts
@@ -7,26 +10,26 @@ namespace Features.TileSystem.Scripts
     {
         private readonly Tile _tile;
         private readonly bool _isMovable;
-        private readonly Tile _itemTilePointer;
+        private readonly List<BaseTileRegistrator> _itemTilePointers;
         private readonly BaseItem_SO _baseItemLoot;
         private readonly int _itemAmountCost;
         
-        public PointerResourceGeneratorTileInteractable(Tile tile, bool isMovable, Tile itemTilePointer, BaseItem_SO baseItemLoot, int itemAmountCost)
+        public PointerResourceGeneratorTileInteractable(Tile tile, bool isMovable, List<BaseTileRegistrator> itemTilePointers, BaseItem_SO baseItemLoot, int itemAmountCost)
         {
             _tile = tile;
             _isMovable = isMovable;
-            _itemTilePointer = itemTilePointer;
+            _itemTilePointers = itemTilePointers;
             _baseItemLoot = baseItemLoot;
             _itemAmountCost = itemAmountCost;
         }
 
         public bool TryInteract(GameObject interactor)
         {
-            if (!_itemTilePointer.ItemContainer.CanAddItemCount(_itemTilePointer.ItemContainer.ContainedBaseItem, -_itemAmountCost) 
+            if (!_itemTilePointers.All(x => x.Tile.ItemContainer.CanAddItemCount(x.Tile.ItemContainer.ContainedBaseItem, -_itemAmountCost)) 
                 || !_tile.ContainsTileInteractableOfType<EmptyItemTileInteractable>()) return false;
 
-            RemovePointerTileItem();
-            InitializeSelfTileItem();
+            RemoveItemFromPointer();
+            DropItemOnTile();
             return true;
         }
 
@@ -40,13 +43,16 @@ namespace Features.TileSystem.Scripts
             return _isMovable;
         }
         
-        private void RemovePointerTileItem()
+        private void RemoveItemFromPointer()
         {
-            _itemTilePointer.ItemContainer.AddItemCount(_itemTilePointer.ItemContainer.ContainedBaseItem, -_itemAmountCost);
+            foreach (var baseTileRegistrator in _itemTilePointers)
+            {
+                baseTileRegistrator.Tile.ItemContainer.AddItemCount(baseTileRegistrator.Tile.ItemContainer.ContainedBaseItem, -_itemAmountCost);
+            }
             Debug.Log("Removed item from pointer.");
         }
 
-        private void InitializeSelfTileItem()
+        private void DropItemOnTile()
         {
             _tile.ExchangeFirstTileInteractableOfType<ItemTileInteractable>(new EmptyItemTileInteractable(_tile));
             TileHelper.InstantiateOnTile(_tile, _baseItemLoot.prefab, Quaternion.identity);

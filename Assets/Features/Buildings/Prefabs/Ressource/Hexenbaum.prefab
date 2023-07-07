@@ -48,7 +48,8 @@ MonoBehaviour:
   registerOnAwake: 1
   isMovable: 1
   baseItemLoot: {fileID: 11400000, guid: 0e77a3d96d2a3fa408584dc0e5b490fa, type: 2}
-  pointerRegistrator: {fileID: 2893863232707919896}
+  pointerRegistrators:
+  - {fileID: 2893863232707919896}
   craftAmount: 1
 --- !u!1 &2893863232707919897
 GameObject:
@@ -183,7 +184,8 @@ MonoBehaviour:
   registerOnAwake: 1
   isMovable: 1
   baseItemLoot: {fileID: 11400000, guid: 0e77a3d96d2a3fa408584dc0e5b490fa, type: 2}
-  pointerRegistrator: {fileID: 2893863232707919896}
+  pointerRegistrators:
+  - {fileID: 2893863232707919896}
   craftAmount: 1
 --- !u!1 &2893863233733660167
 GameObject:
@@ -233,7 +235,8 @@ MonoBehaviour:
   registerOnAwake: 1
   isMovable: 1
   baseItemLoot: {fileID: 11400000, guid: 0e77a3d96d2a3fa408584dc0e5b490fa, type: 2}
-  pointerRegistrator: {fileID: 2893863232707919896}
+  pointerRegistrators:
+  - {fileID: 2893863232707919896}
   craftAmount: 1
 --- !u!1 &2893863234047116024
 GameObject:
@@ -283,7 +286,8 @@ MonoBehaviour:
   registerOnAwake: 1
   isMovable: 1
   baseItemLoot: {fileID: 11400000, guid: 0e77a3d96d2a3fa408584dc0e5b490fa, type: 2}
-  pointerRegistrator: {fileID: 2893863232707919896}
+  pointerRegistrators:
+  - {fileID: 2893863232707919896}
   craftAmount: 1
 --- !u!1 &7665460649234598153
 GameObject:

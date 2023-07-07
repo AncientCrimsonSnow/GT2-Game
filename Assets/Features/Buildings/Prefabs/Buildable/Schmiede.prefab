@@ -203,7 +203,8 @@ MonoBehaviour:
   registerOnAwake: 0
   isMovable: 1
   baseItemLoot: {fileID: 11400000, guid: 31b70881d2a457b47bcaa8dcbe0862ac, type: 2}
-  pointerRegistrator: {fileID: 4005196534574554301}
+  pointerRegistrators:
+  - {fileID: 4005196534574554301}
   craftAmount: 1
 --- !u!1 &9197231802072009185
 GameObject:

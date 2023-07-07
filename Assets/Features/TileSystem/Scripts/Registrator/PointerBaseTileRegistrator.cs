@@ -1,4 +1,6 @@
-﻿using Features.Items.Scripts;
+﻿using System.Collections.Generic;
+using System.Linq;
+using Features.Items.Scripts;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -9,19 +11,19 @@ namespace Features.TileSystem.Scripts.Registrator
         [SerializeField] private bool isMovable;
         [FormerlySerializedAs("itemLoot")] [SerializeField] private BaseItem_SO baseItemLoot;
 
-        [SerializeField] private BaseTileRegistrator pointerRegistrator;
+        [FormerlySerializedAs("pointerRegistrator")] [SerializeField] private List<BaseTileRegistrator> pointerRegistrators;
         [SerializeField] private int craftAmount;
 
         private ITileInteractable _tileInteractable;
         
         public override bool CanRegisterOnTile()
         {
-            return base.CanRegisterOnTile() && pointerRegistrator.CanRegisterOnTile();
+            return base.CanRegisterOnTile() && pointerRegistrators.All(x => x.CanRegisterOnTile());
         }
 
         protected override void InternalRegisterOnTile()
         {
-            var tileComponent = new PointerResourceGeneratorTileInteractable(Tile, isMovable, pointerRegistrator.Tile, baseItemLoot, craftAmount);
+            var tileComponent = new PointerResourceGeneratorTileInteractable(Tile, isMovable, pointerRegistrators, baseItemLoot, craftAmount);
             Tile.RegisterTileInteractable(tileComponent);
             _tileInteractable = tileComponent;
         }

@@ -1,4 +1,5 @@
 ﻿using System;
+using Features.Items.Scripts;
 using Unity.Mathematics;
 using UnityEngine;
 using Object = UnityEngine.Object;
@@ -131,6 +132,25 @@ namespace Features.TileSystem.Scripts
             var instantiateObject = Object.Instantiate(prefab, position, rotation);
             if (parent != null) instantiateObject.transform.SetParent(parent);
             return instantiateObject;
+        }
+        
+        public static void DropItemNearestEmptyTile(TileManager tileManager, Transform transform, BaseItem_SO baseItem)
+        {
+            var worldPositionInt2 = TransformPositionToInt2(transform);
+            var foundTile = tileManager.SearchNearestTileByCondition(worldPositionInt2,
+                tile => tile.ContainsTileInteractableOfType<EmptyItemTileInteractable>() ||
+                        (tile.TryGetFirstTileInteractableOfType(out StackableItemTileInteractable _) &&
+                         tile.ItemContainer.ContainedBaseItem == baseItem && tile.ItemContainer.CanAddItemCount(baseItem, 1)));
+
+            if (foundTile.ContainsTileInteractableOfType<EmptyItemTileInteractable>())
+            {
+                foundTile.ExchangeFirstTileInteractableOfType<ItemTileInteractable>(new EmptyItemTileInteractable(foundTile));
+                InstantiateOnTile(foundTile, baseItem.prefab, Quaternion.identity);
+            }
+            else
+            {
+                foundTile.ItemContainer.AddItemCount(baseItem, 1);
+            }
         }
     }
 }

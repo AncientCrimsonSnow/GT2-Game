@@ -17,7 +17,6 @@ namespace Features.Character.Scripts.Movement
         [SerializeField] private TileManager tileManager;
         [SerializeField, Layer] private int editorLayer;
         [SerializeField] private Ease easeType;
-        [SerializeField] private Animator animator;
     
         private Vector2 _storedInputVector;
 

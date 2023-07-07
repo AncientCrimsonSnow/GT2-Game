@@ -52,8 +52,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   keepItemOnDrop: 0
-  heldBaseItemAtAwake: {fileID: 11400000, guid: 1b4ad7d3054f0db499c931667a74671d,
-    type: 2}
+  tileManager: {fileID: 11400000, guid: 250008992667b5e458c740568aa31544, type: 2}
+  heldBaseItemAtAwake: {fileID: 0}
   takeItemAtAwake: 0
 --- !u!114 &4005563181385370186
 MonoBehaviour:
@@ -83,7 +83,6 @@ MonoBehaviour:
   tileManager: {fileID: 11400000, guid: 250008992667b5e458c740568aa31544, type: 2}
   editorLayer: 6
   easeType: 1
-  animator: {fileID: 2406174279606194161}
 --- !u!114 &3137264507857338284
 MonoBehaviour:
   m_ObjectHideFlags: 0
