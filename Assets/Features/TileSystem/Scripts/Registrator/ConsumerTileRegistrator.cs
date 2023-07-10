@@ -13,6 +13,11 @@ namespace Features.TileSystem.Scripts.Registrator
         private ReplayManager _replayManager;
         private ConsumerSnapshot _consumerSnapshot;
 
+        public override bool CanRegisterOnTile()
+        {
+            return base.CanRegisterOnTile() && !ReplayManager.Instance.IsRecording();
+        }
+
         protected override void InternalRegisterOnTile()
         {
             _replayManager = ReplayManager.Instance;

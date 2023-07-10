@@ -36,7 +36,7 @@ namespace Features.Buildings.Scripts.SequenceStateMachine
         {
             _validBuildings[_selectedIndex].ReuseBuildingAreaObjects();
         
-            nextState = new BuildingSelectionSequenceState(_tileManager, _validBuildings, _buildArea);
+            nextState = new BuildingSelectionSequenceState(_tileManager, _validBuildings, _buildArea, _selectedIndex);
             return true;
         }
 

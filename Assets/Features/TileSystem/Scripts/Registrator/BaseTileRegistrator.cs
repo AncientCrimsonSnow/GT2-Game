@@ -19,7 +19,6 @@ namespace Features.TileSystem.Scripts.Registrator
 
         public void Awake()
         {
-            Debug.Log("Awake " + name);
             if (!CanRegisterOnTile()) return;
             
             ApplyRoundedPosition();
@@ -28,7 +27,6 @@ namespace Features.TileSystem.Scripts.Registrator
 
         public void OnBeforeReusePoolable()
         {
-            Debug.Log("Before Reuse " + name);
             if (!CanRegisterOnTile()) return;
             
             ApplyRoundedPosition();
@@ -37,13 +35,11 @@ namespace Features.TileSystem.Scripts.Registrator
 
         public void OnBeforeReleasePoolable()
         {
-            Debug.Log("Before Release " + name);
             UnregisterOnTile();
         }
         
         public void OnDestroy()
         {
-            Debug.Log("Destroy " + name);
             UnregisterOnTile();
         }
         
@@ -51,8 +47,8 @@ namespace Features.TileSystem.Scripts.Registrator
         {
             return Tile.IsMovable() && !_isCurrentlyRegistered;
         }
-        
-        public void RegisterOnTile()
+
+        private void RegisterOnTile()
         {
             _isCurrentlyRegistered = true;
             _registeredPosition = transform.position;

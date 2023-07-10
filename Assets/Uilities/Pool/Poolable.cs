@@ -1,9 +1,10 @@
 using System;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace Uilities.Pool
 {
+    //TODO: enum to check, if list addition to pool is valid
+    
     public enum PoolingType { None, CanCreatePool, CanCreatePopulatedPool }
     
     [DefaultExecutionOrder(-9999), DisallowMultipleComponent]
@@ -11,7 +12,6 @@ namespace Uilities.Pool
     {
         [SerializeField] private PoolContainer poolContainer;
         [SerializeField] private PoolingType poolingType;
-        [FormerlySerializedAs("enabledAtAwake")] [SerializeField] private bool disabledAtAwake;
 
         public bool IsPoolingEnabled { get; private set; }
 
@@ -108,11 +108,6 @@ namespace Uilities.Pool
                 _pool = PoolManager.CreatePool(this);
             }
             
-            if (disabledAtAwake)
-            {
-                DisablePooling();
-            }
-            
             _isInitialized = true;
         }
         
@@ -173,11 +168,15 @@ namespace Uilities.Pool
 
         private void SetReleasable()
         {
+            if (!IsPoolingEnabled) return;
+            
             _pool.RegisterToReleasable(this).UnregisterToReusable(this);
         }
         
         private void SetReusable()
         {
+            if (!IsPoolingEnabled) return;
+            
             _pool.RegisterToReusable(this).UnregisterToReleasable(this);
         }
     }

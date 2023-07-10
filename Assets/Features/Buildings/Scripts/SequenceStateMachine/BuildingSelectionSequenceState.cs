@@ -58,7 +58,7 @@ namespace Features.Buildings.Scripts.SequenceStateMachine
 
         private void SetNewIndex(int addition)
         {
-            _validBuildings[_currentIndex].InstantiatedBuilding.SetActive(false);
+            _validBuildings[_currentIndex].InstantiatedBuilding.gameObject.SetActive(false);
             
             _currentIndex += addition;
 
@@ -72,7 +72,7 @@ namespace Features.Buildings.Scripts.SequenceStateMachine
                 _currentIndex = _validBuildings.Count - 1;
             }
             
-            _validBuildings[_currentIndex].InstantiatedBuilding.SetActive(true);
+            _validBuildings[_currentIndex].InstantiatedBuilding.gameObject.SetActive(true);
         
             _validBuildings[_currentIndex].ApplyColor(visualization => visualization.EnableSelection());
         }

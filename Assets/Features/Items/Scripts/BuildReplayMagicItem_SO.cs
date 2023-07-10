@@ -62,17 +62,16 @@ namespace Features.Items.Scripts
             var dropKernel = tileManager.GetTileKernelAt(casterPosition, kernelSize);
             
             if (!ScriptableObjectByType.TryGetByType(out List<BuildingRecipe> buildingRecipes)) return false;
-            var validBuildings = ParseValidBuildings(caster, dropKernel, buildingRecipes);
+            var validBuildings = InitializeValidBuildings(caster, dropKernel, buildingRecipes);
             if (validBuildings.Count == 0) return false;
             
             //execute
-            validBuildings[0].InstantiatedBuilding.SetActive(true);
             SetBuildingFocus();
             InitializeBuildSequenceStateMachine(dropKernel, validBuildings);
             return true;
         }
 
-        private List<BuildData> ParseValidBuildings(GameObject caster, Tile[,] dropKernel, List<BuildingRecipe> buildingRecipes)
+        private List<BuildData> InitializeValidBuildings(GameObject caster, Tile[,] dropKernel, List<BuildingRecipe> buildingRecipes)
         {
             var validBuildings = new List<BuildData>();
             
@@ -81,13 +80,14 @@ namespace Features.Items.Scripts
                 if (IsRecipeFit(CreateKernelItemCountPairs(dropKernel), buildingRecipe) &&
                     kernelSize >= buildingRecipe.requiredBuildingKernelSize)
                 {
-                    var instantiatedObject = Instantiate(buildingRecipe.building, caster.transform.position,
-                        Quaternion.identity);
-
-                    instantiatedObject.SetActive(false);
-                    validBuildings.Add(new BuildData(tileManager, instantiatedObject, CopyData(buildingRecipe.recipeData), dropKernel));
+                    var instantiatedBuilding = buildingRecipe.building.Reuse(caster.transform.position, Quaternion.identity);
+                    instantiatedBuilding.Release();
+                    instantiatedBuilding.SetPoolingEnabled(false);
+                    validBuildings.Add(new BuildData(tileManager, instantiatedBuilding, CopyData(buildingRecipe.recipeData), dropKernel));
                 }
             }
+            
+            validBuildings[0].InstantiatedBuilding.gameObject.SetActive(true);
             
             return validBuildings;
         }
@@ -127,7 +127,7 @@ namespace Features.Items.Scripts
                 validBuildings.Remove(validBuildings.Find(x => x.InstantiatedBuilding == selectedBuilding.InstantiatedBuilding));
                 DestroyAllBuildings(validBuildings);
 
-                selectedBuilding.ApplyBuild();
+                selectedBuilding.InstantiatedBuilding.SetPoolingEnabled(true);
                 
                 ReplayManager.Instance.StopReplayable(skeletonFocus.GetFocus(), true);
             });
@@ -156,7 +156,7 @@ namespace Features.Items.Scripts
         {
             for (var i = validBuildings.Count - 1; i >= 0; i--)
             {
-                Destroy(validBuildings[i].InstantiatedBuilding);
+                validBuildings[i].InstantiatedBuilding.Release(true);
             }
         }
 
@@ -198,13 +198,13 @@ namespace Features.Items.Scripts
 
     public class BuildData
     {
-        public readonly GameObject InstantiatedBuilding;
+        public readonly Poolable InstantiatedBuilding;
         
         private readonly TileManager _tileManager;
         private readonly Dictionary<Tile, Poolable> _neededPoolables;
         private readonly BuildVisualization _buildVisualization;
 
-        public BuildData(TileManager tileManager, GameObject instantiatedBuilding, List<RecipeData> recipeDataList, Tile[,] buildArea)
+        public BuildData(TileManager tileManager, Poolable instantiatedBuilding, List<RecipeData> recipeDataList, Tile[,] buildArea)
         {
             _neededPoolables = new Dictionary<Tile, Poolable>();
             _tileManager = tileManager;
@@ -239,6 +239,7 @@ namespace Features.Items.Scripts
         
         private bool BuildingPlacementIsValid()
         {
+            _tileManager.GetTileAt(TileHelper.TransformPositionToInt2(InstantiatedBuilding.transform)).PrintInteractable();
             var buildingObjects = InstantiatedBuilding.GetComponentsInChildren<BaseTileRegistrator>();
 
             return buildingObjects.All(baseTileInteractableRegistrator => baseTileInteractableRegistrator.CanRegisterOnTile());
@@ -284,14 +285,6 @@ namespace Features.Items.Scripts
             }
             
             return true;
-        }
-
-        public void ApplyBuild()
-        {
-            foreach (var baseTileRegistrator in InstantiatedBuilding.GetComponentsInChildren<BaseTileRegistrator>())
-            {
-                baseTileRegistrator.RegisterOnTile();
-            }
         }
     }
 }
