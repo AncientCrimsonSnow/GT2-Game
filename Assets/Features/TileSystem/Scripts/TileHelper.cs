@@ -144,7 +144,7 @@ namespace Features.TileSystem.Scripts
             var foundTile = tileManager.SearchNearestTileByCondition(worldPositionInt2,
                 tile => tile.ContainsTileInteractableOfType<EmptyItemTileInteractable>() ||
                         (tile.TryGetFirstTileInteractableOfType(out StackableItemTileInteractable _) &&
-                         tile.ItemContainer.ContainedBaseItem == baseItem && tile.ItemContainer.CanAddItemCount(baseItem, 1)));
+                         tile.ItemContainer.IsItemFit(baseItem) && tile.ItemContainer.CanAddItemCount(1)));
 
             if (foundTile.ContainsTileInteractableOfType<EmptyItemTileInteractable>())
             {

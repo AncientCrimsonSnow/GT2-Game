@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Features.Items.Scripts;
+using Uilities.Pool;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -13,6 +14,8 @@ namespace Features.TileSystem.Scripts.Registrator
 
         [FormerlySerializedAs("pointerRegistrator")] [SerializeField] private List<BaseTileRegistrator> pointerRegistrators;
         [SerializeField] private int craftAmount;
+        [SerializeField] private Poolable poolable;
+        [SerializeField] private bool destroyPointerIfEmpty;
 
         private ITileInteractable _tileInteractable;
         
@@ -23,7 +26,7 @@ namespace Features.TileSystem.Scripts.Registrator
 
         protected override void InternalRegisterOnTile()
         {
-            var tileComponent = new PointerResourceGeneratorTileInteractable(Tile, isMovable, pointerRegistrators, baseItemLoot, craftAmount);
+            var tileComponent = new PointerResourceGeneratorTileInteractable(Tile, isMovable, pointerRegistrators, baseItemLoot, craftAmount, poolable, destroyPointerIfEmpty);
             Tile.RegisterTileInteractable(tileComponent);
             _tileInteractable = tileComponent;
         }

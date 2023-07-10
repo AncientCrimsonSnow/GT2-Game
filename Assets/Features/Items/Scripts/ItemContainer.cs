@@ -60,20 +60,19 @@ namespace Features.Items.Scripts
 
         public void AddItemCount(BaseItem_SO baseItem, int change)
         {
-            if (CanAddItemCount(baseItem, change))
+            if (CanAddItemCount(change) && IsItemFit(baseItem))
             {
                 _itemCount += change;
             }
         }
 
-        public bool CanAddItemCount(BaseItem_SO baseItem, int change)
+        public bool IsItemFit(BaseItem_SO baseItem)
         {
-            if (ContainedBaseItem != baseItem)
-            {
-                Debug.LogWarning("You cant add a different item to this ItemContainer!");
-                return false;
-            }
-            
+            return ContainedBaseItem == baseItem;
+        }
+
+        public bool CanAddItemCount(int change)
+        {
             if (_itemCount + change < 0)
             {
                 Debug.LogWarning("You can't remove more items than there are available on this Tile!");

@@ -45,12 +45,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tileManager: {fileID: 11400000, guid: 250008992667b5e458c740568aa31544, type: 2}
-  registerOnAwake: 1
   isMovable: 1
   baseItemLoot: {fileID: 11400000, guid: 7fcc0f00cab13364c90df74905d29309, type: 2}
   pointerRegistrators:
   - {fileID: 2893863232707919896}
   craftAmount: 1
+  poolable: {fileID: 8809736457329227766}
+  destroyPointerIfEmpty: 1
 --- !u!1 &2893863232707919897
 GameObject:
   m_ObjectHideFlags: 0
@@ -96,7 +97,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tileManager: {fileID: 11400000, guid: 250008992667b5e458c740568aa31544, type: 2}
-  registerOnAwake: 1
   poolable: {fileID: 8809736457329227766}
   isMovable: 0
   baseItemType: {fileID: 11400000, guid: 7fcc0f00cab13364c90df74905d29309, type: 2}
@@ -147,12 +147,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tileManager: {fileID: 11400000, guid: 250008992667b5e458c740568aa31544, type: 2}
-  registerOnAwake: 1
   isMovable: 1
   baseItemLoot: {fileID: 11400000, guid: 7fcc0f00cab13364c90df74905d29309, type: 2}
   pointerRegistrators:
   - {fileID: 2893863232707919896}
   craftAmount: 1
+  poolable: {fileID: 8809736457329227766}
+  destroyPointerIfEmpty: 1
 --- !u!1 &2893863233733660167
 GameObject:
   m_ObjectHideFlags: 0
@@ -198,12 +199,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tileManager: {fileID: 11400000, guid: 250008992667b5e458c740568aa31544, type: 2}
-  registerOnAwake: 1
   isMovable: 1
   baseItemLoot: {fileID: 11400000, guid: 7fcc0f00cab13364c90df74905d29309, type: 2}
   pointerRegistrators:
   - {fileID: 2893863232707919896}
   craftAmount: 1
+  poolable: {fileID: 8809736457329227766}
+  destroyPointerIfEmpty: 1
 --- !u!1 &2893863234047116024
 GameObject:
   m_ObjectHideFlags: 0
@@ -249,12 +251,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tileManager: {fileID: 11400000, guid: 250008992667b5e458c740568aa31544, type: 2}
-  registerOnAwake: 1
   isMovable: 1
   baseItemLoot: {fileID: 11400000, guid: 7fcc0f00cab13364c90df74905d29309, type: 2}
   pointerRegistrators:
   - {fileID: 2893863232707919896}
   craftAmount: 1
+  poolable: {fileID: 8809736457329227766}
+  destroyPointerIfEmpty: 1
 --- !u!1 &4481293106266797138
 GameObject:
   m_ObjectHideFlags: 0

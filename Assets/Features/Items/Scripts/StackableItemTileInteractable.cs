@@ -6,11 +6,13 @@ namespace Features.Items.Scripts
 {
     public class StackableItemTileInteractable : ItemTileInteractable
     {
+        private readonly Poolable _pooledGameObject;
         private int _itemCount;
 
         public StackableItemTileInteractable(Tile tile, bool isMovable, BaseItem_SO baseItemType, 
             int maxContainedItemCount, int containedItemAmountOnSpawn, Poolable pooledGameObject) : base(tile, isMovable)
         {
+            _pooledGameObject = pooledGameObject;
             Tile.ItemContainer.InitializeItem(baseItemType, pooledGameObject, maxContainedItemCount, containedItemAmountOnSpawn);
         }
 
@@ -24,14 +26,14 @@ namespace Features.Items.Scripts
             
             if (heldItemBehaviour.IsCarrying())
             {
-                if (!Tile.ItemContainer.CanAddItemCount(heldItemBehaviour.CarriedBaseItem, 1)) return false;
+                if (!Tile.ItemContainer.IsItemFit(heldItemBehaviour.CarriedBaseItem) || !Tile.ItemContainer.CanAddItemCount(1)) return false;
 
                 Tile.ItemContainer.AddItemCount(heldItemBehaviour.CarriedBaseItem, 1);
                 heldItemBehaviour.DropItem();
             }
             else
             {
-                if (!Tile.ItemContainer.CanAddItemCount(Tile.ItemContainer.ContainedBaseItem, -1)) return false;
+                if (!Tile.ItemContainer.CanAddItemCount(-1)) return false;
                 
                 Tile.ItemContainer.AddItemCount(Tile.ItemContainer.ContainedBaseItem, -1);
                 heldItemBehaviour.PickupItem(Tile.ItemContainer.ContainedBaseItem);
@@ -42,11 +44,7 @@ namespace Features.Items.Scripts
 
         public override bool TryCast(GameObject caster)
         {
-            if (!Tile.ItemContainer.CanAddItemCount(Tile.ItemContainer.ContainedBaseItem, -1)) return false;
-            if (!Tile.ItemContainer.ContainedBaseItem.TryCast(caster)) return false;
-            
-            Tile.ItemContainer.AddItemCount(Tile.ItemContainer.ContainedBaseItem, -1);
-            return true;
+            return false;
         }
     }
 }

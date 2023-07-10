@@ -106,7 +106,7 @@ namespace Features.Character.Scripts.Magic
             var foundTile = tileManager.SearchNearestTileByCondition(worldPositionInt2,
                 tile => tile.ContainsTileInteractableOfType<EmptyItemTileInteractable>() ||
                         (tile.TryGetFirstTileInteractableOfType(out StackableItemTileInteractable _) &&
-                         tile.ItemContainer.ContainedBaseItem == droppedItemOnDestroy && tile.ItemContainer.CanAddItemCount(droppedItemOnDestroy, 1)));
+                         tile.ItemContainer.IsItemFit(droppedItemOnDestroy) && tile.ItemContainer.CanAddItemCount(1)));
 
             if (foundTile.ContainsTileInteractableOfType<EmptyItemTileInteractable>())
             {

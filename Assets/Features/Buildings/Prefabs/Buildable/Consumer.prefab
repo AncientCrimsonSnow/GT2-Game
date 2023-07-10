@@ -270,6 +270,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tileManager: {fileID: 11400000, guid: 250008992667b5e458c740568aa31544, type: 2}
+  consumedValue: {fileID: 11400000, guid: aea189b3c1087874e944a02553523a24, type: 2}
 --- !u!33 &4672423139051537944
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -603,6 +604,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tileManager: {fileID: 11400000, guid: 250008992667b5e458c740568aa31544, type: 2}
+  consumedValue: {fileID: 11400000, guid: aea189b3c1087874e944a02553523a24, type: 2}
 --- !u!33 &47656152091137128
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -714,6 +716,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tileManager: {fileID: 11400000, guid: 250008992667b5e458c740568aa31544, type: 2}
+  consumedValue: {fileID: 11400000, guid: aea189b3c1087874e944a02553523a24, type: 2}
 --- !u!33 &5346357678985613528
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -936,6 +939,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tileManager: {fileID: 11400000, guid: 250008992667b5e458c740568aa31544, type: 2}
+  consumedValue: {fileID: 11400000, guid: aea189b3c1087874e944a02553523a24, type: 2}
 --- !u!33 &7232324375111967446
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -1055,7 +1059,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   poolContainer: {fileID: 11400000, guid: 299890836ed09134199b81a89b00ba4c, type: 2}
   poolingType: 1
-  disabledAtAwake: 1
 --- !u!1001 &7521428152852228618
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -81,8 +81,9 @@ namespace Features.Items.Scripts
                     kernelSize >= buildingRecipe.requiredBuildingKernelSize)
                 {
                     var instantiatedBuilding = buildingRecipe.building.Reuse(caster.transform.position, Quaternion.identity);
-                    instantiatedBuilding.Release();
                     instantiatedBuilding.SetPoolingEnabled(false);
+                    instantiatedBuilding.OnBeforeReleasePoolable();
+                    instantiatedBuilding.gameObject.SetActive(false);
                     validBuildings.Add(new BuildData(tileManager, instantiatedBuilding, CopyData(buildingRecipe.recipeData), dropKernel));
                 }
             }
@@ -127,6 +128,8 @@ namespace Features.Items.Scripts
                 validBuildings.Remove(validBuildings.Find(x => x.InstantiatedBuilding == selectedBuilding.InstantiatedBuilding));
                 DestroyAllBuildings(validBuildings);
 
+                selectedBuilding.InstantiatedBuilding.OnBeforeReusePoolable();
+                selectedBuilding.InstantiatedBuilding.gameObject.SetActive(true);
                 selectedBuilding.InstantiatedBuilding.SetPoolingEnabled(true);
                 
                 ReplayManager.Instance.StopReplayable(skeletonFocus.GetFocus(), true);

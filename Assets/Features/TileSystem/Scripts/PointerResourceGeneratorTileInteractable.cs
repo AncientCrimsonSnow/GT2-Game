@@ -2,6 +2,7 @@
 using System.Linq;
 using Features.Items.Scripts;
 using Features.TileSystem.Scripts.Registrator;
+using Uilities.Pool;
 using UnityEngine;
 
 namespace Features.TileSystem.Scripts
@@ -13,20 +14,25 @@ namespace Features.TileSystem.Scripts
         private readonly List<BaseTileRegistrator> _itemTilePointers;
         private readonly BaseItem_SO _baseItemLoot;
         private readonly int _itemAmountCost;
-        
-        public PointerResourceGeneratorTileInteractable(Tile tile, bool isMovable, List<BaseTileRegistrator> itemTilePointers, BaseItem_SO baseItemLoot, int itemAmountCost)
+        private readonly Poolable _poolable;
+        private readonly bool _destroyPointerIfEmpty;
+
+        public PointerResourceGeneratorTileInteractable(Tile tile, bool isMovable, List<BaseTileRegistrator> itemTilePointers, 
+            BaseItem_SO baseItemLoot, int itemAmountCost, Poolable poolable, bool destroyPointerIfEmpty)
         {
             _tile = tile;
             _isMovable = isMovable;
             _itemTilePointers = itemTilePointers;
             _baseItemLoot = baseItemLoot;
             _itemAmountCost = itemAmountCost;
+            _poolable = poolable;
+            _destroyPointerIfEmpty = destroyPointerIfEmpty;
         }
 
         public bool TryInteract(GameObject interactor)
         {
-            if (!_itemTilePointers.All(x => x.Tile.ItemContainer.CanAddItemCount(x.Tile.ItemContainer.ContainedBaseItem, -_itemAmountCost)) 
-                || !_tile.ContainsTileInteractableOfType<EmptyItemTileInteractable>()) return false;
+            if (!_itemTilePointers.All(x => x.Tile.ItemContainer.CanAddItemCount(-_itemAmountCost)
+                                            || !_tile.ContainsTileInteractableOfType<EmptyItemTileInteractable>())) return false;
 
             RemoveItemFromPointer();
             DropItemOnTile();
@@ -48,6 +54,11 @@ namespace Features.TileSystem.Scripts
             foreach (var baseTileRegistrator in _itemTilePointers)
             {
                 baseTileRegistrator.Tile.ItemContainer.AddItemCount(baseTileRegistrator.Tile.ItemContainer.ContainedBaseItem, -_itemAmountCost);
+                
+                if (!baseTileRegistrator.Tile.ItemContainer.CanAddItemCount(-_itemAmountCost) && _destroyPointerIfEmpty)
+                {
+                    _poolable.Release();
+                }
             }
             Debug.Log("Removed item from pointer.");
         }
