@@ -1,13 +1,14 @@
 ﻿using Features.TileSystem.Scripts;
+using Uilities.Pool;
 using UnityEngine;
 
 namespace Features.Items.Scripts
 {
     public class UnstackableItemTileInteractable : ItemTileInteractable
     {
-        public UnstackableItemTileInteractable(Tile tile, bool isMovable, BaseItem_SO baseItemType, GameObject useThisGameObject) : base(tile, isMovable)
+        public UnstackableItemTileInteractable(Tile tile, bool isMovable, BaseItem_SO baseItemType, Poolable pooledGameObject) : base(tile, isMovable)
         {
-            Tile.ItemContainer.InitializeItem(baseItemType, useThisGameObject);
+            Tile.ItemContainer.InitializeItem(baseItemType, pooledGameObject);
         }
 
         public override bool TryInteract(GameObject interactor)
@@ -24,7 +25,7 @@ namespace Features.Items.Scripts
                 return false;
             }
 
-            if (!Tile.ItemContainer.CanDestroyItem(1)) return false;
+            if (!Tile.ItemContainer.CanDestroyItem()) return false;
 
             heldItemBehaviour.PickupItem(Tile.ItemContainer.ContainedBaseItem);
             Tile.ExchangeFirstTileInteractableOfType<ItemTileInteractable>(new EmptyItemTileInteractable(Tile));

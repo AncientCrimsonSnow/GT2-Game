@@ -1,4 +1,5 @@
 ﻿using Features.TileSystem.Scripts;
+using Uilities.Pool;
 using UnityEngine;
 
 namespace Features.Items.Scripts
@@ -6,10 +7,11 @@ namespace Features.Items.Scripts
     public class ItemContainer
     {
         public BaseItem_SO ContainedBaseItem { get; private set; }
-        
+
         private readonly Tile _tile;
-        
-        private GameObject _instantiatedGameObject;
+
+        public Poolable PooledGameObject => _pooledGameObject;
+        private Poolable _pooledGameObject;
         private int _itemCount;
         private int _maxContainedItemCount;
         private int _registratorStack;
@@ -18,40 +20,26 @@ namespace Features.Items.Scripts
         {
             _tile = tile;
         }
-
-        public void SetActive(bool isActive)
-        {
-            _instantiatedGameObject.SetActive(isActive);
-        }
-
-        public bool IsActive()
-        {
-            return _instantiatedGameObject.activeSelf;
-        }
         
         public bool ContainsItem()
         {
-            return _instantiatedGameObject != null && ContainedBaseItem != null;
+            return _pooledGameObject != null && ContainedBaseItem != null;
         }
 
-        public void InitializeItem(BaseItem_SO newBaseItem, GameObject instantiatedObject, int maxContainedItemCount = 1, int itemCount = 1)
+        public void InitializeItem(BaseItem_SO newBaseItem, Poolable pooledGameObject, int maxContainedItemCount = 1, int itemCount = 1)
         {
             if (ContainsItem()) return;
 
             _itemCount = itemCount;
             _maxContainedItemCount = maxContainedItemCount;
             ContainedBaseItem = newBaseItem;
-            _instantiatedGameObject = instantiatedObject;
+            _pooledGameObject = pooledGameObject;
         }
         
-        public bool CanDestroyItem(int maxItemDestructionCount)
+        public bool CanDestroyItem()
         {
-            if (_itemCount > maxItemDestructionCount)
-            {
-                Debug.LogWarning($"You can only destroy the Item, when there are at most {maxItemDestructionCount} items on it! There are/is currently {_itemCount}");
-                return false;
-            }
-
+            if (!ContainsItem()) return false;
+            
             if (_registratorStack > 0)
             {
                 Debug.LogWarning($"There are still registrators linked with this item!");
@@ -61,11 +49,11 @@ namespace Features.Items.Scripts
             return true;
         }
 
-        public void DestroyItem(int maxItemDestructionCount)
+        public void DestroyItem()
         {
-            if (!CanDestroyItem(maxItemDestructionCount)) return;
+            if (!CanDestroyItem()) return;
             
-            Object.Destroy(_instantiatedGameObject);
+            _pooledGameObject.Release();
             ContainedBaseItem = null;
             _maxContainedItemCount = 0;
         }

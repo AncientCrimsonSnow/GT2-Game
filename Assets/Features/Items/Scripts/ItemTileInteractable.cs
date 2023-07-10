@@ -25,7 +25,8 @@ namespace Features.Items.Scripts
 
         public virtual bool IsExchangeable(ITileInteractable newTileInteractable)
         {
-            return this is EmptyItemTileInteractable || newTileInteractable is EmptyItemTileInteractable;
+            return (this is EmptyItemTileInteractable && newTileInteractable is not EmptyItemTileInteractable) 
+                   || (this is not EmptyItemTileInteractable && newTileInteractable is EmptyItemTileInteractable);
         }
     }
 }

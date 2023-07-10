@@ -301,6 +301,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7875480940548880318}
   - component: {fileID: 8106357566672100090}
+  - component: {fileID: 2761914583994535541}
   m_Layer: 0
   m_Name: Schnitzerei
   m_TagString: Untagged
@@ -340,5 +341,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tileManager: {fileID: 11400000, guid: 250008992667b5e458c740568aa31544, type: 2}
   registerOnAwake: 1
+  poolable: {fileID: 2761914583994535541}
   isMovable: 1
   baseItemType: {fileID: 11400000, guid: bb10802d6979e4a459c33fb064d8c8e8, type: 2}
+--- !u!114 &2761914583994535541
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8353975661546354772}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c18bac68bb2e54348accfe8db81025bf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  poolContainer: {fileID: 11400000, guid: 02bdb35fbeed43742ae0d3654a3209f7, type: 2}
+  poolingType: 1

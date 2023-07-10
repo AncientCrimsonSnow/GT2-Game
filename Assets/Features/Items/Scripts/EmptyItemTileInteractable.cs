@@ -7,7 +7,7 @@ namespace Features.Items.Scripts
     {
         public EmptyItemTileInteractable(Tile tile) : base(tile, true)
         {
-            Tile.ItemContainer.DestroyItem(1);
+            Tile.ItemContainer.DestroyItem();
         }
 
         public override bool TryInteract(GameObject interactor)
@@ -25,8 +25,7 @@ namespace Features.Items.Scripts
             }
 
             var heldItem = heldItemBehaviour.CarriedBaseItem;
-            Tile.ExchangeFirstTileInteractableOfType<ItemTileInteractable>(new EmptyItemTileInteractable(Tile));
-            TileHelper.InstantiateOnTile(Tile, heldItem.prefab, Quaternion.identity);
+            TileHelper.ReuseOnTile(Tile, heldItem.prefab, Quaternion.identity);
             heldItemBehaviour.DropItem();
             return true;
         }

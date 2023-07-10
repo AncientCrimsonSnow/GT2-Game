@@ -28,7 +28,7 @@ namespace Features.TileSystem.Scripts.Registrator
             _tileInteractable = tileComponent;
         }
 
-        protected override void UnregisterOnTile()
+        protected override void InternalUnregisterOnTile()
         {
             Tile.UnregisterTileInteractable(_tileInteractable);
         }

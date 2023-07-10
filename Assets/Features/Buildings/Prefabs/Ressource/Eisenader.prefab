@@ -97,6 +97,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tileManager: {fileID: 11400000, guid: 250008992667b5e458c740568aa31544, type: 2}
   registerOnAwake: 1
+  poolable: {fileID: 8809736457329227766}
   isMovable: 0
   baseItemType: {fileID: 11400000, guid: 7fcc0f00cab13364c90df74905d29309, type: 2}
   containedItemAmountOnSpawn: 1000
@@ -295,6 +296,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1119458519699815326}
+  - component: {fileID: 8809736457329227766}
   m_Layer: 0
   m_Name: Eisenader
   m_TagString: Untagged
@@ -323,6 +325,20 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8809736457329227766
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7665460649234598153}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c18bac68bb2e54348accfe8db81025bf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  poolContainer: {fileID: 11400000, guid: f403fd3958be75b4998e5f2a0af17edc, type: 2}
+  poolingType: 1
 --- !u!1001 &2624258507717375959
 PrefabInstance:
   m_ObjectHideFlags: 0

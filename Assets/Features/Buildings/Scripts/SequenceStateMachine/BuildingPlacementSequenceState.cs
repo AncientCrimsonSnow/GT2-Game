@@ -22,27 +22,8 @@ namespace Features.Buildings.Scripts.SequenceStateMachine
             _validBuildings = validBuildings;
             _selectedIndex = selectedIndex;
             _buildArea = buildArea;
-        
-            foreach (var kernelTile in buildArea)
-            {
-                if (!kernelTile.ItemContainer.ContainsItem() || !kernelTile.ContainsTileInteractableOfType<UnstackableItemTileInteractable>()) continue;
-                    
-                var foundRecipeData = validBuildings[selectedIndex].RecipeData.Find(x =>
-                    x.requiredItem == kernelTile.ItemContainer.ContainedBaseItem);
-
-                if (foundRecipeData is not { requiredCount: > 0 }) continue;
             
-                validBuildings[selectedIndex].ObjectsToDestroy.Add(kernelTile);
-                kernelTile.ItemContainer.SetActive(false);
-                foundRecipeData.requiredCount--;
-            }
-
-            var buildVisualization = _validBuildings[_selectedIndex].InstantiatedBuilding.GetComponentInChildren<BuildVisualization>();
-            if (buildVisualization != null)
-            {
-                buildVisualization.EnableMovement();
-                buildVisualization.SetAllColor(BuildingPlacementIsValid(_validBuildings[_selectedIndex].InstantiatedBuilding));
-            }
+            _validBuildings[_selectedIndex].ApplyColor(visualization => visualization.EnableMovement());
         }
     
         public bool TryCompleteSequence(out IBuildSequenceState nextState)
@@ -53,11 +34,7 @@ namespace Features.Buildings.Scripts.SequenceStateMachine
 
         public bool TryGetPrevious(out IBuildSequenceState nextState)
         {
-            foreach (var tile in _validBuildings[_selectedIndex].ObjectsToDestroy)
-            {
-                tile.ItemContainer.SetActive(true);
-            }
-            _validBuildings[_selectedIndex].ObjectsToDestroy.Clear();
+            _validBuildings[_selectedIndex].ReuseBuildingAreaObjects();
         
             nextState = new BuildingSelectionSequenceState(_tileManager, _validBuildings, _buildArea);
             return true;
@@ -77,11 +54,7 @@ namespace Features.Buildings.Scripts.SequenceStateMachine
         
             _validBuildings[_selectedIndex].InstantiatedBuilding.transform.position += new Vector3(inputVector.x, 0, inputVector.y);
         
-            var buildVisualization = _validBuildings[_selectedIndex].InstantiatedBuilding.GetComponentInChildren<BuildVisualization>();
-            if (buildVisualization != null)
-            {
-                buildVisualization.SetAllColor(BuildingPlacementIsValid(_validBuildings[_selectedIndex].InstantiatedBuilding));
-            }
+            _validBuildings[_selectedIndex].ApplyColor();
         }
 
         public BuildData GetSelectedObject()

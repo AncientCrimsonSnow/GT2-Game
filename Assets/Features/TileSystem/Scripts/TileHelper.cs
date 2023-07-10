@@ -1,5 +1,6 @@
 ﻿using System;
 using Features.Items.Scripts;
+using Uilities.Pool;
 using Unity.Mathematics;
 using UnityEngine;
 using Object = UnityEngine.Object;
@@ -10,7 +11,11 @@ namespace Features.TileSystem.Scripts
     {
         public static int2 TransformPositionToInt2(Transform transform)
         {
-            var position = transform.position;
+            return Vector3ToInt2(transform.position);
+        }
+        
+        public static int2 Vector3ToInt2(Vector3 position)
+        {
             return new int2(Mathf.RoundToInt(position.x), Mathf.RoundToInt(position.z));
         }
         
@@ -126,17 +131,16 @@ namespace Features.TileSystem.Scripts
             return new int2(originPosition.x + arrayPosition.x, originPosition.y + arrayPosition.y);
         }
         
-        public static GameObject InstantiateOnTile(IGridPosition worldPosition, GameObject prefab, Quaternion rotation, Transform parent = null)
+        public static Poolable ReuseOnTile(IGridPosition worldPosition, GameObject prefab, Quaternion rotation, Transform parent = null)
         {
             var position = new Vector3(worldPosition.WorldPosition.x, 0, worldPosition.WorldPosition.y);
-            var instantiateObject = Object.Instantiate(prefab, position, rotation);
-            if (parent != null) instantiateObject.transform.SetParent(parent);
-            return instantiateObject;
+            var poolable = parent ? prefab.Reuse(position, rotation, parent) : prefab.Reuse(position, rotation);
+            return poolable;
         }
         
-        public static void DropItemNearestEmptyTile(TileManager tileManager, Transform transform, BaseItem_SO baseItem)
+        public static void DropItemNearestEmptyTile(TileManager tileManager, Vector3 position, BaseItem_SO baseItem)
         {
-            var worldPositionInt2 = TransformPositionToInt2(transform);
+            var worldPositionInt2 = Vector3ToInt2(position);
             var foundTile = tileManager.SearchNearestTileByCondition(worldPositionInt2,
                 tile => tile.ContainsTileInteractableOfType<EmptyItemTileInteractable>() ||
                         (tile.TryGetFirstTileInteractableOfType(out StackableItemTileInteractable _) &&
@@ -144,8 +148,7 @@ namespace Features.TileSystem.Scripts
 
             if (foundTile.ContainsTileInteractableOfType<EmptyItemTileInteractable>())
             {
-                foundTile.ExchangeFirstTileInteractableOfType<ItemTileInteractable>(new EmptyItemTileInteractable(foundTile));
-                InstantiateOnTile(foundTile, baseItem.prefab, Quaternion.identity);
+                ReuseOnTile(foundTile, baseItem.prefab, Quaternion.identity);
             }
             else
             {

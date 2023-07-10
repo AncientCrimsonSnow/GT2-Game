@@ -14,9 +14,20 @@ namespace Features.Buildings.Scripts
     }
     
     [Serializable] 
-    public struct RecipeData
+    public class RecipeData
     {
         public BaseItem_SO requiredItem;
         public int requiredCount;
+
+        public RecipeData(BaseItem_SO requiredItem, int requiredCount)
+        {
+            this.requiredItem = requiredItem;
+            this.requiredCount = requiredCount;
+        }
+
+        public void ReduceRequiredCount()
+        {
+            requiredCount--;
+        }
     }
 }

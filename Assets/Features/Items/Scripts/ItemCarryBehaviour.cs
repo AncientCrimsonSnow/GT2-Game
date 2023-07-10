@@ -21,7 +21,7 @@ namespace Features.Items.Scripts
         {
             if (CarriedBaseItem != null)
             {
-                TileHelper.DropItemNearestEmptyTile(tileManager, transform, CarriedBaseItem);
+                TileHelper.DropItemNearestEmptyTile(tileManager, transform.position, CarriedBaseItem);
             }
         }
 

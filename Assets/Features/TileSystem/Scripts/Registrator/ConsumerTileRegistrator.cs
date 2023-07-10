@@ -22,7 +22,7 @@ namespace Features.TileSystem.Scripts.Registrator
             _replayManager.StartReplay(gameObject, true);
         }
 
-        protected override void UnregisterOnTile()
+        protected override void InternalUnregisterOnTile()
         {
             _replayManager.StopReplayable(gameObject);
         }

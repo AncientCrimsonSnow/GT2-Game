@@ -51,9 +51,11 @@ namespace Features.TileSystem.Scripts
             for (var index = 0; index < _tileInteractables.Count; index++)
             {
                 var baseTileComponent = _tileInteractables[index];
-                if (baseTileComponent is not T typeTileComponent || !typeTileComponent.IsExchangeable(newTileComponent)) continue;
-                _tileInteractables[index] = newTileComponent;
-                return;
+                if (baseTileComponent is T typeTileComponent && typeTileComponent.IsExchangeable(newTileComponent))
+                {
+                    _tileInteractables[index] = newTileComponent;
+                    return;
+                }
             }
         }
         
@@ -69,17 +71,29 @@ namespace Features.TileSystem.Scripts
 
         public bool TryInteract(GameObject interactor)
         {
+            //PrintInteractable();
+
             return _tileInteractables.Any(connectedTileContext => connectedTileContext.TryInteract(interactor));
         }
 
         public bool TryCast(GameObject caster)
         {
+            //PrintInteractable();
+            
             return _tileInteractables.Any(connectedTileContext => connectedTileContext.TryCast(caster));
         }
 
         public bool IsMovable()
         {
             return _tileInteractables.All(tileInteractionContext => tileInteractionContext.IsMovable());
+        }
+
+        public void PrintInteractable()
+        {
+            foreach (var tileInteractable in _tileInteractables)
+            {
+                Debug.Log("Try Cast: " + tileInteractable + " | " + ItemContainer.PooledGameObject + " | " + ItemContainer.ContainedBaseItem + " | " + WorldPosition.x + " " + WorldPosition.y);
+            }
         }
     }
 }

@@ -64,7 +64,7 @@ namespace Features.Items.Scripts
             var onReplayCompleteAction = new Action(() =>
             {
                 onDestroyAction.Invoke();
-                TileHelper.DropItemNearestEmptyTile(tileManager, instantiatedPrefab.transform, this);
+                TileHelper.DropItemNearestEmptyTile(tileManager, instantiatedPrefab.transform.position, this);
             });
             
             //the newestInstantiatedSkeleton must be buffered, because it will be null during replay

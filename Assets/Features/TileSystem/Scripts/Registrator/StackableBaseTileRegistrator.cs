@@ -1,4 +1,5 @@
 ﻿using Features.Items.Scripts;
+using Uilities.Pool;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -6,6 +7,7 @@ namespace Features.TileSystem.Scripts.Registrator
 {
     public class StackableBaseTileRegistrator : BaseTileRegistrator
     {
+        [SerializeField] private Poolable poolable;
         [SerializeField] private bool isMovable;
         [FormerlySerializedAs("itemType")] [SerializeField] private BaseItem_SO baseItemType;
         [SerializeField] private int containedItemAmountOnSpawn;
@@ -25,15 +27,15 @@ namespace Features.TileSystem.Scripts.Registrator
             
             if (!Tile.ContainsTileInteractableOfType<EmptyItemTileInteractable>()) return;
 
-            ItemTileInteractable tileComponent = new StackableItemTileInteractable(Tile, isMovable, baseItemType, maxContainedItemCount, containedItemAmountOnSpawn, gameObject);
-            Tile.ExchangeFirstTileInteractableOfType(tileComponent);
+            Tile.ExchangeFirstTileInteractableOfType<ItemTileInteractable>(new StackableItemTileInteractable(Tile, isMovable, baseItemType,
+                maxContainedItemCount, containedItemAmountOnSpawn, poolable));
         }
 
-        protected override void UnregisterOnTile()
+        protected override void InternalUnregisterOnTile()
         {
             Tile.ItemContainer.RemoveRegistratorStack();
             
-            if (!Tile.ItemContainer.CanDestroyItem(0)) return;
+            if (!Tile.ItemContainer.CanDestroyItem()) return;
             
             Tile.ExchangeFirstTileInteractableOfType<ItemTileInteractable>(new EmptyItemTileInteractable(Tile));
         }

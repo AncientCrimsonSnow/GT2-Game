@@ -48,7 +48,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tileManager: {fileID: 11400000, guid: 250008992667b5e458c740568aa31544, type: 2}
-  registerOnStart: 0
 --- !u!33 &4254025114233452465
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -160,7 +159,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tileManager: {fileID: 11400000, guid: 250008992667b5e458c740568aa31544, type: 2}
-  registerOnStart: 0
 --- !u!33 &2937625582652050550
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -272,7 +270,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tileManager: {fileID: 11400000, guid: 250008992667b5e458c740568aa31544, type: 2}
-  registerOnStart: 0
 --- !u!33 &4672423139051537944
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -384,7 +381,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tileManager: {fileID: 11400000, guid: 250008992667b5e458c740568aa31544, type: 2}
-  registerOnStart: 0
 --- !u!33 &2278844964274778844
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -496,7 +492,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tileManager: {fileID: 11400000, guid: 250008992667b5e458c740568aa31544, type: 2}
-  registerOnStart: 0
 --- !u!33 &4346887886864060462
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -608,7 +603,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tileManager: {fileID: 11400000, guid: 250008992667b5e458c740568aa31544, type: 2}
-  registerOnStart: 0
 --- !u!33 &47656152091137128
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -720,7 +714,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tileManager: {fileID: 11400000, guid: 250008992667b5e458c740568aa31544, type: 2}
-  registerOnStart: 0
 --- !u!33 &5346357678985613528
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -832,7 +825,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tileManager: {fileID: 11400000, guid: 250008992667b5e458c740568aa31544, type: 2}
-  registerOnStart: 0
 --- !u!33 &2708958223785617427
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -944,7 +936,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tileManager: {fileID: 11400000, guid: 250008992667b5e458c740568aa31544, type: 2}
-  registerOnStart: 0
 --- !u!33 &7232324375111967446
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -1017,7 +1008,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5593624783022258812}
-  - component: {fileID: 929834977204966640}
+  - component: {fileID: 8449137007069039182}
   m_Layer: 0
   m_Name: Consumer
   m_TagString: Untagged
@@ -1050,7 +1041,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &929834977204966640
+--- !u!114 &8449137007069039182
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1059,9 +1050,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 9197231802072009185}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 38b5ff898e644884bb9effb6221c26c2, type: 3}
+  m_Script: {fileID: 11500000, guid: c18bac68bb2e54348accfe8db81025bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  poolContainer: {fileID: 11400000, guid: 299890836ed09134199b81a89b00ba4c, type: 2}
+  poolingType: 1
+  disabledAtAwake: 1
 --- !u!1001 &7521428152852228618
 PrefabInstance:
   m_ObjectHideFlags: 0

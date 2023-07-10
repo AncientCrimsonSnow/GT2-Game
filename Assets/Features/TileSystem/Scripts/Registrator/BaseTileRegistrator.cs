@@ -1,6 +1,5 @@
-using System;
+using Uilities.Pool;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace Features.TileSystem.Scripts.Registrator
 {
@@ -9,52 +8,43 @@ namespace Features.TileSystem.Scripts.Registrator
     /// When changing it's position later, it will still be inside the same position inside the TileManager!
     /// Tiles must currently be static on a position!
     /// </summary>
-    public abstract class BaseTileRegistrator : MonoBehaviour
+    public abstract class BaseTileRegistrator : MonoBehaviour, IBeforeReusePoolableCallback, IBeforeReleasePoolableCallback
     {
         [SerializeField] private TileManager tileManager;
-        [FormerlySerializedAs("registerOnStart")] [SerializeField] private bool registerOnAwake;
 
         public Tile Tile => tileManager.GetTileAt(TileHelper.TransformPositionToInt2(transform));
-        public bool HasRegistratorGroup => TileRegistratorGroup != null;
-        private TileRegistratorGroup TileRegistratorGroup { get; set; }
         
-        private Action _onDestroyAction;
-        private Action _onDisableAction;
         private Vector3 _registeredPosition;
         private bool _isCurrentlyRegistered;
-        private bool _hasInitialRegistration;
 
-        private void Awake()
+        public void Awake()
         {
+            Debug.Log("Awake " + name);
+            if (!CanRegisterOnTile()) return;
+            
             ApplyRoundedPosition();
-
-            if (!registerOnAwake) return;
-
-            if (CanRegisterOnTile())
-            {
-                RegisterOnTile();
-            }
+            RegisterOnTile();
         }
 
-        private void OnEnable()
+        public void OnBeforeReusePoolable()
         {
-            if (!_hasInitialRegistration) return;
+            Debug.Log("Before Reuse " + name);
+            if (!CanRegisterOnTile()) return;
             
-            Register();
+            ApplyRoundedPosition();
+            RegisterOnTile();
         }
 
-        private void OnDisable()
+        public void OnBeforeReleasePoolable()
         {
-            Unregister();
-            
-            _onDisableAction?.Invoke();
+            Debug.Log("Before Release " + name);
+            UnregisterOnTile();
         }
-
-        protected virtual void OnDestroy()
+        
+        public void OnDestroy()
         {
-            Unregister();
-
-            _onDestroyAction?.Invoke();
+            Debug.Log("Destroy " + name);
+            UnregisterOnTile();
         }
         
         public virtual bool CanRegisterOnTile()
@@ -65,33 +55,13 @@ namespace Features.TileSystem.Scripts.Registrator
         public void RegisterOnTile()
         {
             _isCurrentlyRegistered = true;
-            _hasInitialRegistration = true;
             _registeredPosition = transform.position;
             InternalRegisterOnTile();
         }
         
-        public void AssignToRegistratorGroup(TileRegistratorGroup tileRegistratorGroup, Action onDisableAction, Action onDestroyAction)
-        {
-            TileRegistratorGroup = tileRegistratorGroup;
-            _onDisableAction = onDisableAction;
-            _onDestroyAction = onDestroyAction;
-        }
+        protected abstract void InternalRegisterOnTile();
 
-        public void RemoveFromRegistratorGroup()
-        {
-            TileRegistratorGroup = null;
-            _onDisableAction = null;
-            _onDestroyAction = null;
-        }
-
-        private void Register()
-        {
-            if (!CanRegisterOnTile()) return;
-
-            RegisterOnTile();
-        }
-
-        private void Unregister()
+        private void UnregisterOnTile()
         {
             if (!_isCurrentlyRegistered) return;
             _isCurrentlyRegistered = false;
@@ -101,13 +71,11 @@ namespace Features.TileSystem.Scripts.Registrator
                 Debug.LogWarning($"You changed the position of {this} during Runtime! It will still unregister itself from the registered Tile!");
             }
             
-            UnregisterOnTile();
+            InternalUnregisterOnTile();
         }
 
-        protected abstract void InternalRegisterOnTile();
+        protected abstract void InternalUnregisterOnTile();
 
-        protected abstract void UnregisterOnTile();
-        
         private void ApplyRoundedPosition()
         {
             if (_registeredPosition.x % 1 != 0 || _registeredPosition.z % 1 != 0)

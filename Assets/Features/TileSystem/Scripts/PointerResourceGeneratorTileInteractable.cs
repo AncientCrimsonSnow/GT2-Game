@@ -54,8 +54,8 @@ namespace Features.TileSystem.Scripts
 
         private void DropItemOnTile()
         {
-            _tile.ExchangeFirstTileInteractableOfType<ItemTileInteractable>(new EmptyItemTileInteractable(_tile));
-            TileHelper.InstantiateOnTile(_tile, _baseItemLoot.prefab, Quaternion.identity);
+            TileHelper.ReuseOnTile(_tile, _baseItemLoot.prefab, Quaternion.identity);
+            
             Debug.Log("Dropped item by crafting.");
         }
     }

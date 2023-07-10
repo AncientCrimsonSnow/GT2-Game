@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4138201595417247618}
   - component: {fileID: 4138201595417247619}
+  - component: {fileID: 6382223916792431873}
   m_Layer: 0
   m_Name: BuildingBones
   m_TagString: Untagged
@@ -46,10 +47,24 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tileManager: {fileID: 11400000, guid: 250008992667b5e458c740568aa31544, type: 2}
-  registerOnStart: 1
+  registerOnAwake: 1
+  poolable: {fileID: 6382223916792431873}
   isMovable: 1
   baseItemType: {fileID: 11400000, guid: 2856e0fa757df554fa2e03cf94cc6e62, type: 2}
-  useThisGameObject: 1
+--- !u!114 &6382223916792431873
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4138201595417247617}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c18bac68bb2e54348accfe8db81025bf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  poolContainer: {fileID: 11400000, guid: 909c17f4e076eb14bbf24864f1708835, type: 2}
+  poolingType: 1
 --- !u!1001 &1328964701696262207
 PrefabInstance:
   m_ObjectHideFlags: 0

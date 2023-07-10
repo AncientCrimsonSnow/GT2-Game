@@ -25,7 +25,6 @@ namespace Features.Buildings.Scripts.SequenceStateMachine
         
             if (_currentState.TryGetPrevious(out var previousSequenceState))
             {
-                Debug.Log(previousSequenceState);
                 _currentState = previousSequenceState;
             }
             else
@@ -46,7 +45,6 @@ namespace Features.Buildings.Scripts.SequenceStateMachine
             }
             else
             {
-                Debug.Log(nextSequenceState);
                 _currentState = nextSequenceState;
             }
         }

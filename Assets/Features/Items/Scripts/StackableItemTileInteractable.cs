@@ -1,4 +1,5 @@
 ﻿using Features.TileSystem.Scripts;
+using Uilities.Pool;
 using UnityEngine;
 
 namespace Features.Items.Scripts
@@ -8,9 +9,9 @@ namespace Features.Items.Scripts
         private int _itemCount;
 
         public StackableItemTileInteractable(Tile tile, bool isMovable, BaseItem_SO baseItemType, 
-            int maxContainedItemCount, int containedItemAmountOnSpawn, GameObject useThisGameObject) : base(tile, isMovable)
+            int maxContainedItemCount, int containedItemAmountOnSpawn, Poolable pooledGameObject) : base(tile, isMovable)
         {
-            Tile.ItemContainer.InitializeItem(baseItemType, useThisGameObject, maxContainedItemCount, containedItemAmountOnSpawn);
+            Tile.ItemContainer.InitializeItem(baseItemType, pooledGameObject, maxContainedItemCount, containedItemAmountOnSpawn);
         }
 
         public override bool TryInteract(GameObject interactor)

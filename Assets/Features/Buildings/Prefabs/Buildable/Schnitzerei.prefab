@@ -195,7 +195,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tileManager: {fileID: 11400000, guid: 250008992667b5e458c740568aa31544, type: 2}
-  registerOnAwake: 0
+  poolable: {fileID: 4253660889767554292}
   isMovable: 1
   baseItemType: {fileID: 11400000, guid: 0e77a3d96d2a3fa408584dc0e5b490fa, type: 2}
   containedItemAmountOnSpawn: 0
@@ -297,7 +297,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tileManager: {fileID: 11400000, guid: 250008992667b5e458c740568aa31544, type: 2}
-  registerOnAwake: 0
   isMovable: 1
   baseItemLoot: {fileID: 11400000, guid: bb10802d6979e4a459c33fb064d8c8e8, type: 2}
   pointerRegistrators:
@@ -638,7 +637,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5593624783022258812}
-  - component: {fileID: 929834977204966640}
+  - component: {fileID: 4253660889767554292}
   m_Layer: 0
   m_Name: Schnitzerei
   m_TagString: Untagged
@@ -664,7 +663,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &929834977204966640
+--- !u!114 &4253660889767554292
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -673,9 +672,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 9197231802072009185}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 38b5ff898e644884bb9effb6221c26c2, type: 3}
+  m_Script: {fileID: 11500000, guid: c18bac68bb2e54348accfe8db81025bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  poolContainer: {fileID: 11400000, guid: d922fc458077c2e4a84e6c8428cfa778, type: 2}
+  poolingType: 1
+  disabledAtAwake: 1
 --- !u!1001 &1262308252507868726
 PrefabInstance:
   m_ObjectHideFlags: 0

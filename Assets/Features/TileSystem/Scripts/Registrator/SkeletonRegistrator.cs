@@ -12,6 +12,6 @@ namespace Features.TileSystem.Scripts.Registrator
             Destroy(gameObject);
         }
 
-        protected override void UnregisterOnTile() { }
+        protected override void InternalUnregisterOnTile() { }
     }
 }

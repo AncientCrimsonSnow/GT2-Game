@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7875480940548880318}
   - component: {fileID: 3579825375782006876}
+  - component: {fileID: 449084622651480040}
   m_Layer: 0
   m_Name: Eisenerz
   m_TagString: Untagged
@@ -47,8 +48,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tileManager: {fileID: 11400000, guid: 250008992667b5e458c740568aa31544, type: 2}
   registerOnAwake: 1
+  poolable: {fileID: 449084622651480040}
   isMovable: 1
   baseItemType: {fileID: 11400000, guid: 7fcc0f00cab13364c90df74905d29309, type: 2}
+--- !u!114 &449084622651480040
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8353975661546354772}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c18bac68bb2e54348accfe8db81025bf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  poolContainer: {fileID: 11400000, guid: d1c5bcc6e4480e0469fce7ff736d2ac9, type: 2}
+  poolingType: 1
 --- !u!1001 &2526352780704263050
 PrefabInstance:
   m_ObjectHideFlags: 0

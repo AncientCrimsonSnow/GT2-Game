@@ -1,8 +1,6 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using Features.Items.Scripts;
 using Features.TileSystem.Scripts;
-using Features.TileSystem.Scripts.Registrator;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -22,16 +20,12 @@ namespace Features.Buildings.Scripts.SequenceStateMachine
             _buildArea = buildArea;
             _currentIndex = selectedIndex;
 
-            var buildVisualization = _validBuildings[_currentIndex].InstantiatedBuilding.GetComponentInChildren<BuildVisualization>();
-            if (buildVisualization != null)
-            {
-                buildVisualization.EnableSelection();
-                buildVisualization.SetAllColor(BuildingPlacementIsValid(_validBuildings[_currentIndex].InstantiatedBuilding));
-            }
+            _validBuildings[_currentIndex].ApplyColor(visualization => visualization.EnableSelection());
         } 
     
         public bool TryCompleteSequence(out IBuildSequenceState nextState)
         {
+            _validBuildings[_currentIndex].ReleaseBuildingAreaObjects();
             nextState = new BuildingPlacementSequenceState(_tileManager, _validBuildings, _currentIndex, _buildArea);
             return false;
         }
@@ -80,19 +74,7 @@ namespace Features.Buildings.Scripts.SequenceStateMachine
             
             _validBuildings[_currentIndex].InstantiatedBuilding.SetActive(true);
         
-            var buildVisualization = _validBuildings[_currentIndex].InstantiatedBuilding.GetComponentInChildren<BuildVisualization>();
-            if (buildVisualization != null)
-            {
-                buildVisualization.EnableSelection();
-                buildVisualization.SetAllColor(BuildingPlacementIsValid(_validBuildings[_currentIndex].InstantiatedBuilding));
-            }
-        }
-    
-        private bool BuildingPlacementIsValid(GameObject building)
-        {
-            var buildingObjects = building.GetComponentsInChildren<BaseTileRegistrator>();
-
-            return buildingObjects.All(baseTileInteractableRegistrator => baseTileInteractableRegistrator.CanRegisterOnTile());
+            _validBuildings[_currentIndex].ApplyColor(visualization => visualization.EnableSelection());
         }
     }
 }

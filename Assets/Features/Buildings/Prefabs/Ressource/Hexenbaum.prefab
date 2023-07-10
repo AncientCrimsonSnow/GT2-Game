@@ -97,6 +97,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tileManager: {fileID: 11400000, guid: 250008992667b5e458c740568aa31544, type: 2}
   registerOnAwake: 1
+  poolable: {fileID: 7849831958039759344}
   isMovable: 0
   baseItemType: {fileID: 11400000, guid: 0e77a3d96d2a3fa408584dc0e5b490fa, type: 2}
   containedItemAmountOnSpawn: 1000
@@ -298,6 +299,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1119458519699815326}
+  - component: {fileID: 7849831958039759344}
   m_Layer: 0
   m_Name: Hexenbaum
   m_TagString: Untagged
@@ -326,6 +328,20 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7849831958039759344
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7665460649234598153}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c18bac68bb2e54348accfe8db81025bf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  poolContainer: {fileID: 11400000, guid: 6f27e583a518e5545ba45a2c5fbdb058, type: 2}
+  poolingType: 1
 --- !u!1 &8348350510133013024
 GameObject:
   m_ObjectHideFlags: 0

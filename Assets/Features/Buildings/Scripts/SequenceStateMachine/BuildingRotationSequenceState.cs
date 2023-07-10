@@ -23,25 +23,14 @@ namespace Features.Buildings.Scripts.SequenceStateMachine
             _selectedIndex = selectedIndex;
             _buildArea = buildArea;
         
-            var buildVisualization = _validBuildings[_selectedIndex].InstantiatedBuilding.GetComponentInChildren<BuildVisualization>();
-            if (buildVisualization != null)
-            {
-                buildVisualization.EnableRotation();
-                buildVisualization.SetAllColor(BuildingPlacementIsValid(_validBuildings[_selectedIndex].InstantiatedBuilding));
-            }
+            _validBuildings[_selectedIndex].ApplyColor(visualization => visualization.EnableRotation());
         }
 
         public bool TryCompleteSequence(out IBuildSequenceState nextState)
         {
-            nextState = default;
-            if (BuildingPlacementIsValid(_validBuildings[_selectedIndex].InstantiatedBuilding))
+            if (_validBuildings[_selectedIndex].CanApplyBuild())
             {
-                var buildVisualization = _validBuildings[_selectedIndex].InstantiatedBuilding.GetComponentInChildren<BuildVisualization>();
-                if (buildVisualization != null)
-                {
-                    buildVisualization.DisableAll();
-                }
-            
+                nextState = default;
                 return true;
             }
         
@@ -75,11 +64,7 @@ namespace Features.Buildings.Scripts.SequenceStateMachine
                 Rotate(90, newPosition);
             }
         
-            var buildVisualization = _validBuildings[_selectedIndex].InstantiatedBuilding.GetComponentInChildren<BuildVisualization>();
-            if (buildVisualization != null)
-            {
-                buildVisualization.SetAllColor(BuildingPlacementIsValid(_validBuildings[_selectedIndex].InstantiatedBuilding));
-            }
+            _validBuildings[_selectedIndex].ApplyColor();
         }
 
         public BuildData GetSelectedObject()
@@ -90,13 +75,6 @@ namespace Features.Buildings.Scripts.SequenceStateMachine
         private void Rotate(float angle, Vector3 rotateAround)
         {
             _validBuildings[_selectedIndex].InstantiatedBuilding.transform.RotateAround(rotateAround, Vector3.up, angle);
-        }
-    
-        private bool BuildingPlacementIsValid(GameObject building)
-        {
-            var buildingObjects = building.GetComponentsInChildren<BaseTileRegistrator>();
-
-            return buildingObjects.All(baseTileInteractableRegistrator => baseTileInteractableRegistrator.CanRegisterOnTile());
         }
     }
 }
