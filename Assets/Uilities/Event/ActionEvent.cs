@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace DataStructures.Event
+namespace Uilities.Event
 {
     [CreateAssetMenu(fileName = "new ActionEvent", menuName = "DataStructures/Action Event")]
     public class ActionEvent : ScriptableObject

@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace DataStructures.Variables
+namespace Uilities.Variables
 {
     [Serializable]
     public abstract class AbstractReference<T>

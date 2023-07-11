@@ -1,8 +1,8 @@
-﻿using DataStructures.Variables;
+﻿using Uilities.Variables;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-namespace DataStructures.Event
+namespace Uilities.Event
 {
 	[CreateAssetMenu(fileName = "newSimpleAudioEvent", menuName = "DataStructures/SimpleAudioEvent")]
 	public class SimpleAudioEvent : AudioEvent

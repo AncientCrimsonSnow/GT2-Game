@@ -11,6 +11,16 @@ namespace Features.Buildings.Scripts
         private void Awake()
         {
             DisableAll();
+            ResetAllColor();
+        }
+
+        public void ResetAllColor()
+        {
+            Color color = Color.white;
+
+            selection.color = color;
+            movement.color = color;
+            rotation.color = color;
         }
 
         public void SetAllColor(bool placeable)

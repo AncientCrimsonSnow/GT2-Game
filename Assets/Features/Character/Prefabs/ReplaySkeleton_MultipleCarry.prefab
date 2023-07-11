@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5724755661199476466}
-  - component: {fileID: 6660453748582372275}
+  - component: {fileID: 6044340594411921702}
   - component: {fileID: 4005563181385370186}
   - component: {fileID: 2432906570973151577}
   - component: {fileID: 3137264507857338284}
@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: 8460609380560002215}
   - component: {fileID: 7949436744629420094}
   m_Layer: 6
-  m_Name: ReplaySkeleton
+  m_Name: ReplaySkeleton_MultipleCarry
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -39,7 +39,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6660453748582372275
+--- !u!114 &6044340594411921702
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -48,13 +48,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 3864702134253200536}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b29fd2623665454ca942b330133eb3a2, type: 3}
+  m_Script: {fileID: 11500000, guid: f2d0fc2bd60b0ed429bde38f5e8eff68, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  keepItemOnDrop: 0
   tileManager: {fileID: 11400000, guid: 250008992667b5e458c740568aa31544, type: 2}
-  heldBaseItemAtAwake: {fileID: 0}
-  takeItemAtAwake: 0
+  itemCarryRemoveType: 0
+  maxSimultaneouslyCarriedItems: 5
 --- !u!114 &4005563181385370186
 MonoBehaviour:
   m_ObjectHideFlags: 0

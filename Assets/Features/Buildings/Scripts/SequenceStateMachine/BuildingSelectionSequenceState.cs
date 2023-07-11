@@ -20,7 +20,7 @@ namespace Features.Buildings.Scripts.SequenceStateMachine
             _buildArea = buildArea;
             _currentIndex = selectedIndex;
 
-            _validBuildings[_currentIndex].ApplyColor(visualization => visualization.EnableSelection());
+            _validBuildings[_currentIndex].ResetColor(visualization => visualization.EnableSelection());
         } 
     
         public bool TryCompleteSequence(out IBuildSequenceState nextState)
@@ -73,8 +73,8 @@ namespace Features.Buildings.Scripts.SequenceStateMachine
             }
             
             _validBuildings[_currentIndex].InstantiatedBuilding.gameObject.SetActive(true);
-        
-            _validBuildings[_currentIndex].ApplyColor(visualization => visualization.EnableSelection());
+            
+            _validBuildings[_currentIndex].ResetColor(visualization => visualization.EnableSelection());
         }
     }
 }

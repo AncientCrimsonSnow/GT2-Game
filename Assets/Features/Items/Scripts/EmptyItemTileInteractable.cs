@@ -12,7 +12,7 @@ namespace Features.Items.Scripts
 
         public override bool TryInteract(GameObject interactor)
         {
-            if (!interactor.TryGetComponent(out BaseItemCarryBehaviour heldItemBehaviour))
+            if (!interactor.TryGetComponent(out IItemCarryBehaviour heldItemBehaviour))
             {
                 Debug.LogWarning("The interactor cant't pickup Items, because CarriedItemBaseBehaviour is missing!");
                 return false;
@@ -24,9 +24,9 @@ namespace Features.Items.Scripts
                 return false;
             }
 
-            var heldItem = heldItemBehaviour.CarriedBaseItem;
+            var heldItem = heldItemBehaviour.GetNextCarried();
             TileHelper.ReuseOnTile(Tile, heldItem.prefab, Quaternion.identity);
-            heldItemBehaviour.DropItem();
+            heldItemBehaviour.DropItem(heldItem);
             return true;
         }
 

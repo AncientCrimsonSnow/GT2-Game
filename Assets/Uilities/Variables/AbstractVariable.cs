@@ -1,7 +1,7 @@
-using DataStructures.Event;
+using Uilities.Event;
 using UnityEngine;
 
-namespace DataStructures.Variables
+namespace Uilities.Variables
 {
     public abstract class AbstractVariable<T> : ScriptableObject
     {

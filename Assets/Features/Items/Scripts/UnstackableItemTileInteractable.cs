@@ -13,19 +13,13 @@ namespace Features.Items.Scripts
 
         public override bool TryInteract(GameObject interactor)
         {
-            if (!interactor.TryGetComponent(out BaseItemCarryBehaviour heldItemBehaviour))
+            if (!interactor.TryGetComponent(out IItemCarryBehaviour heldItemBehaviour))
             {
                 Debug.LogWarning("The interactor can't pickup Items, because CarriedItemBaseBehaviour is missing!");
                 return false;
             }
 
-            if (heldItemBehaviour.IsCarrying())
-            {
-                Debug.LogWarning("The interactor can't pickup an item, while carrying one!");
-                return false;
-            }
-
-            if (!Tile.ItemContainer.CanDestroyItem()) return false;
+            if (!Tile.ItemContainer.CanDestroyItem() || !heldItemBehaviour.CanCarryMore()) return false;
 
             heldItemBehaviour.PickupItem(Tile.ItemContainer.ContainedBaseItem);
             Tile.ExchangeFirstTileInteractableOfType<ItemTileInteractable>(new EmptyItemTileInteractable(Tile));

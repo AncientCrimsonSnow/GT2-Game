@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace DataStructures.Variables
+namespace Uilities.Variables
 {
     [CreateAssetMenu(fileName = "NewCommandModeVariable", menuName = "DataStructures/Variables/CommandModeVariable")]
     public class CommandModeVariable : AbstractVariable<CommandMode>

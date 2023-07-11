@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace DataStructures.Variables
+namespace Uilities.Variables
 {
     [CreateAssetMenu(fileName = "NewIntVariable", menuName = "DataStructures/Variables/IntVariable")]
     public class IntVariable : AbstractVariable<int>

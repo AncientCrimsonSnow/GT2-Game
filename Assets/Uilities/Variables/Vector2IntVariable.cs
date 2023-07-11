@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace DataStructures.Variables
+namespace Uilities.Variables
 {
     [CreateAssetMenu(fileName = "NewVector2IntVariable", menuName = "DataStructures/Variables/Vector2IntVariable")]
     public class Vector2IntVariable : AbstractVariable<Vector2Int>

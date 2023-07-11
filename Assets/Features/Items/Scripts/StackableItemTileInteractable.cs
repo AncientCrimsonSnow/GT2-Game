@@ -6,19 +6,17 @@ namespace Features.Items.Scripts
 {
     public class StackableItemTileInteractable : ItemTileInteractable
     {
-        private readonly Poolable _pooledGameObject;
         private int _itemCount;
 
         public StackableItemTileInteractable(Tile tile, bool isMovable, BaseItem_SO baseItemType, 
             int maxContainedItemCount, int containedItemAmountOnSpawn, Poolable pooledGameObject) : base(tile, isMovable)
         {
-            _pooledGameObject = pooledGameObject;
             Tile.ItemContainer.InitializeItem(baseItemType, pooledGameObject, maxContainedItemCount, containedItemAmountOnSpawn);
         }
 
         public override bool TryInteract(GameObject interactor)
         {
-            if (!interactor.TryGetComponent(out BaseItemCarryBehaviour heldItemBehaviour))
+            if (!interactor.TryGetComponent(out IItemCarryBehaviour heldItemBehaviour))
             {
                 Debug.LogWarning("The interactor cant't pickup Items, because CarriedItemBaseBehaviour is missing!");
                 return false;
@@ -26,14 +24,14 @@ namespace Features.Items.Scripts
             
             if (heldItemBehaviour.IsCarrying())
             {
-                if (!Tile.ItemContainer.IsItemFit(heldItemBehaviour.CarriedBaseItem) || !Tile.ItemContainer.CanAddItemCount(1)) return false;
+                if (!Tile.ItemContainer.IsItemFit(heldItemBehaviour.GetNextCarried()) || !Tile.ItemContainer.CanAddItemCount(1)) return false;
 
-                Tile.ItemContainer.AddItemCount(heldItemBehaviour.CarriedBaseItem, 1);
-                heldItemBehaviour.DropItem();
+                Tile.ItemContainer.AddItemCount(heldItemBehaviour.GetNextCarried(), 1);
+                heldItemBehaviour.DropItem(heldItemBehaviour.GetNextCarried());
             }
             else
             {
-                if (!Tile.ItemContainer.CanAddItemCount(-1)) return false;
+                if (!heldItemBehaviour.CanCarryMore() || !Tile.ItemContainer.CanAddItemCount(-1)) return false;
                 
                 Tile.ItemContainer.AddItemCount(Tile.ItemContainer.ContainedBaseItem, -1);
                 heldItemBehaviour.PickupItem(Tile.ItemContainer.ContainedBaseItem);

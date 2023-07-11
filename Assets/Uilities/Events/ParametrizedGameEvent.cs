@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace DataStructures.Events
+namespace Uilities.Events
 {
     public abstract class ParametrizedGameEvent<T> : ScriptableObject
     {

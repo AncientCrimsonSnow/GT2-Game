@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace DataStructures.Event
+namespace Uilities.Event
 {
     public abstract class ActionEventWithParameter<T> : ScriptableObject
     {

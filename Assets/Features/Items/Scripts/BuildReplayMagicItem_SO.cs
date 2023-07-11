@@ -231,6 +231,15 @@ namespace Features.Items.Scripts
             }
         }
 
+        public void ResetColor(Action<BuildVisualization> onVisualize = null)
+        {
+            if (_buildVisualization != null)
+            {
+                onVisualize?.Invoke(_buildVisualization);
+                _buildVisualization.ResetAllColor();
+            }
+        }
+
         public void ApplyColor(Action<BuildVisualization> onVisualize = null)
         {
             if (_buildVisualization != null)

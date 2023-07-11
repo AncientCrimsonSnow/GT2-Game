@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.Events;
 
-namespace DataStructures.Event
+namespace Uilities.Event
 {
     public class ActionEventListener : MonoBehaviour
     {

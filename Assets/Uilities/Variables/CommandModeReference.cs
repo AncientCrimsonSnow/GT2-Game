@@ -1,6 +1,6 @@
 using System;
 
-namespace DataStructures.Variables
+namespace Uilities.Variables
 {
     [Serializable]
     public class CommandModeReference : AbstractReference<CommandMode>

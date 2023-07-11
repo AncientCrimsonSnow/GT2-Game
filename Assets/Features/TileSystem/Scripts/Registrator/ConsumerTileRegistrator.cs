@@ -1,8 +1,8 @@
 using System;
-using DataStructures.Variables;
 using Features.Items.Scripts;
 using Features.ReplaySystem;
 using Features.ReplaySystem.Record;
+using Uilities.Variables;
 using UnityEngine;
 
 namespace Features.TileSystem.Scripts.Registrator

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace DataStructures.Variables
+namespace Uilities.Variables
 {
     [CreateAssetMenu(fileName = "NewDoubleVariable", menuName = "DataStructures/Variables/DoubleVariable")]
     public class DoubleVariable : AbstractVariable<double>

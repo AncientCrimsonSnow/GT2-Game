@@ -2,7 +2,7 @@
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-namespace DataStructures.Event
+namespace Uilities.Event
 {
 	[CreateAssetMenu(fileName = "newCompositeAudioEvent", menuName = "DataStructures/CompositeAudioEvent")]
 	public class CompositeAudioEvent : AudioEvent

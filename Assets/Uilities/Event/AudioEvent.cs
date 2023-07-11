@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace DataStructures.Event
+namespace Uilities.Event
 {
 	public abstract class AudioEvent : ScriptableObject
 	{
