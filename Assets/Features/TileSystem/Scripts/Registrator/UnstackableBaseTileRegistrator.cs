@@ -9,7 +9,7 @@ namespace Features.TileSystem.Scripts.Registrator
     {
         [SerializeField] private Poolable poolable;
         [SerializeField] private bool isMovable;
-        [FormerlySerializedAs("itemType")] [SerializeField] private BaseItem_SO baseItemType;
+        [SerializeField] private BaseItem_SO containedItemType;
     
         public override bool CanRegisterOnTile()
         {
@@ -19,7 +19,7 @@ namespace Features.TileSystem.Scripts.Registrator
 
         protected override void InternalRegisterOnTile()
         {
-            Tile.ExchangeFirstTileInteractableOfType<ItemTileInteractable>(new UnstackableItemTileInteractable(Tile, isMovable, baseItemType, poolable));
+            Tile.ExchangeFirstTileInteractableOfType<ItemTileInteractable>(new UnstackableItemTileInteractable(Tile, isMovable, containedItemType, poolable));
         }
 
         protected override void InternalUnregisterOnTile()

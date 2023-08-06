@@ -9,7 +9,7 @@ namespace Features.TileSystem.Scripts.Registrator
     {
         [SerializeField] private Poolable poolable;
         [SerializeField] private bool isMovable;
-        [FormerlySerializedAs("itemType")] [SerializeField] private BaseItem_SO baseItemType;
+        [SerializeField] private BaseItem_SO containedItemType;
         [SerializeField] private int containedItemAmountOnSpawn;
         [SerializeField] private int maxContainedItemCount;
 
@@ -18,7 +18,7 @@ namespace Features.TileSystem.Scripts.Registrator
         public override bool CanRegisterOnTile()
         {
             return base.CanRegisterOnTile() && (Tile.ContainsTileInteractableOfType<EmptyItemTileInteractable>() || 
-                                                (Tile.ContainsTileInteractableOfType<StackableItemTileInteractable>() && Tile.ItemContainer.ContainedBaseItem == baseItemType));
+                                                (Tile.ContainsTileInteractableOfType<StackableItemTileInteractable>() && Tile.ItemContainer.ContainedBaseItem == containedItemType));
         }
 
         protected override void InternalRegisterOnTile()
@@ -27,7 +27,7 @@ namespace Features.TileSystem.Scripts.Registrator
             
             if (!Tile.ContainsTileInteractableOfType<EmptyItemTileInteractable>()) return;
 
-            Tile.ExchangeFirstTileInteractableOfType<ItemTileInteractable>(new StackableItemTileInteractable(Tile, isMovable, baseItemType,
+            Tile.ExchangeFirstTileInteractableOfType<ItemTileInteractable>(new StackableItemTileInteractable(Tile, isMovable, containedItemType,
                 maxContainedItemCount, containedItemAmountOnSpawn, poolable));
         }
 
