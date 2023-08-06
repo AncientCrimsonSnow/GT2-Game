@@ -218,7 +218,7 @@ GameObject:
   - component: {fileID: 5593624783022258812}
   - component: {fileID: 7115549391498273177}
   m_Layer: 0
-  m_Name: Schmiede
+  m_Name: Forge_Buiding_TileElement
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
