@@ -9,9 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e06e699ae9bb3d249bf7b7dc6edde6e1, type: 3}
-  m_Name: Levitanit_BuildableItem_PoolContainer
+  m_Script: {fileID: 11500000, guid: 52cf7a74ba0c4daaa5d99d936a737eae, type: 3}
+  m_Name: Soul_BaseItem
   m_EditorClassIdentifier: 
-  associatedPrefab: {fileID: 8353975661546354772, guid: 61fb2568265fa1f4699075c3fe9f2ddb,
-    type: 3}
-  additionalReusableCount: 0
+  itemName: Soul
+  prefab: {fileID: 7665460649234598153, guid: 8e15275628f366d4f98a51a1631ecec4, type: 3}
+  itemValue: 0

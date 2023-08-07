@@ -9,15 +9,14 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5724755661199476466}
-  - component: {fileID: 6044340594411921702}
-  - component: {fileID: 4005563181385370186}
+  - component: {fileID: 6660453748582372275}
   - component: {fileID: 2432906570973151577}
   - component: {fileID: 3137264507857338284}
-  - component: {fileID: 3664282068094039969}
+  - component: {fileID: 4731231508795461634}
   - component: {fileID: 8460609380560002215}
   - component: {fileID: 7949436744629420094}
   m_Layer: 6
-  m_Name: ReplaySkeleton_MultipleCarry
+  m_Name: BuildingSkeleton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -31,15 +30,15 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3864702134253200536}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1.474, y: 0, z: 0}
-  m_LocalScale: {x: 0.7, y: 0.7, z: 0.7}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 2406174280368957404}
+  - {fileID: 6616470286225823345}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6044340594411921702
+--- !u!114 &6660453748582372275
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -48,25 +47,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 3864702134253200536}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f2d0fc2bd60b0ed429bde38f5e8eff68, type: 3}
+  m_Script: {fileID: 11500000, guid: b29fd2623665454ca942b330133eb3a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tileManager: {fileID: 11400000, guid: 250008992667b5e458c740568aa31544, type: 2}
-  itemCarryRemoveType: 0
-  maxSimultaneouslyCarriedItems: 5
---- !u!114 &4005563181385370186
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3864702134253200536}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 786af49eb5186434888b83cb8eeb1850, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  animator: {fileID: 2406174279606194161}
+  tileManager: {fileID: 0}
+  heldBaseItemAtAwake: {fileID: 11400000, guid: 1b4ad7d3054f0db499c931667a74671d,
+    type: 2}
 --- !u!114 &2432906570973151577
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -95,8 +81,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tileManager: {fileID: 11400000, guid: 250008992667b5e458c740568aa31544, type: 2}
-  animator: {fileID: 2406174279606194161}
---- !u!114 &3664282068094039969
+  animator: {fileID: 6616470285461995100}
+--- !u!114 &4731231508795461634
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -105,11 +91,22 @@ MonoBehaviour:
   m_GameObject: {fileID: 3864702134253200536}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4bb1e9d3403301640b69bda3c605bbaa, type: 3}
+  m_Script: {fileID: 11500000, guid: a848b49b1104a02428ac43f45f193983, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   tileManager: {fileID: 11400000, guid: 250008992667b5e458c740568aa31544, type: 2}
+  droppedItemOnDestroy: {fileID: 11400000, guid: 2856e0fa757df554fa2e03cf94cc6e62,
+    type: 2}
+  originVisualisationPrefab: {fileID: 9102529346641877077, guid: df2d8a3e2b22e424abd9332ca5a77ff6,
+    type: 3}
   skeletonFocus: {fileID: 11400000, guid: c331b643c11d29344b88a3e861edf8f9, type: 2}
+  cinemachineVirtualCameraFocus: {fileID: 11400000, guid: fec216cec1f7775458570390ba57e2cc,
+    type: 2}
+  directionInputFocus: {fileID: 11400000, guid: eec3e3054ef80274ab87f9dee2a5d97a,
+    type: 2}
+  interactionInputFocus: {fileID: 11400000, guid: 2336b63a164002e4884c139ac9deda41,
+    type: 2}
+  castInputFocus: {fileID: 11400000, guid: 34de74de615798744afafe8616be9db9, type: 2}
 --- !u!136 &8460609380560002215
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -140,18 +137,13 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!1001 &4750886407031407320
+--- !u!1001 &4276331042449568629
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
     m_TransformParent: {fileID: 5724755661199476466}
     m_Modifications:
-    - target: {fileID: 1782606231327191652, guid: 954fcd96182d9374399fa5687564b08e,
-        type: 3}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 2100000, guid: eb5bf26b2c9fe7d4ea5dea30d9c09122, type: 2}
     - target: {fileID: 6956646105363014916, guid: 954fcd96182d9374399fa5687564b08e,
         type: 3}
       propertyPath: m_RootOrder
@@ -214,15 +206,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 954fcd96182d9374399fa5687564b08e, type: 3}
---- !u!95 &2406174279606194161 stripped
+--- !u!95 &6616470285461995100 stripped
 Animator:
   m_CorrespondingSourceObject: {fileID: 6956646105069980969, guid: 954fcd96182d9374399fa5687564b08e,
     type: 3}
-  m_PrefabInstance: {fileID: 4750886407031407320}
+  m_PrefabInstance: {fileID: 4276331042449568629}
   m_PrefabAsset: {fileID: 0}
---- !u!4 &2406174280368957404 stripped
+--- !u!4 &6616470286225823345 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6956646105363014916, guid: 954fcd96182d9374399fa5687564b08e,
     type: 3}
-  m_PrefabInstance: {fileID: 4750886407031407320}
+  m_PrefabInstance: {fileID: 4276331042449568629}
   m_PrefabAsset: {fileID: 0}

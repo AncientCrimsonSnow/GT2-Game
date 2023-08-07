@@ -7,14 +7,13 @@ namespace Features.Items.Scripts
     public class ItemContainer
     {
         public BaseItem_SO ContainedBaseItem { get; private set; }
+        public int ItemCount { get; private set; }
+        public Poolable PooledGameObject { get; private set; }
 
-        private readonly Tile _tile;
-
-        public Poolable PooledGameObject => _pooledGameObject;
-        private Poolable _pooledGameObject;
-        private int _itemCount;
         private int _maxContainedItemCount;
         private int _registratorStack;
+        
+        private readonly Tile _tile;
 
         public ItemContainer(Tile tile)
         {
@@ -23,17 +22,17 @@ namespace Features.Items.Scripts
         
         public bool ContainsItem()
         {
-            return _pooledGameObject != null && ContainedBaseItem != null;
+            return PooledGameObject != null && ContainedBaseItem != null;
         }
 
         public void InitializeItem(BaseItem_SO newBaseItem, Poolable pooledGameObject, int maxContainedItemCount = 1, int itemCount = 1)
         {
             if (ContainsItem()) return;
 
-            _itemCount = itemCount;
+            ItemCount = itemCount;
             _maxContainedItemCount = maxContainedItemCount;
             ContainedBaseItem = newBaseItem;
-            _pooledGameObject = pooledGameObject;
+            PooledGameObject = pooledGameObject;
         }
         
         public bool CanDestroyItem()
@@ -53,7 +52,7 @@ namespace Features.Items.Scripts
         {
             if (!CanDestroyItem()) return;
             
-            _pooledGameObject.Release();
+            PooledGameObject.Release();
             ContainedBaseItem = null;
             _maxContainedItemCount = 0;
         }
@@ -62,7 +61,7 @@ namespace Features.Items.Scripts
         {
             if (CanAddItemCount(change) && IsItemFit(baseItem))
             {
-                _itemCount += change;
+                ItemCount += change;
             }
         }
 
@@ -73,13 +72,13 @@ namespace Features.Items.Scripts
 
         public bool CanAddItemCount(int change)
         {
-            if (_itemCount + change < 0)
+            if (ItemCount + change < 0)
             {
                 Debug.LogWarning("You can't remove more items than there are available on this Tile!");
                 return false;
             }
 
-            if (_itemCount + change > _maxContainedItemCount)
+            if (ItemCount + change > _maxContainedItemCount)
             {
                 Debug.LogWarning("You can't add more items on this Tile!");
                 return false;

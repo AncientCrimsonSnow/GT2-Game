@@ -14,9 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   recipeData:
   - requiredItem: {fileID: 11400000, guid: 64458e9b3fd817d4088a6ca98187ceeb, type: 2}
-    requiredCount: 2
+    requiredCount: 1
   - requiredItem: {fileID: 11400000, guid: a54355329647f0546bb4af21576e6a00, type: 2}
-    requiredCount: 2
+    requiredCount: 1
   building: {fileID: 9197231802072009185, guid: cf4207d6d40334846a30a02f8ff90473,
     type: 3}
   requiredBuildingKernelSize: 3

@@ -78,7 +78,7 @@ namespace Features.TileSystem.Scripts
 
         public bool TryCast(GameObject caster)
         {
-            //PrintInteractable();
+            PrintInteractable();
             
             return _tileInteractables.Any(connectedTileContext => connectedTileContext.TryCast(caster));
         }

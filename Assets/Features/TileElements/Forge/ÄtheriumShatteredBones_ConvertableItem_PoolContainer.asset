@@ -10,8 +10,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e06e699ae9bb3d249bf7b7dc6edde6e1, type: 3}
-  m_Name: Levitanit_BuildableItem_PoolContainer
+  m_Name: "\xC4theriumShatteredBones_ConvertableItem_PoolContainer"
   m_EditorClassIdentifier: 
-  associatedPrefab: {fileID: 8353975661546354772, guid: 61fb2568265fa1f4699075c3fe9f2ddb,
+  associatedPrefab: {fileID: 4138201595417247617, guid: 504d28fd67fc4f14090c00dfa7e870a8,
     type: 3}
   additionalReusableCount: 0

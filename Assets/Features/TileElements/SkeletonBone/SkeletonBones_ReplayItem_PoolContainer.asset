@@ -10,8 +10,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e06e699ae9bb3d249bf7b7dc6edde6e1, type: 3}
-  m_Name: Levitanit_BuildableItem_PoolContainer
+  m_Name: SkeletonBones_ReplayItem_PoolContainer
   m_EditorClassIdentifier: 
-  associatedPrefab: {fileID: 8353975661546354772, guid: 61fb2568265fa1f4699075c3fe9f2ddb,
+  associatedPrefab: {fileID: 4138201595417247617, guid: 7baafd9a370e2d84cbc97841e7ae9680,
     type: 3}
   additionalReusableCount: 0

@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 125f3f47be9bd4747b4816294baa8ae0, type: 3}
+  m_Name: "\xC4theriumShatteredBones_ConvertableItem"
+  m_EditorClassIdentifier: 
+  itemName: "\xC4therium Shattered Bones"
+  prefab: {fileID: 4138201595417247617, guid: 504d28fd67fc4f14090c00dfa7e870a8, type: 3}
+  itemValue: 0
+  tileManager: {fileID: 11400000, guid: 250008992667b5e458c740568aa31544, type: 2}
+  requiredCarriedItem: {fileID: 11400000, guid: 540fb8601094d85409a9e045c1905123,
+    type: 2}
+  newItem: {fileID: 11400000, guid: 818c47711abcaeb4a83d9dafc63d3f15, type: 2}
