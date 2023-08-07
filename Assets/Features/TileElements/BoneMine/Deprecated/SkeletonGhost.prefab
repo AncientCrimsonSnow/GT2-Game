@@ -47,7 +47,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tileManager: {fileID: 11400000, guid: 250008992667b5e458c740568aa31544, type: 2}
-  registerOnStart: 0
   skeletonToInstantiate: {fileID: 3864702134253200536, guid: 3a76c15e73c6d0e409f62d605fb6103d,
     type: 3}
 --- !u!1 &5403724404997081590
@@ -89,6 +88,16 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 4794027392402177569}
     m_Modifications:
+    - target: {fileID: 8834065895720119229, guid: 3732f32aa337dad46ae0fc62b2016f71,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 9dfc825aed78fcd4ba02077103263b40, type: 2}
+    - target: {fileID: 8834065896464635669, guid: 3732f32aa337dad46ae0fc62b2016f71,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 9dfc825aed78fcd4ba02077103263b40, type: 2}
     - target: {fileID: 8834065897040169496, guid: 3732f32aa337dad46ae0fc62b2016f71,
         type: 3}
       propertyPath: m_Name
@@ -149,6 +158,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8834065897441488654, guid: 3732f32aa337dad46ae0fc62b2016f71,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 9dfc825aed78fcd4ba02077103263b40, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3732f32aa337dad46ae0fc62b2016f71, type: 3}
 --- !u!4 &4520423660106637029 stripped

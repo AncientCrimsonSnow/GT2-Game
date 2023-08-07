@@ -1,0 +1,141 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &7665460649234598153
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1119458519699815326}
+  - component: {fileID: 7849831958039759344}
+  - component: {fileID: 4391249377467157331}
+  m_Layer: 0
+  m_Name: "\xC4theriumBones_ReplayItem_TileElement"
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1119458519699815326
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7665460649234598153}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 7, y: -0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 4581925909463344290}
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7849831958039759344
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7665460649234598153}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c18bac68bb2e54348accfe8db81025bf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  poolContainer: {fileID: 11400000, guid: 1df8c1f609c855740b29a1d6417cb349, type: 2}
+  poolingType: 1
+--- !u!114 &4391249377467157331
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7665460649234598153}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7469fc35548d9c8499cff6402611c720, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tileManager: {fileID: 11400000, guid: 250008992667b5e458c740568aa31544, type: 2}
+  poolable: {fileID: 7849831958039759344}
+  isMovable: 1
+  containedItemType: {fileID: 11400000, guid: 818c47711abcaeb4a83d9dafc63d3f15, type: 2}
+--- !u!1001 &1232025384666733817
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 1119458519699815326}
+    m_Modifications:
+    - target: {fileID: 2721473202711421665, guid: 267f73fc2cb26a145ac4531fd481b7e5,
+        type: 3}
+      propertyPath: m_Name
+      value: AtheriumBones_Model
+      objectReference: {fileID: 0}
+    - target: {fileID: 3354985845641427035, guid: 267f73fc2cb26a145ac4531fd481b7e5,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3354985845641427035, guid: 267f73fc2cb26a145ac4531fd481b7e5,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3354985845641427035, guid: 267f73fc2cb26a145ac4531fd481b7e5,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3354985845641427035, guid: 267f73fc2cb26a145ac4531fd481b7e5,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3354985845641427035, guid: 267f73fc2cb26a145ac4531fd481b7e5,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3354985845641427035, guid: 267f73fc2cb26a145ac4531fd481b7e5,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3354985845641427035, guid: 267f73fc2cb26a145ac4531fd481b7e5,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3354985845641427035, guid: 267f73fc2cb26a145ac4531fd481b7e5,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3354985845641427035, guid: 267f73fc2cb26a145ac4531fd481b7e5,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3354985845641427035, guid: 267f73fc2cb26a145ac4531fd481b7e5,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3354985845641427035, guid: 267f73fc2cb26a145ac4531fd481b7e5,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 267f73fc2cb26a145ac4531fd481b7e5, type: 3}
+--- !u!4 &4581925909463344290 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3354985845641427035, guid: 267f73fc2cb26a145ac4531fd481b7e5,
+    type: 3}
+  m_PrefabInstance: {fileID: 1232025384666733817}
+  m_PrefabAsset: {fileID: 0}
