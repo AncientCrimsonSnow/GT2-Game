@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5297684506087653226}
   m_Layer: 0
-  m_Name: WitchTree_Model
+  m_Name: WitchTree_Model_02
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

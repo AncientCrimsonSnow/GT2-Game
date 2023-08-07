@@ -269,7 +269,7 @@ GameObject:
   - component: {fileID: 1119458519699815326}
   - component: {fileID: 7849831958039759344}
   m_Layer: 0
-  m_Name: Witchtree_Generator_TileElement
+  m_Name: Witchtree_Generator_TileElement_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

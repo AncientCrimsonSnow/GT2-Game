@@ -65,6 +65,11 @@ namespace Features.Items.Scripts
             }
         }
 
+        public void MaximizeItemCount()
+        {
+            ItemCount = _maxContainedItemCount;
+        }
+
         public bool IsItemFit(BaseItem_SO baseItem)
         {
             return ContainedBaseItem == baseItem;

@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e06e699ae9bb3d249bf7b7dc6edde6e1, type: 3}
-  m_Name: Witchtree_Generator_PoolContainer
+  m_Name: Witchtree_Generator_PoolContainer_01
   m_EditorClassIdentifier: 
   associatedPrefab: {fileID: 7665460649234598153, guid: b13977d3d14aa374584204efe35dedba,
     type: 3}

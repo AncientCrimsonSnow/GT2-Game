@@ -64,6 +64,7 @@ namespace Features.Items.Scripts
             if (!ScriptableObjectByType.TryGetByType(out List<BuildingRecipe> buildingRecipes)) return false;
             var validBuildings = InitializeValidBuildings(caster, dropKernel, buildingRecipes);
             if (validBuildings.Count == 0) return false;
+            validBuildings[0].InstantiatedBuilding.gameObject.SetActive(true);
             
             //execute
             SetBuildingFocus();
@@ -84,25 +85,11 @@ namespace Features.Items.Scripts
                     instantiatedBuilding.SetPoolingEnabled(false);
                     instantiatedBuilding.OnBeforeReleasePoolable();
                     instantiatedBuilding.gameObject.SetActive(false);
-                    validBuildings.Add(new BuildData(tileManager, instantiatedBuilding, CopyData(buildingRecipe.recipeData), dropKernel));
+                    validBuildings.Add(new BuildData(tileManager, instantiatedBuilding, dropKernel));
                 }
             }
             
-            validBuildings[0].InstantiatedBuilding.gameObject.SetActive(true);
-            
             return validBuildings;
-        }
-
-        private List<RecipeData> CopyData(List<RecipeData> listToBeCopied)
-        {
-            var newList = new List<RecipeData>();
-
-            foreach (var recipeData in listToBeCopied)
-            {
-                newList.Add(new RecipeData(recipeData.requiredItem, recipeData.requiredCount));
-            }
-
-            return newList;
         }
         
         private void SetBuildingFocus()
@@ -207,7 +194,7 @@ namespace Features.Items.Scripts
         private readonly Dictionary<Tile, Poolable> _neededPoolables;
         private readonly BuildVisualization _buildVisualization;
 
-        public BuildData(TileManager tileManager, Poolable instantiatedBuilding, List<RecipeData> recipeDataList, Tile[,] buildArea)
+        public BuildData(TileManager tileManager, Poolable instantiatedBuilding, Tile[,] buildArea)
         {
             _neededPoolables = new Dictionary<Tile, Poolable>();
             _tileManager = tileManager;
@@ -219,15 +206,7 @@ namespace Features.Items.Scripts
             {
                 if (!kernelTile.ItemContainer.ContainsItem() || !kernelTile.ContainsTileInteractableOfType<UnstackableItemTileInteractable>()) continue;
 
-                foreach (var recipeData in recipeDataList)
-                {
-                    if (kernelTile.ItemContainer.ContainedBaseItem == recipeData.requiredItem && recipeData.requiredCount > 0)
-                    {
-                        _neededPoolables.Add(kernelTile, kernelTile.ItemContainer.PooledGameObject);
-                        recipeData.ReduceRequiredCount();
-                        break;
-                    }
-                }
+                _neededPoolables.Add(kernelTile, kernelTile.ItemContainer.PooledGameObject);
             }
         }
 
