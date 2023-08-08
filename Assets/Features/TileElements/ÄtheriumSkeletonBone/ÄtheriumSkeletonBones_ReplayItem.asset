@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemName: "\xC4therium Bones"
   prefab: {fileID: 7665460649234598153, guid: 98c8cfeaf7c8f564c95a636012d89aca, type: 3}
-  itemValue: 0
+  itemValue: 10
   tileManager: {fileID: 11400000, guid: 250008992667b5e458c740568aa31544, type: 2}
   magicInstantiationPrefab: {fileID: 3864702134253200536, guid: dcf7edaa27016164e87ad3037f28f748,
     type: 3}

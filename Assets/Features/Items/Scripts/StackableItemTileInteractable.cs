@@ -14,6 +14,27 @@ namespace Features.Items.Scripts
             Tile.ItemContainer.InitializeItem(baseItemType, pooledGameObject, maxContainedItemCount, containedItemAmountOnSpawn);
         }
 
+        public override bool CanInteract(GameObject interactor, out string interactionText)
+        {
+            interactionText = "";
+            if (!interactor.TryGetComponent(out IItemCarryBehaviour heldItemBehaviour)) return false;
+            
+            if (heldItemBehaviour.IsCarrying())
+            {
+                if (!Tile.ItemContainer.IsItemFit(heldItemBehaviour.GetNextCarried()) || !Tile.ItemContainer.CanAddItemCount(1)) return false;
+
+                interactionText = "Drop";
+            }
+            else
+            {
+                if (!heldItemBehaviour.CanCarryMore() || !Tile.ItemContainer.CanAddItemCount(-1)) return false;
+                
+                interactionText = "Pickup";
+            }
+            
+            return true;
+        }
+
         public override bool TryInteract(GameObject interactor)
         {
             if (!interactor.TryGetComponent(out IItemCarryBehaviour heldItemBehaviour))
@@ -38,6 +59,12 @@ namespace Features.Items.Scripts
             }
             
             return true;
+        }
+
+        public override bool CanCast(GameObject caster, out string interactionText)
+        {
+            interactionText = "";
+            return false;
         }
 
         public override bool TryCast(GameObject caster)

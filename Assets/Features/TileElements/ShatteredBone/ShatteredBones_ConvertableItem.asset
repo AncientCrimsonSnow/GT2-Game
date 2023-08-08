@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemName: Shattered Bones
   prefab: {fileID: 4138201595417247617, guid: bf1fd67342cd56c41b737dc1b1f06f1c, type: 3}
-  itemValue: 0
+  itemValue: 1
   tileManager: {fileID: 11400000, guid: 250008992667b5e458c740568aa31544, type: 2}
   requiredCarriedItem: {fileID: 11400000, guid: 540fb8601094d85409a9e045c1905123,
     type: 2}

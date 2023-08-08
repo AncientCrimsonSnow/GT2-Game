@@ -19,6 +19,8 @@ namespace Features.Items.Scripts
     [CreateAssetMenu]
     public class BuildReplayMagicItem_SO : BaseItem_SO, IDirectionInput, ICastInput, IInteractInput
     {
+        public static bool IsBuilding;
+        
         [SerializeField] private TileManager tileManager;
         [SerializeField] private int kernelSize = 3;
 
@@ -53,6 +55,24 @@ namespace Features.Items.Scripts
             _buildSequenceStateMachine.Cancel();
         }
 
+        public override bool CanCast(GameObject caster, out string interactionText)
+        {
+            interactionText = "";
+            
+            if (skeletonFocus.GetFocus() != caster) return false;
+            
+            //initialize values and check validity
+            var casterPosition = TileHelper.TransformPositionToInt2(caster.transform);
+            var dropKernel = tileManager.GetTileKernelAt(casterPosition, kernelSize);
+            
+            if (!ScriptableObjectByType.TryGetByType(out List<BuildingRecipe> buildingRecipes)) return false;
+            var validBuildings = GetValidBuildingsCount(dropKernel, buildingRecipes);
+            if (validBuildings == 0) return false;
+
+            interactionText = "Build";
+            return true;
+        }
+
         public override bool TryCast(GameObject caster)
         {
             if (skeletonFocus.GetFocus() != caster) return false;
@@ -67,9 +87,26 @@ namespace Features.Items.Scripts
             validBuildings[0].InstantiatedBuilding.gameObject.SetActive(true);
             
             //execute
+            IsBuilding = true;
             SetBuildingFocus();
             InitializeBuildSequenceStateMachine(dropKernel, validBuildings);
             return true;
+        }
+        
+        private int GetValidBuildingsCount(Tile[,] dropKernel, List<BuildingRecipe> buildingRecipes)
+        {
+            int validBuildingsCount = 0;
+            
+            foreach (var buildingRecipe in buildingRecipes)
+            {
+                if (IsRecipeFit(CreateKernelItemCountPairs(dropKernel), buildingRecipe) &&
+                    kernelSize >= buildingRecipe.requiredBuildingKernelSize)
+                {
+                    validBuildingsCount++;
+                }
+            }
+
+            return validBuildingsCount;
         }
 
         private List<BuildData> InitializeValidBuildings(GameObject caster, Tile[,] dropKernel, List<BuildingRecipe> buildingRecipes)
@@ -110,6 +147,7 @@ namespace Features.Items.Scripts
         {
             var onSequenceComplete = new Action<BuildData>(selectedBuilding =>
             {
+                IsBuilding = false;
                 RestoreBuildingFocus();
                 
                 validBuildings.Remove(validBuildings.Find(x => x.InstantiatedBuilding == selectedBuilding.InstantiatedBuilding));
@@ -124,6 +162,7 @@ namespace Features.Items.Scripts
 
             var onCancelSequence = new Action(() =>
             {
+                IsBuilding = false;
                 RestoreBuildingFocus();
                 DestroyAllBuildings(validBuildings);
             });
@@ -230,10 +269,18 @@ namespace Features.Items.Scripts
         
         private bool BuildingPlacementIsValid()
         {
-            _tileManager.GetTileAt(TileHelper.TransformPositionToInt2(InstantiatedBuilding.transform)).PrintInteractable();
             var buildingObjects = InstantiatedBuilding.GetComponentsInChildren<BaseTileRegistrator>();
+            
+            foreach (var baseTileRegistrator in buildingObjects)
+            {
+                if (!baseTileRegistrator.Tile.ContainsTileInteractableOfType<EmptyItemTileInteractable>()) return false;
+                if (baseTileRegistrator.Tile.ContainsTileInteractableOfType<BlockedTileInteractable>()) return false;
+                if (baseTileRegistrator.Tile.ContainsTileInteractableOfType<CurseInteractable>()) return false;
+                if (baseTileRegistrator.Tile.ContainsTileInteractableOfType<PointerResourceGeneratorTileInteractable>()) return false;
+                if (baseTileRegistrator.Tile.ContainsTileInteractableOfType<PointerResourceGeneratorTileInteractable>()) return false;
+            }
 
-            return buildingObjects.All(baseTileInteractableRegistrator => baseTileInteractableRegistrator.CanRegisterOnTile());
+            return true;
         }
         
         public void ReuseBuildingAreaObjects()

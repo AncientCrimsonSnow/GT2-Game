@@ -26,7 +26,19 @@ namespace Features.Items.Scripts
         [SerializeField] private CastInputFocus castInputFocus;
 
         private static readonly int IsCasting = Animator.StringToHash("isCasting");
-        
+
+        public override bool CanCast(GameObject caster, out string interactionText)
+        {
+            interactionText = "";
+            if (skeletonFocus.ContainsFocus()) return false;
+            var tile = tileManager.GetTileAt(TileHelper.TransformPositionToInt2(caster.transform));
+            if (!tile.ContainsTileInteractableOfType<UnstackableItemTileInteractable>()) return false;
+
+            interactionText = "Control";
+            
+            return true;
+        }
+
         public override bool TryCast(GameObject caster)
         {
             if (skeletonFocus.ContainsFocus()) return false;

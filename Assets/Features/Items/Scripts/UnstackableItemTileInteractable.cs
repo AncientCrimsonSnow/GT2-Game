@@ -11,6 +11,18 @@ namespace Features.Items.Scripts
             Tile.ItemContainer.InitializeItem(baseItemType, pooledGameObject);
         }
 
+        public override bool CanInteract(GameObject interactor, out string interactionText)
+        {
+            interactionText = "";
+            
+            if (!interactor.TryGetComponent(out IItemCarryBehaviour heldItemBehaviour)) return false;
+            if (!Tile.ItemContainer.CanDestroyItem() || !heldItemBehaviour.CanCarryMore()) return false;
+
+            interactionText = "Pickup";
+            
+            return true;
+        }
+
         public override bool TryInteract(GameObject interactor)
         {
             if (!interactor.TryGetComponent(out IItemCarryBehaviour heldItemBehaviour))
@@ -24,6 +36,11 @@ namespace Features.Items.Scripts
             heldItemBehaviour.PickupItem(Tile.ItemContainer.ContainedBaseItem);
             Tile.ExchangeFirstTileInteractableOfType<ItemTileInteractable>(new EmptyItemTileInteractable(Tile));
             return true;
+        }
+
+        public override bool CanCast(GameObject caster, out string interactionText)
+        {
+            return Tile.ItemContainer.ContainedBaseItem.CanCast(caster, out interactionText);
         }
 
         public override bool TryCast(GameObject caster)

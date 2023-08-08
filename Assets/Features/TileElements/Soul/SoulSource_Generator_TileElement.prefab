@@ -101,8 +101,8 @@ MonoBehaviour:
   poolable: {fileID: 7849831958039759344}
   isMovable: 0
   containedItemType: {fileID: 11400000, guid: 540fb8601094d85409a9e045c1905123, type: 2}
-  containedItemAmountOnSpawn: 1
-  maxContainedItemCount: 1
+  containedItemAmountOnSpawn: 3
+  maxContainedItemCount: 3
 --- !u!114 &4861619228794219239
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -4,13 +4,10 @@ namespace Features.TileSystem.Scripts
 {
     public interface IInteractable
     {
-        /// <summary>
-        /// Interaction for direct player input
-        /// </summary>
-        /// <param name="interactor"></param>
-        /// <returns>Whether the interaction was successful or not</returns>
+        public bool CanInteract(GameObject interactor, out string interactionText);
         public bool TryInteract(GameObject interactor);
 
+        public bool CanCast(GameObject caster, out string interactionText);
         public bool TryCast(GameObject caster);
     }
 }

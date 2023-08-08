@@ -13,9 +13,12 @@ namespace Features.Items.Scripts
             Tile = tile;
             _isMovable = isMovable;
         }
-        
+
+        public abstract bool CanInteract(GameObject interactor, out string interactionText);
+
         public abstract bool TryInteract(GameObject interactor);
-        
+        public abstract bool CanCast(GameObject caster, out string interactionText);
+
         public abstract bool TryCast(GameObject caster);
 
         public bool IsMovable()

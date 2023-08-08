@@ -233,7 +233,7 @@ MonoBehaviour:
   currentMagicValue: {fileID: 11400000, guid: aea189b3c1087874e944a02553523a24, type: 2}
   curseVFX: {fileID: 6756293683413934056, guid: e17911357c386164792c5e1be745b19e,
     type: 3}
-  neededMagicValue: 0
+  neededMagicValue: 20
   time: 10
 --- !u!1 &3425378560558505792
 GameObject:
@@ -296,7 +296,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   magicValue: {fileID: 11400000, guid: aea189b3c1087874e944a02553523a24, type: 2}
   text: {fileID: 67552428041843007}
-  requiredMagic: 0
 --- !u!114 &67552428041843007
 MonoBehaviour:
   m_ObjectHideFlags: 0

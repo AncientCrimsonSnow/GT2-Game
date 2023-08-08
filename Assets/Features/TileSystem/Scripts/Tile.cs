@@ -7,7 +7,6 @@ using UnityEngine;
 
 namespace Features.TileSystem.Scripts
 {
-    // TODO: implement a way, that buildings are able to do stuff by themself: e.g. a consumer building wants to consume items on tiles after all the other TileComponents interactions
     public class Tile : IInteractable, ITileComponentRegistration, IMovable, IGridPosition
     {
         public int2 WorldPosition { get; }
@@ -69,6 +68,22 @@ namespace Features.TileSystem.Scripts
             _tileInteractables.RemoveAll(x => ReferenceEquals(x, newTileInteractable));
         }
 
+        public bool CanInteract(GameObject interactor, out string interactionText)
+        {
+            interactionText = "";
+            
+            foreach (var tileInteractable in _tileInteractables)
+            {
+                if (tileInteractable.CanInteract(interactor, out string newInteractionText))
+                {
+                    interactionText = newInteractionText;
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
         public bool TryInteract(GameObject interactor)
         {
             //PrintInteractable();
@@ -76,9 +91,25 @@ namespace Features.TileSystem.Scripts
             return _tileInteractables.Any(connectedTileContext => connectedTileContext.TryInteract(interactor));
         }
 
+        public bool CanCast(GameObject caster, out string interactionText)
+        {
+            interactionText = "";
+            
+            foreach (var tileInteractable in _tileInteractables)
+            {
+                if (tileInteractable.CanCast(caster, out string newInteractionText))
+                {
+                    interactionText = newInteractionText;
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
         public bool TryCast(GameObject caster)
         {
-            PrintInteractable();
+            //PrintInteractable();
             
             return _tileInteractables.Any(connectedTileContext => connectedTileContext.TryCast(caster));
         }

@@ -24,10 +24,26 @@ public class CurseInteractable : ITileInteractable
         _tileRegistrator = tileRegistrator;
         _time = time;
     }
+    
+    public bool CanInteract(GameObject interactor, out string interactionText)
+    {
+        interactionText = "";
+        return false;
+    }
 
     public bool TryInteract(GameObject interactor)
     {
         return false;
+    }
+    
+    public bool CanCast(GameObject caster, out string interactionText)
+    {
+        interactionText = "";
+        if (_currentMagicValue.Get() < _neededMagicValue) return false;
+
+        interactionText = "Curse";
+        
+        return true;
     }
 
     public bool TryCast(GameObject caster)

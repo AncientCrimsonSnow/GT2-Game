@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemName: Hexatree Chunk
   prefab: {fileID: 8353975661546354772, guid: 9f8f126faabb4324a8ba5735338ef2dc, type: 3}
-  itemValue: 10
+  itemValue: 1
   tileManager: {fileID: 11400000, guid: 250008992667b5e458c740568aa31544, type: 2}
   kernelSize: 3
   skeletonFocus: {fileID: 11400000, guid: c331b643c11d29344b88a3e861edf8f9, type: 2}

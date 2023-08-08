@@ -10,6 +10,17 @@ namespace Features.Items.Scripts
             Tile.ItemContainer.DestroyItem();
         }
 
+        public override bool CanInteract(GameObject interactor, out string interactionText)
+        {
+            interactionText = "";
+            
+            if (!interactor.TryGetComponent(out IItemCarryBehaviour heldItemBehaviour)) return false;
+            if (!heldItemBehaviour.IsCarrying()) return false;
+
+            interactionText = "Drop";
+            return true;
+        }
+
         public override bool TryInteract(GameObject interactor)
         {
             if (!interactor.TryGetComponent(out IItemCarryBehaviour heldItemBehaviour))
@@ -20,7 +31,7 @@ namespace Features.Items.Scripts
 
             if (!heldItemBehaviour.IsCarrying())
             {
-                Debug.LogWarning("The Interactor isn't carrying an item!");
+                //Debug.LogWarning("The Interactor isn't carrying an item!");
                 return false;
             }
 
@@ -28,6 +39,12 @@ namespace Features.Items.Scripts
             TileHelper.ReuseOnTile(Tile, heldItem.prefab, Quaternion.identity);
             heldItemBehaviour.DropItem(heldItem);
             return true;
+        }
+
+        public override bool CanCast(GameObject caster, out string interactionText)
+        {
+            interactionText = "";
+            return false;
         }
 
         public override bool TryCast(GameObject caster)

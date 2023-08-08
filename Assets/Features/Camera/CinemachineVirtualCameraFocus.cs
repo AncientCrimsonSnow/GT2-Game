@@ -9,7 +9,16 @@ namespace Features.Camera
     {
         private Transform _restoreTransform;
         private Transform _currentFollow;
+        private UpdateInteractionText _interactionText;
+        private GameObject _defaultCaster;
 
+        public void InitCanvas(UpdateInteractionText canvas, GameObject defaultCaster)
+        {
+            _interactionText = canvas;
+            _defaultCaster = defaultCaster;
+            _interactionText.SetCaster(defaultCaster);
+        }
+        
         public CinemachineVirtualCameraFocus SetFollow(Transform follow)
         {
             _currentFollow = follow;
@@ -24,6 +33,8 @@ namespace Features.Camera
                 return;
             }
         
+            _interactionText.transform.SetParent(_currentFollow);
+            _interactionText.SetCaster(_currentFollow.gameObject);
             Focus.Follow = _currentFollow;
             Focus.LookAt = _currentFollow;
         }
@@ -36,6 +47,8 @@ namespace Features.Camera
                 return;
             }
         
+            _interactionText.transform.SetParent(_restoreTransform);
+            _interactionText.SetCaster(_defaultCaster);
             Focus.Follow = _restoreTransform;
             Focus.LookAt = _restoreTransform;
         }
@@ -47,7 +60,7 @@ namespace Features.Camera
                 Debug.LogWarning("Couldn't set current Follow as restore!");
                 return;
             }
-        
+            
             _restoreTransform = _currentFollow;
         }
     }

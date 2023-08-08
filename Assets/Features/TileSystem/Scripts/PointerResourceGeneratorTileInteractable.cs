@@ -29,6 +29,17 @@ namespace Features.TileSystem.Scripts
             _destroyPointerIfEmpty = destroyPointerIfEmpty;
         }
 
+        public bool CanInteract(GameObject interactor, out string interactionText)
+        {
+            interactionText = "";
+            if (!_itemTilePointers.All(x => x.Tile.ItemContainer.CanAddItemCount(-_itemAmountCost)
+                                            || !_tile.ContainsTileInteractableOfType<EmptyItemTileInteractable>())) return false;
+
+            interactionText = "Generate";
+            Debug.Log(interactionText);
+            return true;
+        }
+
         public bool TryInteract(GameObject interactor)
         {
             if (!_itemTilePointers.All(x => x.Tile.ItemContainer.CanAddItemCount(-_itemAmountCost)
@@ -37,6 +48,12 @@ namespace Features.TileSystem.Scripts
             RemoveItemFromPointer();
             DropItemOnTile();
             return true;
+        }
+
+        public bool CanCast(GameObject caster, out string interactionText)
+        {
+            interactionText = "";
+            return false;
         }
 
         public bool TryCast(GameObject caster)
@@ -60,14 +77,14 @@ namespace Features.TileSystem.Scripts
                     _poolable.Release();
                 }
             }
-            Debug.Log("Removed item from pointer.");
+            //Debug.Log("Removed item from pointer.");
         }
 
         private void DropItemOnTile()
         {
             TileHelper.ReuseOnTile(_tile, _baseItemLoot.prefab, Quaternion.identity);
             
-            Debug.Log("Dropped item by crafting.");
+            //Debug.Log("Dropped item by crafting.");
         }
     }
 }

@@ -12,6 +12,18 @@ public class ConvertableItem_SO : BaseItem_SO
     [SerializeField] private BaseItem_SO requiredCarriedItem;
     [SerializeField] private BaseItem_SO newItem;
 
+    public override bool CanCast(GameObject caster, out string interactionText)
+    {
+        interactionText = "";
+        
+        if (!caster.TryGetComponent(out IItemCarryBehaviour itemCarryBehaviour)) return false;
+        if (!itemCarryBehaviour.IsCarrying()) return false;
+        if (itemCarryBehaviour.GetNextCarried() != requiredCarriedItem) return false;
+
+        interactionText = "Enchant";
+        return true;
+    }
+
     public override bool TryCast(GameObject caster)
     {
         if (!caster.TryGetComponent(out IItemCarryBehaviour itemCarryBehaviour)) return false;

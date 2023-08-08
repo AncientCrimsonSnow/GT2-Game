@@ -45,7 +45,7 @@ namespace Features.TileSystem.Scripts.Registrator
         
         public virtual bool CanRegisterOnTile()
         {
-            return Tile.IsMovable() && !_isCurrentlyRegistered;
+            return !_isCurrentlyRegistered;
         }
 
         private void RegisterOnTile()
