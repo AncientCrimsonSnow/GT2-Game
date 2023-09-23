@@ -64,4 +64,36 @@ namespace Features.Character.Scripts.Movement
             DOTween.Kill(transform);
         }
     }
+
+    public class OriginatorExample : MonoBehaviour, IReplayOriginator
+    {
+        public Action<IInputSnapshot> PushNewTick { get; set; }
+
+        private void Awake()
+        {
+            ReplayManager.Instance.RegisterOriginator(gameObject, this);
+        }
+
+        public void PushTick()
+        {
+            PushNewTick.Invoke(new ExampleInputSnapshot(transform, Vector3.forward));
+        }
+    }
+
+    public class ExampleInputSnapshot : IInputSnapshot
+    {
+        private readonly Transform transform;
+        private readonly Vector3 movementVector;
+
+        public ExampleInputSnapshot(Transform transform, Vector3 movementVector)
+        {
+            this.transform = transform;
+            this.movementVector = movementVector;
+        }
+        
+        public void Tick(float tickDurationInSeconds)
+        {
+            transform.DOMove(transform.position + movementVector, tickDurationInSeconds);
+        }
+    }
 }

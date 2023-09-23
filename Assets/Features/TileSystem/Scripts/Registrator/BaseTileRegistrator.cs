@@ -15,7 +15,7 @@ namespace Features.TileSystem.Scripts.Registrator
         public Tile Tile => tileManager.GetTileAt(TileHelper.TransformPositionToInt2(transform));
         
         private Vector3 _registeredPosition;
-        private bool _isCurrentlyRegistered;
+        public bool IsCurrentlyRegistered { get; private set; }
 
         public void Awake()
         {
@@ -45,12 +45,12 @@ namespace Features.TileSystem.Scripts.Registrator
         
         public virtual bool CanRegisterOnTile()
         {
-            return !_isCurrentlyRegistered;
+            return !IsCurrentlyRegistered;
         }
 
         private void RegisterOnTile()
         {
-            _isCurrentlyRegistered = true;
+            IsCurrentlyRegistered = true;
             _registeredPosition = transform.position;
             InternalRegisterOnTile();
         }
@@ -59,8 +59,8 @@ namespace Features.TileSystem.Scripts.Registrator
 
         private void UnregisterOnTile()
         {
-            if (!_isCurrentlyRegistered) return;
-            _isCurrentlyRegistered = false;
+            if (!IsCurrentlyRegistered) return;
+            IsCurrentlyRegistered = false;
             
             if (!_registeredPosition.Equals(transform.position))
             {

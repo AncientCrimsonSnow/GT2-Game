@@ -21,7 +21,7 @@ namespace Features.TileSystem.Scripts.Registrator
         
         public override bool CanRegisterOnTile()
         {
-            return base.CanRegisterOnTile() && pointerRegistrators.All(x => x.CanRegisterOnTile());
+            return base.CanRegisterOnTile() && pointerRegistrators.All(x => x.CanRegisterOnTile() || x.IsCurrentlyRegistered);
         }
 
         protected override void InternalRegisterOnTile()
