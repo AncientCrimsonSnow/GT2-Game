@@ -1,3 +1,6 @@
+# GT2-Custom Game
+This repository contains the practical part of the Game Technologies 2 (GT2) course
+
 # NECROPIA: Master of the Dead - Unity Game Repository
 
 ## Project Overview
